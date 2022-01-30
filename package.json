@@ -1,0 +1,21 @@
+{
+  "name": "party-crawler",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "node dist/index.js",
+    "build": "tsc src/index.ts -outDir dist",
+    "dev": "yarn build && yarn start",
+    "migrate": "tsc src/migrate.ts -outDir dist && node dist/migrate.js"
+  },
+  "devDependencies": {
+    "@types/node": "^17.0.13",
+    "@types/pg": "^8.6.4",
+    "typescript": "^4.5.5"
+  },
+  "dependencies": {
+    "axios": "^0.25.0",
+    "pg": "^8.7.1"
+  }
+}
