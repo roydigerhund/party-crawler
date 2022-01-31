@@ -1,6 +1,7 @@
 import axios from 'axios';
+import { PoolClient } from 'pg';
 import config from './config';
-import { storeImage } from './ImagesController';
+import pool from './dbconfig';
 
 const { imagePreviewUrl } = config;
 
@@ -30,39 +31,47 @@ const toDate = (date: string) => {
 };
 
 const main = async () => {
+  const client = await pool.connect();
+
   // iterate over all images
-  for (let i = firstId; i <= lastId; i++) {
-    await getImage(i);
-  }
-  process.exit(0);
-};
+  for (let imageId = firstId; imageId <= lastId; ) {
+    try {
+      // fetch html from url
+      const { data: dataBuffer } = await axios.get(imagePreviewUrl + imageId, { responseType: 'arraybuffer' });
 
-const getImage = async (imageId: number) => {
-  // fetch html from url
-  const { data: dataBuffer, ...rest } = await axios.get(imagePreviewUrl + imageId, { responseType: 'arraybuffer' });
-  // get infos from data with regex
-  const data = dataBuffer.toString('latin1');
-  if (data.match(regex)) {
-    const result = regex.exec(data);
-    if (!result?.groups) return;
-    const { id, party, date, country, city, url }: ImageType = {
-      id: result.groups.id,
-      party: result.groups.party,
-      date: toDate(result.groups.date),
-      country: result.groups.country,
-      city: result.groups.city,
-      url: result.groups.url,
-    };
+      // get infos from data with regex
+      const data = dataBuffer.toString('latin1');
+      if (data.match(regex)) {
+        const result = regex.exec(data);
+        if (!result?.groups) return;
+        const { id, party, date, country, city, url }: ImageType = {
+          id: result.groups.id,
+          party: result.groups.party,
+          date: toDate(result.groups.date),
+          country: result.groups.country,
+          city: result.groups.city,
+          url: result.groups.url,
+        };
 
-    const status = await storeImage({ id, party, date, country, city, url });
-    if (status) {
-      console.log('Stored image:', id);
-    } else {
-      console.log('Failed to store image:', id);
+        try {
+          const sql = `INSERT INTO images(id, party, date, country, city, url) VALUES (${id}, '${party}', '${date}', '${country}', '${city}', '${url}') ON CONFLICT DO NOTHING`;
+          await client.query(sql);
+          console.log('Stored image:', id);
+          imageId++;
+        } catch (error) {
+          console.log('Failed to store image:', id);
+        }
+      } else {
+        console.log('Image does not exist:', imageId);
+        imageId++;
+      }
+    } catch (error) {
+      console.log('Failed to fetch image:', imageId);
     }
-  } else {
-    console.log('Skipped image:', imageId);
   }
+
+  client.release();
+  process.exit(0);
 };
 
 main();
