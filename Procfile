@@ -4,3 +4,4 @@
 # Crawler-4: FIRST_ID=1239001 LAST_ID=1240000 node dist/index.js
 
 downloader: PAGE=130 PER_PAGE=1000 node dist/download.js
+# error-downloader: node dist/download-errors.js

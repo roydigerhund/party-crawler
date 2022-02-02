@@ -1,4 +1,4 @@
-const hadError = [
+export const hadError = [
   'http://www.binpartygeil.de/bilder/partybilder-2004/0401/01086d74338041016260c8606dd3d68d.jpg',
   'http://www.binpartygeil.de/bilder/partybilder-2004/0401/3bbb80558b6fcb15bb28e327160846b4.jpg',
   'http://www.binpartygeil.de/bilder/partybilder-2004/0401/464ef4866310edb4e1f699136072d360.jpg',

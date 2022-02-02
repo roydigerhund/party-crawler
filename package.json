@@ -5,7 +5,7 @@
   "license": "MIT",
   "scripts": {
     "start": "node dist/index.js",
-    "build": "tsc src/index.ts -outDir dist && tsc src/download.ts -outDir dist",
+    "build": "tsc src/index.ts -outDir dist && tsc src/download.ts -outDir dist && tsc src/download-errors.ts -outDir dist",
     "dev": "yarn build && yarn start",
     "migrate": "tsc src/migrate.ts -outDir dist && node dist/migrate.js"
   },
