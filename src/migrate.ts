@@ -7,7 +7,7 @@ const main = async () => {
     const sql = `CREATE TABLE "images" (
       "id" INT NOT NULL,
       "party" TEXT NOT NULL,
-      "date" DATE NOT NULL,
+      "partydate" DATE NOT NULL,
       "country" VARCHAR(2) NOT NULL,
       "city" TEXT NOT NULL,
       "url" TEXT NOT NULL,

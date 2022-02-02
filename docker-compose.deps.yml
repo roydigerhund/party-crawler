@@ -1,12 +1,50 @@
-version: '3'
+version: '3.1'
 
 services:
   db:
+    container_name: 'partycrawler_db'
+    restart: 'always'
     image: postgres:latest
-    ports:
-      - 5433:5432
     environment:
       - POSTGRES_USER=partycrawler
       - POSTGRES_PASSWORD=partycrawler
       - POSTGRES_DB=partycrawler
       - TZ=utc
+    volumes:
+      - postgres_volume:/var/lib/postgresql/data/
+      - ./services/postgres/:/docker-entrypoint-initdb.d/
+    ports:
+      - 5433:5432
+  metabase_db:
+    container_name: 'partycrawler_metabase_db'
+    hostname: 'metabase_db'
+    restart: 'always'
+    image: postgres:latest
+    environment:
+      - POSTGRES_USER=metabase
+      - POSTGRES_PASSWORD=metabase
+      - POSTGRES_DB=metabase
+    volumes:
+      - metabase_postgres_volume:/var/lib/postgresql/data/
+      - ./services/postgres/:/docker-entrypoint-initdb.d/
+    ports:
+      - 5434:5432
+  metabase:
+    container_name: 'partycrawler_metabase'
+    restart: 'always'
+    image: metabase/metabase:latest
+    environment:
+      - MB_DB_TYPE=postgres
+      - MB_DB_DBNAME=metabase
+      - MB_DB_PORT=5432
+      - MB_DB_USER=metabase
+      - MB_DB_PASS=metabase
+      - MB_DB_HOST=metabase_db
+    ports:
+      - 3000:3000
+    depends_on:
+      - metabase_db
+volumes:
+  postgres_volume:
+  metabase_postgres_volume:
+  metabase_volume:

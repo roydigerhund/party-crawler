@@ -13,20 +13,20 @@ const lastId = parseInt(process.env.LAST_ID, 10);
 console.log('Will fetch from id', firstId, 'to id', lastId);
 
 const regex = new RegExp(
-  /<title>BinPartyGeil\.de Party-Foto\/Bild-Nr\. (?<id>\d{1,10}): (?<party>.*) am (?<date>\d{2}\.\d{2}\.\d{4}) in (?<country>[A-Z]*?)-(?<city>.*?)<\/title>.*?<meta property="og:image" content="(?<url>.*?)"/gs,
+  /<title>BinPartyGeil\.de Party-Foto\/Bild-Nr\. (?<id>\d{1,10}): (?<party>.*) am (?<partydate>\d{2}\.\d{2}\.\d{4}) in (?<country>[A-Z]*?)-(?<city>.*?)<\/title>.*?<meta property="og:image" content="(?<url>.*?)"/gs,
 );
 export type ImageType = {
   id: string;
   party: string;
-  date: string;
+  partydate: string;
   country: string;
   city: string;
   url: string;
 };
 
 // dd.mm.yyyy to isoString
-const toDate = (date: string) => {
-  const [day, month, year] = date.split('.');
+const toDate = (partydate: string) => {
+  const [day, month, year] = partydate.split('.');
   return new Date(`${year}-${month}-${day}`).toISOString();
 };
 
@@ -44,17 +44,17 @@ const main = async () => {
       if (data.match(regex)) {
         const result = regex.exec(data);
         if (!result?.groups) return;
-        const { id, party, date, country, city, url }: ImageType = {
+        const { id, party, partydate, country, city, url }: ImageType = {
           id: result.groups.id,
           party: result.groups.party,
-          date: toDate(result.groups.date),
+          partydate: toDate(result.groups.partydate),
           country: result.groups.country,
           city: result.groups.city,
           url: result.groups.url,
         };
 
         try {
-          const sql = `INSERT INTO images(id, party, date, country, city, url) VALUES (${id}, '${party}', '${date}', '${country}', '${city}', '${url}') ON CONFLICT DO NOTHING`;
+          const sql = `INSERT INTO images(id, party, partydate, country, city, url) VALUES (${id}, '${party}', '${partydate}', '${country}', '${city}', '${url}') ON CONFLICT DO NOTHING`;
           await client.query(sql);
           console.log('Stored image:', id);
           imageId++;
