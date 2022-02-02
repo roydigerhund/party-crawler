@@ -7,6 +7,9 @@ yarn := $(shell command -v yarn 2> /dev/null)
 crawl: deps-up
 	yarn build && nf start
 
+download: deps-up
+	yarn build && nf start
+
 deps-up:
 	$(docker-compose) -f docker-compose.deps.yml up -d
 

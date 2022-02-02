@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { PoolClient } from 'pg';
 import config from './config';
 import pool from './dbconfig';
 
