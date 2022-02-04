@@ -1,26 +1,46 @@
+import * as async from 'async';
 import axios from 'axios';
+import * as mkdirp from 'mkdirp';
+import * as path from 'path';
 import config from './config';
-import { hadError } from './errors';
 const fse = require('fs-extra');
-
-console.log('Will fetch', hadError.length, 'images');
+const cliProgress = require('cli-progress');
 
 const main = async () => {
-  // fetch and save each image
-  await Promise.all(
-    hadError.map(async (url) => {
-      try {
-        const { data } = await axios.get(url, { responseType: 'arraybuffer', timeout: 60000 });
-        const fileName = url.replace(/^.*?de\//, '');
-        const filePath = `${config.downloadPath}/${fileName}`;
-        await fse.outputFile(filePath, data, { force: true });
-      } catch (error) {
-        console.log('Error while downloading image', url);
-        // write error to file
-        await fse.appendFile(config.downloadErrorsFile, `${url}\n`);
-      }
-    }),
-  );
+  // read errors.txt line by line
+  const errors = await fse.readFile('./src/errors.txt', 'utf8');
+  const lines = errors.split('\n');
+  const bar = new cliProgress.SingleBar({}, cliProgress.Presets.shades_classic);
+
+  console.time('Downloading Time');
+
+  bar.start(lines.length, 0);
+
+  await async.eachLimit(lines, 10, async (url: string, callback) => {
+    try {
+      // stream file to disk
+      const fileName = url.replace(/^.*?de\//, '');
+      const filePath = `${config.downloadPath}/${fileName}`;
+      await mkdirp(path.dirname(filePath));
+      const writer = fse.createWriteStream(filePath, { flags: 'w' });
+      const response = await axios({
+        method: 'get',
+        url,
+        responseType: 'stream',
+      });
+      response.data.pipe(writer);
+    } catch (error) {
+      // write error to file
+      await fse.appendFile(config.downloadErrorsFile, `${url}\n`);
+    } finally {
+      bar.increment();
+      callback();
+    }
+  });
+
+  bar.stop();
+
+  console.timeEnd('Downloading Time');
 
   process.exit(0);
 };
