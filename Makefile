@@ -23,7 +23,4 @@ deps-logs:
 	$(docker-compose) -f docker-compose.deps.yml logs -f
 
 setup:
-	yarn 
-
-migrate: deps-up
-	cd packages/cityhub-api && yarn typeorm migration:run
+	cd crawler && yarn 
