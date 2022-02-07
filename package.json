@@ -8,6 +8,8 @@
     "build": "tsc src/index.ts -outDir dist && tsc src/download.ts -outDir dist && tsc src/download-errors.ts -outDir dist",
     "download": "tsc src/download.ts -outDir dist && node dist/download.js",
     "download-errors": "tsc src/download-errors.ts -outDir dist && node dist/download-errors.js",
+    "check-corrupt": "tsc src/check-corrupt.ts -outDir dist && node dist/check-corrupt.js",
+    "corrupt": "tsc src/corrupt.ts -outDir dist && PAGE=549 PER_PAGE=1000 node dist/corrupt.js",
     "dev": "yarn build && yarn start",
     "migrate": "tsc src/migrate.ts -outDir dist && node dist/migrate.js"
   },

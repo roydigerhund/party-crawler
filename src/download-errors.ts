@@ -16,7 +16,7 @@ const main = async () => {
 
   bar.start(lines.length, 0);
 
-  await async.eachLimit(lines, 10, async (url: string, callback) => {
+  await async.eachLimit(lines, 1, async (url: string, callback) => {
     try {
       // stream file to disk
       const fileName = url.replace(/^.*?de\//, '');
@@ -27,6 +27,7 @@ const main = async () => {
         method: 'get',
         url,
         responseType: 'stream',
+        timeout: 30000,
       });
       response.data.pipe(writer);
     } catch (error) {
