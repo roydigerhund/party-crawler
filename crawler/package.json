@@ -11,14 +11,17 @@
     "check-corrupt": "tsc src/check-corrupt.ts -outDir dist && node dist/check-corrupt.js",
     "corrupt": "tsc src/corrupt.ts -outDir dist && PAGE=549 PER_PAGE=1000 node dist/corrupt.js",
     "dev": "yarn build && yarn start",
-    "migrate": "tsc src/migrate.ts -outDir dist && node dist/migrate.js"
+    "migrate": "tsc src/migrate.ts -outDir dist && node dist/migrate.js",
+    "data-migrate": "tsc src/data-migrate.ts -outDir dist && node dist/data-migrate.js"
   },
   "devDependencies": {
     "@types/async": "^3.2.12",
     "@types/mkdirp": "^1.0.2",
     "@types/node": "^17.0.14",
     "@types/pg": "^8.6.4",
-    "typescript": "^4.5.5"
+    "@types/uuid": "^8.3.4",
+    "typescript": "^4.5.5",
+    "uuid": "^8.3.2"
   },
   "dependencies": {
     "@types/fs-extra": "^9.0.13",

@@ -18,14 +18,14 @@ model RawData {
 }
 
 model Country {
-  id     String @id @db.Uuid
+  id     String @id @default(uuid()) @db.Uuid
   name   String
   code   String @db.VarChar(2)
   cities City[]
 }
 
 model City {
-  id        String  @id @db.Uuid
+  id        String  @id @default(uuid()) @db.Uuid
   name      String
   countryId String  @db.Uuid
   country   Country @relation(fields: [countryId], references: [id])
@@ -33,7 +33,7 @@ model City {
 }
 
 model Party {
-  id     String   @id @db.Uuid
+  id     String   @id @default(uuid()) @db.Uuid
   name   String
   date   DateTime @db.Date
   cityId String   @db.Uuid
@@ -42,7 +42,7 @@ model Party {
 }
 
 model Image {
-  id        String  @id @db.Uuid
+  id        String  @id @default(uuid()) @db.Uuid
   url       String
   partyId   String  @db.Uuid
   party     Party   @relation(fields: [partyId], references: [id])
