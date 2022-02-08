@@ -9,6 +9,7 @@ import { classNames } from '~/utils/class-names';
 const navigation = [
   { name: 'Home', href: '/', icon: HomeIcon },
   { name: 'Parties', href: '/parties', icon: UsersIcon },
+  { name: 'Raw Data', href: '/raw-data', icon: UsersIcon },
 ];
 
 const Page: React.FC = ({ children }) => {

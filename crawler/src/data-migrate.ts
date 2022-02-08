@@ -60,7 +60,7 @@ const createCities = async (client: PoolClient, countries: Country[]): Promise<C
 type Party = {
   id: string;
   name: string;
-  date: string;
+  date: Date;
   cityId: string;
 };
 
@@ -81,14 +81,6 @@ const createParties = async (client: PoolClient, cities: (City & { country: Coun
   return parties;
 };
 
-type Image = {
-  id: string;
-  url: string;
-  partyId: string;
-  filePath: string;
-  rawDataId: number;
-};
-
 const createImages = async (
   client: PoolClient,
   page: number,
@@ -100,19 +92,31 @@ const createImages = async (
       (page - 1) * perPage
     } LIMIT ${perPage}`,
   );
+
+  // console.log('\n');
+  // console.log(rows[0].partydate.toLocaleDateString());
+  // console.log('\n');
+  // console.log(parties[0].date.toLocaleDateString());
+  // console.log('\n');
+
+  // process.exit(1);
+
   const newImages = rows.map(
-    (image: { id: number; party: string; partydate: string; country: string; city: string; url: string }) => [
-      uuidv4(),
-      image.url,
-      parties.find(
-        (party) =>
-          party.city.country.code === (image.country || 'XX') &&
-          party.city.name === (image.city || 'Unknown') &&
-          party.name === (image.party || 'Unknown'),
-      )?.id,
-      image.url.replace('http://www.binpartygeil.de/', '/downloads/'),
-      image.id,
-    ],
+    (image: { id: number; party: string; partydate: Date; country: string; city: string; url: string }) => {
+      return [
+        uuidv4(),
+        image.url,
+        parties.find(
+          (party) =>
+            party.city.country.code === (image.country || 'XX') &&
+            party.city.name === (image.city || 'Unknown') &&
+            party.name === (image.party || 'Unknown') &&
+            party.date.toLocaleDateString() === image.partydate.toLocaleDateString(),
+        )?.id,
+        image.url.replace('http://www.binpartygeil.de/', '/downloads/'),
+        image.id,
+      ];
+    },
   );
   const { rows: images } = await pool.query(
     `INSERT INTO "Image" (id, url, "partyId", "filePath", "rawDataId") VALUES ${expand(
@@ -146,7 +150,7 @@ const main = async () => {
     city: newCities.find((city) => city.id === p.cityId) || newCities[0],
   }));
 
-  const perPage = 1000;
+  const perPage = 10000;
   const totalImages = (await client.query('SELECT COUNT(id) FROM "RawData"')).rows[0].count;
   const totalPages = Math.ceil(totalImages / perPage);
 

@@ -1,56 +1,26 @@
-import { Prisma } from '@prisma/client';
+import { Prisma, RawData } from '@prisma/client';
 import { LoaderFunction, useLoaderData, useTransition } from 'remix';
 import Page from '~/components/Page';
 import db from '~/db.server';
 
-type PartyData = {
-  id: string;
-  name: string;
-  city: {
-    id: string;
-    name: string;
-    country: {
-      id: string;
-      name: string;
-    };
-  };
-  date: Date;
-  images: {
-    id: string;
-    filePath: string;
-  }[];
-};
-
-export const loader: LoaderFunction = async ({ request }): Promise<PartyData[]> => {
+export const loader: LoaderFunction = async ({ request }): Promise<RawData[]> => {
   const url = new URL(request.url);
   const search = url.searchParams.get('search') || '';
 
-  const parties = db.party.findMany({
+  const images = db.rawData.findMany({
     where: {
       OR: [
-        { name: { contains: search, mode: Prisma.QueryMode.insensitive } },
-        { city: { name: { contains: search, mode: Prisma.QueryMode.insensitive } } },
+        { party: { contains: search, mode: Prisma.QueryMode.insensitive } },
+        { city: { contains: search, mode: Prisma.QueryMode.insensitive } },
       ],
     },
-    include: {
-      _count: {
-        select: {
-          images: true,
-        },
-      },
-      city: { include: { country: true } },
-      images: { take: 1 },
-    },
-    take: 20,
-    orderBy: {
-      date: 'desc',
-    },
+    take: 100,
   });
-  return parties;
+  return images;
 };
 
-const Parties = () => {
-  const parties = useLoaderData<PartyData[]>();
+const RawData = () => {
+  const images = useLoaderData<RawData[]>();
   const { state } = useTransition();
 
   return (
@@ -71,35 +41,32 @@ const Parties = () => {
                 <p className="pointer-events-none block text-sm font-medium text-gray-500">{'image.partydate'}</p>
               </li>
             ) : (
-              parties.map((party) => (
-                <li key={party.id} className="relative">
+              images.map((image) => (
+                <li key={image.id} className="relative">
                   <div className="group aspect-w-10 aspect-h-10 block w-full overflow-hidden rounded-lg bg-gray-100 focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 focus-within:ring-offset-gray-100">
-                    {party.images[0] && (
-                      <img
-                        src={party.images[0].filePath}
-                        alt=""
-                        className="pointer-events-none object-cover group-hover:opacity-75"
-                      />
-                    )}
-                    {/* <a
-                      href={party.id}
-                      target="_blank"
-                      className="absolute inset-0 focus:outline-none"
-                    >
-                      <span className="sr-only">View details for {party.name}</span>
-                    </a> */}
+                    <img
+                      src={image.url.replace('http://www.binpartygeil.de/', '/downloads/')}
+                      alt=""
+                      className="pointer-events-none object-cover group-hover:opacity-75"
+                    />
+                    <a href={image.url} target="_blank" className="absolute inset-0 focus:outline-none">
+                      <span className="sr-only">View details for {image.id}</span>
+                    </a>
                   </div>
                   <p className="pointer-events-none mt-2 block text-sm font-medium text-gray-900">
-                    {party.name} in{' '}
+                    {image.party} in{' '}
                     <a
                       href="#"
                       className="pointer-events-auto cursor-pointer text-indigo-700 underline-offset-2 hover:underline"
                     >
-                      {party.city.name}
+                      {image.country} - {image.city}
                     </a>
                   </p>
                   <p className="pointer-events-none block text-sm font-medium text-gray-500">
-                    {new Date(party.date).toLocaleDateString()}
+                    {new Date(image.partydate).toLocaleDateString()}
+                  </p>
+                  <p className="pointer-events-none block text-sm font-medium text-gray-500">
+                    {image.id}
                   </p>
                 </li>
               ))
@@ -111,4 +78,4 @@ const Parties = () => {
   );
 };
 
-export default Parties;
+export default RawData;
