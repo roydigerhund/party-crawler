@@ -85,6 +85,7 @@ const Page: React.FC = ({ children }) => {
                       <NavLink
                         key={item.name}
                         to={item.href}
+                        prefetch="intent"
                         className={({ isActive }) =>
                           classNames(
                             isActive
@@ -133,6 +134,7 @@ const Page: React.FC = ({ children }) => {
                   <NavLink
                     key={item.name}
                     to={item.href}
+                    prefetch="intent"
                     className={({ isActive }) =>
                       classNames(
                         isActive ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900',

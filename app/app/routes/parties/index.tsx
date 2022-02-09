@@ -1,6 +1,7 @@
 import { Prisma } from '@prisma/client';
 import { LoaderFunction, useLoaderData, useTransition } from 'remix';
 import Page from '~/components/Page';
+import Pagination from '~/components/Pagination';
 import db from '~/db.server';
 
 type PartyData = {
@@ -21,11 +22,25 @@ type PartyData = {
   }[];
 };
 
-export const loader: LoaderFunction = async ({ request }): Promise<PartyData[]> => {
+type LoaderReturnType = { parties: PartyData[]; partyCount: number; page: number };
+
+const perPage = 40;
+
+export const loader: LoaderFunction = async ({ request }): Promise<LoaderReturnType> => {
   const url = new URL(request.url);
   const search = url.searchParams.get('search') || '';
+  const pageParam = url.searchParams.get('page') || '1';
+  const page = parseInt(pageParam, 10);
 
-  const parties = db.party.findMany({
+  const partyCount = await db.party.count({
+    where: {
+      OR: [
+        { name: { contains: search, mode: Prisma.QueryMode.insensitive } },
+        { city: { name: { contains: search, mode: Prisma.QueryMode.insensitive } } },
+      ],
+    },
+  });
+  const parties = await db.party.findMany({
     where: {
       OR: [
         { name: { contains: search, mode: Prisma.QueryMode.insensitive } },
@@ -33,24 +48,20 @@ export const loader: LoaderFunction = async ({ request }): Promise<PartyData[]> 
       ],
     },
     include: {
-      _count: {
-        select: {
-          images: true,
-        },
-      },
       city: { include: { country: true } },
       images: { take: 1 },
     },
-    take: 20,
+    skip: perPage * (page - 1),
+    take: perPage,
     orderBy: {
       date: 'desc',
     },
   });
-  return parties;
+  return { parties, partyCount, page };
 };
 
 const Parties = () => {
-  const parties = useLoaderData<PartyData[]>();
+  const { parties, partyCount, page } = useLoaderData<LoaderReturnType>();
   const { state } = useTransition();
 
   return (
@@ -106,6 +117,7 @@ const Parties = () => {
             )}
           </ul>
         </div>
+        <Pagination currentPage={page} perPage={perPage} total={partyCount} />
       </div>
     </Page>
   );
