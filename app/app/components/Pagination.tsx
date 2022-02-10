@@ -1,12 +1,13 @@
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/solid';
 import React from 'react';
-import { Link } from 'remix';
+import { Link, useLocation } from 'remix';
 
 type Viewable = 'always' | 'sometimes' | 'never';
 
 type Props = { currentPage: number; perPage: number; total: number };
 
 const Pagination = ({ currentPage, perPage, total }: Props) => {
+  const location = useLocation();
   const numberOfPages = Math.ceil(total / perPage);
   const currentIndex = currentPage - 1;
 
@@ -27,19 +28,24 @@ const Pagination = ({ currentPage, perPage, total }: Props) => {
         : 'never',
   }));
 
-  const onPageClick = (page: number) => {};
+  const getLink = (page: number) => {
+    const { pathname, search } = location;
+    const params = new URLSearchParams(search);
+    params.set('page', page.toString());
+    return `${pathname}?${params.toString()}`;
+  };
 
   return numberOfPages < 2 ? null : (
     <div className="mt-4 flex items-center justify-between border-t border-gray-200 bg-white py-3">
       <div className="flex flex-1 justify-between sm:hidden">
         <Link
-          to={`?page=${currentPage > 1 ? currentPage : 1}`}
+          to={getLink(currentPage > 1 ? currentPage - 1 : 1)}
           className="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
         >
           Previous
         </Link>
         <Link
-          to={`?page=${currentPage < numberOfPages ? currentPage : numberOfPages}`}
+          to={getLink(currentPage < numberOfPages ? currentPage + 1 : numberOfPages)}
           className="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
         >
           Next
@@ -56,7 +62,7 @@ const Pagination = ({ currentPage, perPage, total }: Props) => {
         <div>
           <nav className="relative z-0 inline-flex -space-x-px rounded-md shadow-sm" aria-label="Pagination">
             <Link
-              to={`?page=${currentPage > 1 ? currentPage : 1}`}
+              to={getLink(currentPage > 1 ? currentPage - 1 : 1)}
               className="relative inline-flex items-center rounded-l-md border border-gray-300 bg-white px-2 py-2 text-sm font-medium text-gray-500 hover:bg-gray-50"
             >
               <span className="sr-only">Previous</span>
@@ -66,7 +72,7 @@ const Pagination = ({ currentPage, perPage, total }: Props) => {
               viewable === 'always' || viewable === 'sometimes' ? (
                 <Link
                   key={page}
-                  to={`?page=${page}`}
+                  to={getLink(page)}
                   prefetch="intent"
                   className={`relative items-center border border-gray-300 bg-white px-4 py-2 text-sm hover:bg-gray-50 ${
                     viewable === 'always' ? 'inline-flex' : 'hidden xl:inline-flex'
@@ -86,7 +92,7 @@ const Pagination = ({ currentPage, perPage, total }: Props) => {
               ),
             )}
             <Link
-              to={`?page=${currentPage < numberOfPages ? currentPage : numberOfPages}`}
+              to={getLink(currentPage < numberOfPages ? currentPage + 1 : numberOfPages)}
               className="relative inline-flex items-center rounded-r-md border border-gray-300 bg-white px-2 py-2 text-sm font-medium text-gray-500 hover:bg-gray-50"
             >
               <span className="sr-only">Next</span>

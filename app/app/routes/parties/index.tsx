@@ -1,30 +1,22 @@
-import { Prisma } from '@prisma/client';
-import { LoaderFunction, useLoaderData, useTransition } from 'remix';
+import { City, Country, Prisma, Image } from '@prisma/client';
+import { Link, LoaderFunction, useLoaderData, useTransition } from 'remix';
 import Page from '~/components/Page';
 import Pagination from '~/components/Pagination';
 import db from '~/db.server';
 
-type PartyData = {
+export type PartyData = {
   id: string;
   name: string;
-  city: {
-    id: string;
-    name: string;
-    country: {
-      id: string;
-      name: string;
-    };
+  city: City & {
+    country: Country;
   };
   date: Date;
-  images: {
-    id: string;
-    filePath: string;
-  }[];
+  images: Image[];
 };
 
 type LoaderReturnType = { parties: PartyData[]; partyCount: number; page: number };
 
-const perPage = 40;
+const perPage = 20;
 
 export const loader: LoaderFunction = async ({ request }): Promise<LoaderReturnType> => {
   const url = new URL(request.url);
@@ -92,13 +84,9 @@ const Parties = () => {
                         className="pointer-events-none object-cover group-hover:opacity-75"
                       />
                     )}
-                    {/* <a
-                      href={party.id}
-                      target="_blank"
-                      className="absolute inset-0 focus:outline-none"
-                    >
+                    <Link to={`/parties/${party.id}`} className="absolute inset-0 focus:outline-none">
                       <span className="sr-only">View details for {party.name}</span>
-                    </a> */}
+                    </Link>
                   </div>
                   <p className="pointer-events-none mt-2 block text-sm font-medium text-gray-900">
                     {party.name} in{' '}

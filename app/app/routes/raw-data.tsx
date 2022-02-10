@@ -7,14 +7,14 @@ export const loader: LoaderFunction = async ({ request }): Promise<RawData[]> =>
   const url = new URL(request.url);
   const search = url.searchParams.get('search') || '';
 
-  const images = db.rawData.findMany({
+  const images = await db.rawData.findMany({
     where: {
       OR: [
         { party: { contains: search, mode: Prisma.QueryMode.insensitive } },
         { city: { contains: search, mode: Prisma.QueryMode.insensitive } },
       ],
     },
-    take: 100,
+    take: 300,
   });
   return images;
 };
@@ -49,7 +49,7 @@ const RawData = () => {
                       alt=""
                       className="pointer-events-none object-cover group-hover:opacity-75"
                     />
-                    <a href={image.url} target="_blank" className="absolute inset-0 focus:outline-none">
+                    <a href={image.url.replace('http://www.binpartygeil.de/', '/downloads/')} target="_blank" className="absolute inset-0 focus:outline-none">
                       <span className="sr-only">View details for {image.id}</span>
                     </a>
                   </div>
