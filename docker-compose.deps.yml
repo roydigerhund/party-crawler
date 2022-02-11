@@ -17,7 +17,7 @@ services:
       - 35432:5432
   minio:
     container_name: 'partycrawler_minio'
-    image: minio/minio
+    image: minio/minio:latest
     restart: always
     ports:
       - 39000:9000
