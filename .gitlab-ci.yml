@@ -1,0 +1,52 @@
+services:
+  - docker:dind
+stages:
+  - build
+  - tag-images
+  - deploy
+
+app:
+  stage: build
+  only:
+    - tags
+  image:
+    name: gcr.io/kaniko-project/executor:debug
+    entrypoint: ['']
+  before_script:
+    - echo "{\"auths\":{\"$CI_REGISTRY\":{\"username\":\"$CI_REGISTRY_USER\",\"password\":\"$CI_REGISTRY_PASSWORD\"}}}" > /kaniko/.docker/config.json
+    - echo $CI_SERVER_TLS_CA_FILE >> /kaniko/ssl/certs/ca-certificates.crt
+  script:
+    - /kaniko/executor --verbosity warn --context $CI_PROJECT_DIR/app --dockerfile $CI_PROJECT_DIR/app//Dockerfile --destination registry.zoom7.io/party-crawler/party-crawler/app:$CI_COMMIT_TAG
+
+tag-latest:
+  stage: tag-images
+  when: manual
+  only:
+    - tags
+  allow_failure: false
+  image:
+    name: gcr.io/go-containerregistry/crane:debug
+    entrypoint: ['']
+  before_script:
+    - crane auth login $CI_REGISTRY -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD
+  script:
+    - crane tag registry.zoom7.io/party-crawler/party-crawler/app:$CI_COMMIT_TAG latest
+
+deploy:
+  stage: deploy
+  needs:
+    - tag-latest
+  only:
+    - tags
+  image:
+    name: bitnami/kubectl:latest
+    entrypoint: ['']
+  before_script:
+    - echo $ENCODED_KUBECONFIG | base64 --decode > /tmp/kubeconfig
+    - export KUBECONFIG=/tmp/kubeconfig
+  script:
+    - kubectl set image deployment app app=registry.zoom7.io/party-crawler/party-crawler/app:$CI_COMMIT_TAG -n party-crawler && kubectl rollout status deployment app -n party-crawler
+
+    - export deployments=$(kubectl get deploy -n party-crawler -l restart-group=worker -o jsonpath="{.items[*].metadata.name}")
+    - for deployment in $deployments; do kubectl set image deployment $deployment worker=registry.zoom7.io/party-crawler/party-crawler/app:$CI_COMMIT_TAG -n party-crawler; done
+    - for deployment in $deployments; do kubectl rollout status deployment $deployment -n party-crawler; done
