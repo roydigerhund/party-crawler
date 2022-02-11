@@ -4,7 +4,8 @@ import { LoaderFunction, useLoaderData, useTransition } from 'remix';
 import Gallery from '~/components/Gallery';
 import Page from '~/components/Page';
 import db from '~/db.server';
-import { PartyData } from '.';
+import { formatDate } from '~/utils/intl';
+import { PartyData } from '~/utils/types-and-enums';
 
 export const loader: LoaderFunction = async ({ params }): Promise<PartyData | null> => {
   const { partyId } = params;
@@ -16,6 +17,11 @@ export const loader: LoaderFunction = async ({ params }): Promise<PartyData | nu
       city: {
         include: {
           country: true,
+        },
+      },
+      _count: {
+        select: {
+          images: true,
         },
       },
     },
@@ -50,7 +56,7 @@ const Party = () => {
         <h1 className="text-2xl font-semibold text-gray-900">
           {party.name} in {party.city.name}
         </h1>
-        <p className="text-md font-medium text-gray-500">Am {new Date(party.date).toLocaleDateString()}</p>
+        <p className="text-md font-medium text-gray-500">{formatDate(party.date)}</p>
       </div>
       <div className="px-4 sm:px-6 md:px-0">
         <div className="py-4">
@@ -81,7 +87,7 @@ const Party = () => {
                       }}
                       className="absolute inset-0 focus:outline-none"
                     >
-                      <span className="sr-only">View details for {image.id}</span>
+                      <span className="sr-only">Details anzeigen für {image.id}</span>
                     </button>
                   </div>
                 </li>

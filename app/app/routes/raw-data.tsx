@@ -2,6 +2,7 @@ import { Prisma, RawData } from '@prisma/client';
 import { LoaderFunction, useLoaderData, useTransition } from 'remix';
 import Page from '~/components/Page';
 import db from '~/db.server';
+import { formatDate } from '~/utils/intl';
 
 export const loader: LoaderFunction = async ({ request }): Promise<RawData[]> => {
   const url = new URL(request.url);
@@ -26,7 +27,7 @@ const RawData = () => {
   return (
     <Page>
       <div className="px-4 sm:px-6 md:px-0">
-        <h1 className="text-2xl font-semibold text-gray-900">Parties</h1>
+        <h1 className="text-2xl font-semibold text-gray-900">Raw Data</h1>
       </div>
       <div className="px-4 sm:px-6 md:px-0">
         <div className="py-4">
@@ -49,8 +50,12 @@ const RawData = () => {
                       alt=""
                       className="pointer-events-none object-cover group-hover:opacity-75"
                     />
-                    <a href={image.url.replace('http://www.binpartygeil.de/', '/downloads/')} target="_blank" className="absolute inset-0 focus:outline-none">
-                      <span className="sr-only">View details for {image.id}</span>
+                    <a
+                      href={image.url.replace('http://www.binpartygeil.de/', '/downloads/')}
+                      target="_blank"
+                      className="absolute inset-0 focus:outline-none"
+                    >
+                      <span className="sr-only">Details anzeigen für {image.id}</span>
                     </a>
                   </div>
                   <p className="pointer-events-none mt-2 block text-sm font-medium text-gray-900">
@@ -63,11 +68,9 @@ const RawData = () => {
                     </a>
                   </p>
                   <p className="pointer-events-none block text-sm font-medium text-gray-500">
-                    {new Date(image.partydate).toLocaleDateString()}
+                    {formatDate(image.partydate)}
                   </p>
-                  <p className="pointer-events-none block text-sm font-medium text-gray-500">
-                    {image.id}
-                  </p>
+                  <p className="pointer-events-none block text-sm font-medium text-gray-500">{image.id}</p>
                 </li>
               ))
             )}

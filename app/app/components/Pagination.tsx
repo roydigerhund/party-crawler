@@ -1,6 +1,7 @@
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/solid';
 import React from 'react';
 import { Link, useLocation } from 'remix';
+import { formatNumber } from '~/utils/intl';
 
 type Viewable = 'always' | 'sometimes' | 'never';
 
@@ -42,21 +43,21 @@ const Pagination = ({ currentPage, perPage, total }: Props) => {
           to={getLink(currentPage > 1 ? currentPage - 1 : 1)}
           className="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
         >
-          Previous
+          Zurück
         </Link>
         <Link
           to={getLink(currentPage < numberOfPages ? currentPage + 1 : numberOfPages)}
           className="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
         >
-          Next
+          Vor
         </Link>
       </div>
       <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
         <div>
           <p className="text-sm text-gray-700">
-            Showing <span className="font-medium">{total === 0 ? 0 : currentIndex * perPage + 1}</span> to{' '}
-            <span className="font-medium">{Math.min(currentPage * perPage, total)}</span> of{' '}
-            <span className="font-medium">{total}</span> results
+            Zeige <span className="font-medium">{total === 0 ? 0 : currentIndex * perPage + 1}</span> bis{' '}
+            <span className="font-medium">{Math.min(currentPage * perPage, total)}</span> von{' '}
+            <span className="font-medium">{formatNumber(total)}</span> Ergebnissen
           </p>
         </div>
         <div>
@@ -65,7 +66,7 @@ const Pagination = ({ currentPage, perPage, total }: Props) => {
               to={getLink(currentPage > 1 ? currentPage - 1 : 1)}
               className="relative inline-flex items-center rounded-l-md border border-gray-300 bg-white px-2 py-2 text-sm font-medium text-gray-500 hover:bg-gray-50"
             >
-              <span className="sr-only">Previous</span>
+              <span className="sr-only">Zurück</span>
               <ChevronLeftIcon className="h-5 w-5" aria-hidden="true" />
             </Link>
             {printablePages.map(({ page, viewable }, i) =>
@@ -95,7 +96,7 @@ const Pagination = ({ currentPage, perPage, total }: Props) => {
               to={getLink(currentPage < numberOfPages ? currentPage + 1 : numberOfPages)}
               className="relative inline-flex items-center rounded-r-md border border-gray-300 bg-white px-2 py-2 text-sm font-medium text-gray-500 hover:bg-gray-50"
             >
-              <span className="sr-only">Next</span>
+              <span className="sr-only">Vor</span>
               <ChevronRightIcon className="h-5 w-5" aria-hidden="true" />
             </Link>
           </nav>
