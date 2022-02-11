@@ -6,6 +6,7 @@ COPY ./package.json .
 RUN yarn
 
 COPY . /usr/src/app
-RUN TSC_COMPILE_ON_ERROR=true yarn build
+RUN yarn build
+RUN prisma generate
 
 RUN yarn start
