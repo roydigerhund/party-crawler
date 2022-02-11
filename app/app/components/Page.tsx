@@ -75,9 +75,9 @@ const Page: React.FC<{ noSearch?: boolean }> = ({ children, noSearch }) => {
                 </Transition.Child>
                 <div className="flex flex-shrink-0 items-center px-4">
                   <img
-                    className="h-8 w-auto"
-                    src="https://tailwindui.com/img/logos/workflow-logo-indigo-600-mark-gray-800-text.svg"
-                    alt="Workflow"
+                    className="h-12 w-auto"
+                    src="/logo.png"
+                    alt="Partybilder"
                   />
                 </div>
                 <div className="mt-5 h-0 flex-1 overflow-y-auto">
@@ -124,9 +124,9 @@ const Page: React.FC<{ noSearch?: boolean }> = ({ children, noSearch }) => {
           <div className="flex flex-grow flex-col overflow-y-auto border-r border-gray-200 bg-white pt-5">
             <div className="flex flex-shrink-0 items-center px-4">
               <img
-                className="h-8 w-auto"
-                src="https://tailwindui.com/img/logos/workflow-logo-indigo-600-mark-gray-800-text.svg"
-                alt="Workflow"
+                className="h-12 w-auto"
+                src="/logo.png"
+                alt="Partybilder"
               />
             </div>
             <div className="mt-5 flex flex-grow flex-col">

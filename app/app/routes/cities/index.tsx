@@ -97,11 +97,11 @@ export default function Cities() {
                       </div>
                     </div>
                     <div className="mt-4 flex-shrink-0 sm:mt-0 sm:ml-5">
-                      <div className="flex -space-x-1 overflow-hidden">
+                      <div className="xxs:flex hidden -space-x-1 overflow-hidden">
                         {city.parties.map((party) => (
                           <img
                             key={party.id}
-                            className="inline-block h-12 w-12 rounded-lg ring-2 ring-white"
+                            className="xs:h-10 xs:w-10 h-8 w-8 rounded-lg ring-2 ring-white sm:h-12 sm:w-12"
                             src={party.images[0]?.filePath}
                             alt={party.name}
                           />
