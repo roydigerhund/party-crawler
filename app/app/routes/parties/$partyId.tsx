@@ -1,7 +1,5 @@
 import { Party } from '@prisma/client';
-import { useState } from 'react';
-import { Link, LoaderFunction, useLoaderData, useTransition } from 'remix';
-import Gallery from '~/components/Gallery';
+import { Link, LoaderFunction, useLoaderData } from 'remix';
 import ImageList from '~/components/ImageList';
 import Page from '~/components/Page';
 import db from '~/db.server';

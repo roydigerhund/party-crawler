@@ -29,6 +29,7 @@
     "axios": "^0.25.0",
     "cli-progress": "^3.10.0",
     "fs-extra": "^10.0.0",
+    "html-entities": "^2.3.2",
     "mkdirp": "^1.0.4",
     "pg": "^8.7.1"
   }

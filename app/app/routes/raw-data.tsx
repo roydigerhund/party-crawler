@@ -1,7 +1,8 @@
 import { Prisma, RawData } from '@prisma/client';
-import { LoaderFunction, useLoaderData, useTransition } from 'remix';
+import { LoaderFunction, useLoaderData, useOutletContext, useTransition } from 'remix';
 import Page from '~/components/Page';
 import db from '~/db.server';
+import { OutletContext } from '~/root';
 import { formatDate } from '~/utils/intl';
 
 export const loader: LoaderFunction = async ({ request }): Promise<RawData[]> => {
@@ -21,6 +22,7 @@ export const loader: LoaderFunction = async ({ request }): Promise<RawData[]> =>
 };
 
 const RawData = () => {
+  const { MINIO_BASE_URL } = useOutletContext<OutletContext>();
   const images = useLoaderData<RawData[]>();
   const { state } = useTransition();
 
@@ -46,7 +48,7 @@ const RawData = () => {
                 <li key={image.id} className="relative">
                   <div className="group aspect-w-10 aspect-h-10 block w-full overflow-hidden rounded-lg bg-gray-100 focus-within:ring-2 focus-within:ring-sky-500 focus-within:ring-offset-2 focus-within:ring-offset-gray-100">
                     <img
-                      src={image.url.replace('http://www.binpartygeil.de/', '/downloads/')}
+                      src={MINIO_BASE_URL + image.url.replace('http://www.binpartygeil.de/', '/downloads/')}
                       alt=""
                       className="pointer-events-none object-cover group-hover:opacity-75"
                     />

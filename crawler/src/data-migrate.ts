@@ -2,6 +2,7 @@ import { PoolClient } from 'pg';
 import { v4 as uuidv4 } from 'uuid';
 import pool from './dbconfig';
 const cliProgress = require('cli-progress');
+import { decode } from 'html-entities';
 
 const expand = (rowCount: number, columnCount: number, startAt = 1) => {
   var index = startAt;
@@ -70,7 +71,7 @@ const createParties = async (client: PoolClient, cities: (City & { country: Coun
   );
   const newParties = rows.map((p: { party: string; partydate: string; country: string; city: string }) => [
     uuidv4(),
-    p.party || 'Unknown',
+    decode(p.party || 'Unknown'),
     p.partydate || '',
     cities.find((city) => city.country.code === (p.country || 'XX') && city.name === (p.city || 'Unknown'))?.id,
   ]);
@@ -110,10 +111,10 @@ const createImages = async (
           (party) =>
             party.city.country.code === (image.country || 'XX') &&
             party.city.name === (image.city || 'Unknown') &&
-            party.name === (image.party || 'Unknown') &&
+            party.name === decode(image.party || 'Unknown') &&
             party.date.toLocaleDateString() === image.partydate.toLocaleDateString(),
         )?.id,
-        image.url.replace('http://www.binpartygeil.de/', '/downloads/'),
+        image.url.replace('http://www.binpartygeil.de/bilder/', '/images/'),
         image.id,
       ];
     },

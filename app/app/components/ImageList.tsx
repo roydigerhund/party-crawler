@@ -1,9 +1,11 @@
 import { Image } from '@prisma/client';
 import { useState } from 'react';
-import { Link } from 'remix';
+import { Link, useOutletContext } from 'remix';
+import { OutletContext } from '~/root';
 import Gallery from './Gallery';
 
 const ImageList = ({ images, toParty }: { images: Image[]; toParty?: boolean }) => {
+  const { MINIO_BASE_URL } = useOutletContext<OutletContext>();
   const [openGallery, setOpenGallery] = useState(false);
   const [initialGalleryIndex, setInitialGalleryIndex] = useState<number>(0);
 
@@ -19,9 +21,13 @@ const ImageList = ({ images, toParty }: { images: Image[]; toParty?: boolean }) 
             {images.map((image, index) => (
               <li key={image.id} className="relative">
                 <div className="group aspect-w-10 aspect-h-10 block w-full overflow-hidden rounded-lg bg-black focus-within:ring-2 focus-within:ring-sky-500 focus-within:ring-offset-2 focus-within:ring-offset-gray-100">
-                  <img src={image.filePath} alt="" className="pointer-events-none object-cover group-hover:blur-sm" />
                   <img
-                    src={image.filePath}
+                    src={MINIO_BASE_URL + image.filePath}
+                    alt=""
+                    className="pointer-events-none object-cover group-hover:blur-sm"
+                  />
+                  <img
+                    src={MINIO_BASE_URL + image.filePath}
                     alt={image.id}
                     className="pointer-events-none hidden object-contain group-hover:block"
                   />
@@ -42,7 +48,7 @@ const ImageList = ({ images, toParty }: { images: Image[]; toParty?: boolean }) 
                       <Link
                         to={`/parties/${image.partyId}`}
                         target="_blank"
-                        className="pointer-events-auto w-full rounded-md bg-white bg-opacity-75 py-2 px-4 text-center text-sm font-medium text-gray-900 backdrop-filter backdrop-blur-sm"
+                        className="pointer-events-auto w-full rounded-md bg-white bg-opacity-75 py-2 px-4 text-center text-sm font-medium text-gray-900 backdrop-blur-sm backdrop-filter"
                       >
                         Zur Party
                       </Link>

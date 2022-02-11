@@ -1,5 +1,14 @@
-import type { MetaFunction } from 'remix';
-import { Links, LiveReload, Meta, Outlet, Scripts, ScrollRestoration } from 'remix';
+import {
+  Links,
+  LiveReload,
+  LoaderFunction,
+  Meta,
+  MetaFunction,
+  Outlet,
+  Scripts,
+  ScrollRestoration,
+  useLoaderData,
+} from 'remix';
 import styles from './tailwind.css';
 
 export const meta: MetaFunction = () => {
@@ -10,7 +19,19 @@ export function links() {
   return [{ rel: 'stylesheet', href: styles }];
 }
 
+export type OutletContext = {
+  MINIO_BASE_URL: string;
+};
+
+export const loader: LoaderFunction = async (): Promise<OutletContext> => {
+  return {
+    MINIO_BASE_URL: process.env.MINIO_BASE_URL || '',
+  };
+};
+
 export default function App() {
+  const context = useLoaderData<OutletContext>();
+
   return (
     <html lang="en" className="h-full">
       <head>
@@ -21,10 +42,27 @@ export default function App() {
         <Links />
       </head>
       <body className="h-full">
-        <Outlet />
+        {/* <EnvironmentVariablesProvider> */}
+        <Outlet context={context} />
+        {/* </EnvironmentVariablesProvider> */}
         <ScrollRestoration />
         <Scripts />
         {process.env.NODE_ENV === 'development' && <LiveReload />}
+      </body>
+    </html>
+  );
+}
+
+export function Root() {
+  return (
+    <html lang="en">
+      <head>
+        <Meta />
+        <Links />
+      </head>
+      <body>
+        <Outlet />
+        <Scripts />
       </body>
     </html>
   );

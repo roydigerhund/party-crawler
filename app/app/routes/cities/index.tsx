@@ -1,10 +1,11 @@
 /* This example requires Tailwind CSS v2.0+ */
 import { ChevronRightIcon, UsersIcon } from '@heroicons/react/solid';
 import { Prisma } from '@prisma/client';
-import { Link, LoaderFunction, useLoaderData } from 'remix';
+import { Link, LoaderFunction, useLoaderData, useOutletContext } from 'remix';
 import Page from '~/components/Page';
 import Pagination from '~/components/Pagination';
 import db from '~/db.server';
+import { OutletContext } from '~/root';
 import { CityData } from '~/utils/types-and-enums';
 
 type LoaderReturnType = { cities: CityData[]; cityCount: number; page: number };
@@ -61,6 +62,7 @@ export const loader: LoaderFunction = async ({ request }): Promise<LoaderReturnT
 };
 
 export default function Cities() {
+  const { MINIO_BASE_URL } = useOutletContext<OutletContext>();
   const { cities, cityCount, page } = useLoaderData<LoaderReturnType>();
 
   return (
@@ -102,17 +104,14 @@ export default function Cities() {
                           <img
                             key={party.id}
                             className="xs:h-10 xs:w-10 h-8 w-8 rounded-lg ring-2 ring-white sm:h-12 sm:w-12"
-                            src={party.images[0]?.filePath}
+                            src={MINIO_BASE_URL + party.images[0]?.filePath}
                             alt={party.name}
                           />
                         ))}
                       </div>
                     </div>
                     <div className="ml-5 flex-shrink-0">
-                      <ChevronRightIcon
-                        className="h-5 w-5 text-gray-400 group-hover:text-sky-500"
-                        aria-hidden="true"
-                      />
+                      <ChevronRightIcon className="h-5 w-5 text-gray-400 group-hover:text-sky-500" aria-hidden="true" />
                     </div>
                   </div>
                 </Link>
