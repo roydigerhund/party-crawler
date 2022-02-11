@@ -8,7 +8,7 @@
     "build:css": "tailwindcss -o ./app/tailwind.css",
     "dev": "concurrently \"yarn dev:css\" \"remix dev\"",
     "dev:css": "tailwindcss -o ./app/tailwind.css --watch",
-    "postinstall": "remix setup node",
+    "postinstall": "remix setup node && prisma generate",
     "start": "remix-serve build"
   },
   "dependencies": {
