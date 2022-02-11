@@ -6,7 +6,7 @@ import { PartyData } from '~/utils/types-and-enums';
 
 {
   /* <li className="relative">
-  <div className="group aspect-w-10 aspect-h-10 block w-full overflow-hidden rounded-lg bg-gray-100 focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 focus-within:ring-offset-gray-100"></div>
+  <div className="group aspect-w-10 aspect-h-10 block w-full overflow-hidden rounded-lg bg-gray-100 focus-within:ring-2 focus-within:ring-sky-500 focus-within:ring-offset-2 focus-within:ring-offset-gray-100"></div>
   <p className="mt-2 block h-2 w-3/4 bg-gray-400"></p>
   <p className="mt-2 block h-2 w-1/2 bg-gray-200"></p>
 </li> */
@@ -33,7 +33,7 @@ const PartyList = ({
           {parties.map((party) => (
             <li key={party.id} className="relative">
               <div className="relative">
-                <div className="group aspect-w-10 aspect-h-10 block w-full overflow-hidden rounded-lg bg-gray-100 focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 focus-within:ring-offset-gray-100">
+                <div className="group aspect-w-10 aspect-h-10 block w-full overflow-hidden rounded-lg bg-gray-100 focus-within:ring-2 focus-within:ring-sky-500 focus-within:ring-offset-2 focus-within:ring-offset-gray-100">
                   {party.images[0] && (
                     <img
                       src={party.images[0].filePath}
@@ -54,7 +54,7 @@ const PartyList = ({
                 {party.name} in{' '}
                 <Link
                   to={`/cities/${party.city.id}`}
-                  className="pointer-events-auto cursor-pointer text-indigo-700 underline-offset-2 hover:underline"
+                  className="pointer-events-auto cursor-pointer text-sky-700 underline-offset-2 hover:underline"
                 >
                   {party.city.name}
                 </Link>

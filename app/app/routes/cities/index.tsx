@@ -78,12 +78,12 @@ export default function Cities() {
                   to={`/cities/${city.id}`}
                   className="group relative block transition-transform duration-300 hover:translate-x-1"
                 >
-                  <div className="absolute -left-5 top-0 bottom-0 w-1 origin-right scale-x-0 bg-indigo-500 transition-transform duration-300 group-hover:scale-x-100" />
+                  <div className="absolute -left-5 top-0 bottom-0 w-1 origin-right scale-x-0 bg-sky-500 transition-transform duration-300 group-hover:scale-x-100" />
                   <div className="flex items-center py-4">
                     <div className="min-w-0 flex-1 sm:flex sm:items-center sm:justify-between">
                       <div className="truncate">
                         <div className="flex text-sm">
-                          <p className="truncate font-medium text-indigo-600">{city.name}</p>
+                          <p className="truncate font-medium text-sky-600">{city.name}</p>
                           <p className="ml-1 flex-shrink-0 font-normal text-gray-500">in {city.country.name}</p>
                         </div>
                         <div className="mt-2 flex">
@@ -110,7 +110,7 @@ export default function Cities() {
                     </div>
                     <div className="ml-5 flex-shrink-0">
                       <ChevronRightIcon
-                        className="h-5 w-5 text-gray-400 group-hover:text-indigo-500"
+                        className="h-5 w-5 text-gray-400 group-hover:text-sky-500"
                         aria-hidden="true"
                       />
                     </div>

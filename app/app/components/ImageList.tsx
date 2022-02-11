@@ -18,7 +18,7 @@ const ImageList = ({ images, toParty }: { images: Image[]; toParty?: boolean }) 
           >
             {images.map((image, index) => (
               <li key={image.id} className="relative">
-                <div className="group aspect-w-10 aspect-h-10 block w-full overflow-hidden rounded-lg bg-black focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 focus-within:ring-offset-gray-100">
+                <div className="group aspect-w-10 aspect-h-10 block w-full overflow-hidden rounded-lg bg-black focus-within:ring-2 focus-within:ring-sky-500 focus-within:ring-offset-2 focus-within:ring-offset-gray-100">
                   <img src={image.filePath} alt="" className="pointer-events-none object-cover group-hover:blur-sm" />
                   <img
                     src={image.filePath}
@@ -42,7 +42,7 @@ const ImageList = ({ images, toParty }: { images: Image[]; toParty?: boolean }) 
                       <Link
                         to={`/parties/${image.partyId}`}
                         target="_blank"
-                        className="pointer-events-auto w-full rounded-md bg-white bg-opacity-75 py-2 px-4 text-center text-sm font-medium text-gray-900 backdrop-blur backdrop-filter"
+                        className="pointer-events-auto w-full rounded-md bg-white bg-opacity-75 py-2 px-4 text-center text-sm font-medium text-gray-900 backdrop-filter backdrop-blur-sm"
                       >
                         Zur Party
                       </Link>

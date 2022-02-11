@@ -37,14 +37,14 @@ const RawData = () => {
           >
             {state !== 'idle' ? (
               <li className="relative">
-                <div className="group aspect-w-10 aspect-h-10 block w-full overflow-hidden rounded-lg bg-gray-100 focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 focus-within:ring-offset-gray-100"></div>
+                <div className="group aspect-w-10 aspect-h-10 block w-full overflow-hidden rounded-lg bg-gray-100 focus-within:ring-2 focus-within:ring-sky-500 focus-within:ring-offset-2 focus-within:ring-offset-gray-100"></div>
                 <p className="pointer-events-none mt-2 block text-sm font-medium text-gray-900">{'image.party'}</p>
                 <p className="pointer-events-none block text-sm font-medium text-gray-500">{'image.partydate'}</p>
               </li>
             ) : (
               images.map((image) => (
                 <li key={image.id} className="relative">
-                  <div className="group aspect-w-10 aspect-h-10 block w-full overflow-hidden rounded-lg bg-gray-100 focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 focus-within:ring-offset-gray-100">
+                  <div className="group aspect-w-10 aspect-h-10 block w-full overflow-hidden rounded-lg bg-gray-100 focus-within:ring-2 focus-within:ring-sky-500 focus-within:ring-offset-2 focus-within:ring-offset-gray-100">
                     <img
                       src={image.url.replace('http://www.binpartygeil.de/', '/downloads/')}
                       alt=""
@@ -62,7 +62,7 @@ const RawData = () => {
                     {image.party} in{' '}
                     <a
                       href="#"
-                      className="pointer-events-auto cursor-pointer text-indigo-700 underline-offset-2 hover:underline"
+                      className="pointer-events-auto cursor-pointer text-sky-700 underline-offset-2 hover:underline"
                     >
                       {image.country} - {image.city}
                     </a>

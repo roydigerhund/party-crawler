@@ -77,7 +77,7 @@ const Pagination = ({ currentPage, perPage, total }: Props) => {
                   prefetch="intent"
                   className={`relative items-center border border-gray-300 bg-white px-4 py-2 text-sm hover:bg-gray-50 ${
                     viewable === 'always' ? 'inline-flex' : 'hidden xl:inline-flex'
-                  } ${page === currentPage ? 'font-bold text-indigo-700' : 'font-medium text-gray-700'}`}
+                  } ${page === currentPage ? 'font-bold text-sky-700' : 'font-medium text-gray-700'}`}
                 >
                   {page}
                 </Link>

@@ -47,7 +47,7 @@ const Party = () => {
       <div className="px-4 sm:px-6 md:px-0">
         <h1 className="text-2xl font-semibold text-gray-900">
           {party.name} in{' '}
-          <Link to={`/cities/${party.city.id}`} className="text-indigo-700 underline-offset-2 hover:underline">
+          <Link to={`/cities/${party.city.id}`} className="text-sky-700 underline-offset-2 hover:underline">
             {party.city.name}
           </Link>
         </h1>
