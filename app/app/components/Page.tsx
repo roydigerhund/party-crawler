@@ -10,10 +10,10 @@ const navigation = [
   { name: 'Home', href: '/', icon: HomeIcon },
   { name: 'Parties', href: '/parties', icon: UsersIcon },
   { name: 'Städte', href: '/cities', icon: LocationMarkerIcon },
-  { name: 'Raw Data', href: '/raw-data', icon: UsersIcon },
+  // { name: 'Raw Data', href: '/raw-data', icon: UsersIcon },
 ];
 
-const Page: React.FC = ({ children }) => {
+const Page: React.FC<{ noSearch?: boolean }> = ({ children, noSearch }) => {
   const submit = useSubmit();
   const [searchParams] = useSearchParams();
   const search = searchParams.get('search') || undefined;
@@ -175,7 +175,7 @@ const Page: React.FC = ({ children }) => {
               </button>
               <div className="flex flex-1 justify-between px-4 md:px-0">
                 <div className="flex flex-1">
-                  <Form className="flex w-full md:ml-0" method="get" onChange={(e) => debouncedSubmit(e.currentTarget)}>
+                  {!noSearch && <Form className="flex w-full md:ml-0" method="get" onChange={(e) => debouncedSubmit(e.currentTarget)}>
                     <label htmlFor="search-field" className="sr-only">
                       Suche
                     </label>
@@ -192,7 +192,7 @@ const Page: React.FC = ({ children }) => {
                         defaultValue={search}
                       />
                     </div>
-                  </Form>
+                  </Form>}
                 </div>
               </div>
             </div>

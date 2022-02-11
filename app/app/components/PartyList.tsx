@@ -52,12 +52,12 @@ const PartyList = ({
               </div>
               <p className="pointer-events-none mt-2 block text-sm font-medium text-gray-900">
                 {party.name} in{' '}
-                <a
-                  href="#"
+                <Link
+                  to={`/cities/${party.city.id}`}
                   className="pointer-events-auto cursor-pointer text-indigo-700 underline-offset-2 hover:underline"
                 >
                   {party.city.name}
-                </a>
+                </Link>
               </p>
               <p className="pointer-events-none block text-sm font-medium text-gray-500">{formatDate(party.date)}</p>
             </li>

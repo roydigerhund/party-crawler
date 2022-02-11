@@ -24,7 +24,10 @@ export const loader: LoaderFunction = async ({ request }): Promise<LoaderReturnT
   });
   const cities = await db.city.findMany({
     where: {
-      OR: [{ name: { contains: search, mode: Prisma.QueryMode.insensitive } }],
+      OR: [
+        { name: { contains: search, mode: Prisma.QueryMode.insensitive } },
+        { country: { name: { contains: search, mode: Prisma.QueryMode.insensitive } } },
+      ],
     },
     include: {
       country: true,
