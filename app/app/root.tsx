@@ -12,7 +12,7 @@ import {
 import styles from './tailwind.css';
 
 export const meta: MetaFunction = () => {
-  return { title: 'New Remix App' };
+  return { title: 'Partybilder' };
 };
 
 export function links() {

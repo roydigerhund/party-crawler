@@ -1,9 +1,13 @@
 import { Prisma } from '@prisma/client';
-import { LoaderFunction, useLoaderData } from 'remix';
+import { LoaderFunction, MetaFunction, useLoaderData } from 'remix';
 import Page from '~/components/Page';
 import PartyList from '~/components/PartyList';
 import db from '~/db.server';
 import { PartyData } from '~/utils/types-and-enums';
+
+export const meta: MetaFunction = () => {
+  return { title: 'Parties - Partybilder' };
+};
 
 type LoaderReturnType = { parties: PartyData[]; partyCount: number; page: number };
 

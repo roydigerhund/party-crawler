@@ -1,9 +1,13 @@
 import { Prisma, RawData } from '@prisma/client';
-import { LoaderFunction, useLoaderData, useOutletContext, useTransition } from 'remix';
+import { LoaderFunction, MetaFunction, useLoaderData, useOutletContext, useTransition } from 'remix';
 import Page from '~/components/Page';
 import db from '~/db.server';
 import { OutletContext } from '~/root';
 import { formatDate } from '~/utils/intl';
+
+export const meta: MetaFunction = () => {
+  return { title: 'Raw Data - Partybilder' };
+};
 
 export const loader: LoaderFunction = async ({ request }): Promise<RawData[]> => {
   const url = new URL(request.url);

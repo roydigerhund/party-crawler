@@ -1,9 +1,14 @@
 import { City, Prisma } from '@prisma/client';
-import { LoaderFunction, useLoaderData } from 'remix';
+import { LoaderFunction, MetaFunction, useLoaderData } from 'remix';
 import Page from '~/components/Page';
 import PartyList from '~/components/PartyList';
 import db from '~/db.server';
 import { CityData, PartyData } from '~/utils/types-and-enums';
+
+export const meta: MetaFunction = ({ data }) => {
+  const { city } = data as LoaderReturnType;
+  return { title: `${city?.name || 'Stadt'} - Partybilder` };
+};
 
 const perPage = 20;
 

@@ -1,10 +1,14 @@
 import { Party } from '@prisma/client';
-import { Link, LoaderFunction, useLoaderData } from 'remix';
+import { Link, LoaderFunction, MetaFunction, useLoaderData } from 'remix';
 import ImageList from '~/components/ImageList';
 import Page from '~/components/Page';
 import db from '~/db.server';
 import { formatDate } from '~/utils/intl';
 import { PartyData } from '~/utils/types-and-enums';
+
+export const meta: MetaFunction = ({ data }) => {
+  return { title: `${data?.name || 'Party'} - Partybilder` };
+};
 
 export const loader: LoaderFunction = async ({ params }): Promise<PartyData | null> => {
   const { partyId } = params;

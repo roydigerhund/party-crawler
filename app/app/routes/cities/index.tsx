@@ -1,12 +1,16 @@
 /* This example requires Tailwind CSS v2.0+ */
 import { ChevronRightIcon, UsersIcon } from '@heroicons/react/solid';
 import { Prisma } from '@prisma/client';
-import { Link, LoaderFunction, useLoaderData, useOutletContext } from 'remix';
+import { Link, LoaderFunction, MetaFunction, useLoaderData, useOutletContext } from 'remix';
 import Page from '~/components/Page';
 import Pagination from '~/components/Pagination';
 import db from '~/db.server';
 import { OutletContext } from '~/root';
 import { CityData } from '~/utils/types-and-enums';
+
+export const meta: MetaFunction = () => {
+  return { title: 'Städte - Partybilder' };
+};
 
 type LoaderReturnType = { cities: CityData[]; cityCount: number; page: number };
 
