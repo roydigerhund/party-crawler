@@ -8,7 +8,8 @@ COPY ./prisma ./prisma/
 RUN yarn
 RUN yarn setup
 
-COPY . /usr/src/app
+COPY ./ .
 RUN yarn build
+ENV NODE_ENV=production
 
 CMD ["yarn", "start-deploy"]
