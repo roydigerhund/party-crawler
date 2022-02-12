@@ -10,7 +10,8 @@
     "dev:css": "tailwindcss -o ./app/tailwind.css --watch",
     "postinstall": "remix setup node && prisma generate",
     "migrate": "prisma migrate deploy",
-    "start": "remix-serve build"
+    "start": "remix-serve build",
+    "start-deploy": "yarn migrate && yarn start"
   },
   "dependencies": {
     "@headlessui/react": "^1.4.3",
