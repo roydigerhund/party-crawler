@@ -1,6 +1,6 @@
 import { CheckCircleIcon } from '@heroicons/react/solid';
 import { Image } from '@prisma/client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import { Link, useOutletContext } from 'remix';
 import { OutletContext } from '~/root';
@@ -11,6 +11,14 @@ const ImageList = ({ images, toParty }: { images: Image[]; toParty?: boolean }) 
   const [openGallery, setOpenGallery] = useState(false);
   const [initialGalleryIndex, setInitialGalleryIndex] = useState<number>(0);
   const [copiedId, setCopiedId] = useState<string>();
+
+  // reset the copied id after a second
+  useEffect(() => {
+    if (copiedId) {
+      const timeout = setTimeout(() => setCopiedId(undefined), 1000);
+      return () => clearTimeout(timeout);
+    }
+  }, [copiedId]);
 
   return (
     <>
