@@ -46,7 +46,3 @@ deploy:
     - export KUBECONFIG=/tmp/kubeconfig
   script:
     - kubectl set image deployment app app=registry.zoom7.io/party-crawler/party-crawler/app:$CI_COMMIT_TAG -n party-crawler && kubectl rollout status deployment app -n party-crawler
-
-    - export deployments=$(kubectl get deploy -n party-crawler -l restart-group=worker -o jsonpath="{.items[*].metadata.name}")
-    - for deployment in $deployments; do kubectl set image deployment $deployment worker=registry.zoom7.io/party-crawler/party-crawler/app:$CI_COMMIT_TAG -n party-crawler; done
-    - for deployment in $deployments; do kubectl rollout status deployment $deployment -n party-crawler; done
