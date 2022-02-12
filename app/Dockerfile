@@ -9,5 +9,6 @@ RUN yarn
 
 COPY . /usr/src/app
 RUN yarn build
+RUN yarn migrate
 
 CMD ["yarn", "start"]

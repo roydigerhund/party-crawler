@@ -9,6 +9,7 @@
     "dev": "concurrently \"yarn dev:css\" \"remix dev\"",
     "dev:css": "tailwindcss -o ./app/tailwind.css --watch",
     "postinstall": "remix setup node && prisma generate",
+    "migrate": "prisma migrate deploy",
     "start": "remix-serve build"
   },
   "dependencies": {
