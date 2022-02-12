@@ -49,7 +49,7 @@ const Pagination = ({ currentPage, perPage, total }: Props) => {
           to={getLink(currentPage < numberOfPages ? currentPage + 1 : numberOfPages)}
           className="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
         >
-          Vor
+          Weiter
         </Link>
       </div>
       <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
@@ -96,7 +96,7 @@ const Pagination = ({ currentPage, perPage, total }: Props) => {
               to={getLink(currentPage < numberOfPages ? currentPage + 1 : numberOfPages)}
               className="relative inline-flex items-center rounded-r-md border border-gray-300 bg-white px-2 py-2 text-sm font-medium text-gray-500 hover:bg-gray-50"
             >
-              <span className="sr-only">Vor</span>
+              <span className="sr-only">Weiter</span>
               <ChevronRightIcon className="h-5 w-5" aria-hidden="true" />
             </Link>
           </nav>

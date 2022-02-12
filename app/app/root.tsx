@@ -21,11 +21,13 @@ export function links() {
 
 export type OutletContext = {
   MINIO_BASE_URL: string;
+  APP_BASE_URL: string;
 };
 
 export const loader: LoaderFunction = async (): Promise<OutletContext> => {
   return {
     MINIO_BASE_URL: process.env.MINIO_BASE_URL || '',
+    APP_BASE_URL: process.env.APP_BASE_URL || '',
   };
 };
 

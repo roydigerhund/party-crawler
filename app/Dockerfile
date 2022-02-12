@@ -6,6 +6,7 @@ COPY ./package.json .
 COPY ./yarn.lock .
 COPY ./prisma ./prisma/
 RUN yarn
+RUN yarn setup
 
 COPY . /usr/src/app
 RUN yarn build

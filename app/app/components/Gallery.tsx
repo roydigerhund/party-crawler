@@ -80,7 +80,7 @@ export default function Gallery({
                 onClick={handlePrevious}
                 className="absolute inset-y-0 left-0 right-1/2 cursor-w-resize focus:outline-none"
               >
-                <span className="sr-only">Previous image</span>
+                <span className="sr-only">Vorheriges Bild</span>
               </button>
               <img
                 src={MINIO_BASE_URL + images[currentIndex]?.filePath}
@@ -91,7 +91,7 @@ export default function Gallery({
                 onClick={handleNext}
                 className="absolute inset-y-0 left-1/2 right-0 cursor-e-resize focus:outline-none"
               >
-                <span className="sr-only">Next image</span>
+                <span className="sr-only">Nächstes Bild</span>
               </button>
             </div>
           </Transition.Child>
