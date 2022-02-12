@@ -1,9 +1,11 @@
 import { CheckCircleIcon } from '@heroicons/react/solid';
 import { Image } from '@prisma/client';
+import { primaryInput } from 'detect-it';
 import { useEffect, useState } from 'react';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import { Link, useOutletContext } from 'remix';
 import { OutletContext } from '~/root';
+import { classNames } from '~/utils/class-names';
 import Gallery from './Gallery';
 
 const ImageList = ({ images, toParty }: { images: Image[]; toParty?: boolean }) => {
@@ -11,6 +13,11 @@ const ImageList = ({ images, toParty }: { images: Image[]; toParty?: boolean }) 
   const [openGallery, setOpenGallery] = useState(false);
   const [initialGalleryIndex, setInitialGalleryIndex] = useState<number>(0);
   const [copiedId, setCopiedId] = useState<string>();
+  const [isTouchDevice, setIsTouchDevice] = useState(false);
+
+  useEffect(() => {
+    setIsTouchDevice(primaryInput === 'touch');
+  }, []);
 
   // reset the copied id after a second
   useEffect(() => {
@@ -27,7 +34,7 @@ const ImageList = ({ images, toParty }: { images: Image[]; toParty?: boolean }) 
         <div className="py-4">
           <ul
             role="list"
-            className="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 sm:gap-x-6 lg:grid-cols-4 xl:gap-x-8"
+            className="grid grid-cols-2 gap-4 gap-y-5 sm:grid-cols-3 sm:gap-x-6 sm:gap-y-7 lg:grid-cols-4 xl:gap-x-8 xl:gap-y-9"
           >
             {images.map((image, index) => (
               <li key={image.id} className="relative">
@@ -35,13 +42,15 @@ const ImageList = ({ images, toParty }: { images: Image[]; toParty?: boolean }) 
                   <img
                     src={MINIO_BASE_URL + image.filePath}
                     alt=""
-                    className="pointer-events-none object-cover group-hover:blur-sm"
+                    className={classNames('pointer-events-none object-cover', !isTouchDevice && 'group-hover:blur-sm')}
                   />
-                  <img
-                    src={MINIO_BASE_URL + image.filePath}
-                    alt={image.id}
-                    className="pointer-events-none hidden object-contain group-hover:block"
-                  />
+                  {!isTouchDevice && (
+                    <img
+                      src={MINIO_BASE_URL + image.filePath}
+                      alt={image.id}
+                      className="pointer-events-none hidden object-contain group-hover:block"
+                    />
+                  )}
                   <button
                     onClick={() => {
                       setInitialGalleryIndex(index);
@@ -52,7 +61,11 @@ const ImageList = ({ images, toParty }: { images: Image[]; toParty?: boolean }) 
                     <span className="sr-only">Details anzeigen für {image.id}</span>
                   </button>
                   <div
-                    className="pointer-events-none flex translate-y-2 items-end p-4 opacity-0 duration-300 group-hover:translate-y-0 group-hover:opacity-100"
+                    className={classNames(
+                      'xs:p-2 pointer-events-none flex items-end p-1 sm:p-4',
+                      !isTouchDevice &&
+                        'translate-y-2 opacity-0 duration-300 group-hover:translate-y-0 group-hover:opacity-100',
+                    )}
                     aria-hidden="true"
                   >
                     {toParty ? (
@@ -69,7 +82,7 @@ const ImageList = ({ images, toParty }: { images: Image[]; toParty?: boolean }) 
                           {copiedId === image.id ? (
                             <>
                               <span>Link kopiert</span>
-                              <CheckCircleIcon className="h-4 w-4 text-emerald-500 ml-1" />
+                              <CheckCircleIcon className="ml-1 h-4 w-4 text-emerald-500" />
                             </>
                           ) : (
                             'Bild teilen'

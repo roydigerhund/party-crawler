@@ -31,7 +31,7 @@ const PartyList = ({
       <div className="py-4">
         <ul
           role="list"
-          className="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 sm:gap-x-6 lg:grid-cols-4 xl:gap-x-8"
+          className="grid grid-cols-2 gap-4 gap-y-5 sm:grid-cols-3 sm:gap-x-6 sm:gap-y-7 lg:grid-cols-4 xl:gap-x-8 xl:gap-y-9"
         >
           {parties.map((party) => (
             <li key={party.id} className="relative">

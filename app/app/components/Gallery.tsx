@@ -78,7 +78,7 @@ export default function Gallery({
             <div className="my-4 inline-block max-w-4xl transform overflow-hidden rounded-lg bg-white p-0.5 text-left align-middle shadow-xl transition-all">
               <button
                 onClick={handlePrevious}
-                className="absolute inset-y-0 left-0 right-1/2 cursor-w-resize focus:outline-none"
+                className="absolute inset-y-0 left-0 right-2/3 cursor-w-resize focus:outline-none"
               >
                 <span className="sr-only">Vorheriges Bild</span>
               </button>
@@ -89,7 +89,7 @@ export default function Gallery({
               />
               <button
                 onClick={handleNext}
-                className="absolute inset-y-0 left-1/2 right-0 cursor-e-resize focus:outline-none"
+                className="absolute inset-y-0 left-2/3 right-0 cursor-e-resize focus:outline-none"
               >
                 <span className="sr-only">Nächstes Bild</span>
               </button>

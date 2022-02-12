@@ -246,6 +246,13 @@
   dependencies:
     "@types/ms" "*"
 
+"@types/detect-it@^4.0.1":
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/@types/detect-it/-/detect-it-4.0.1.tgz#e315bbd214f7ce512efcf43637d5903c2beb813b"
+  integrity sha512-n7uRpDMTGuscSeNawgG8YQcOgHCqOsJGfPFLkVNamCf9JBCuvRTjvLwhd3TGaRYrV8fuuhUJrOegbK5K+i1JHA==
+  dependencies:
+    detect-it "*"
+
 "@types/estree-jsx@^0.0.1":
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/@types/estree-jsx/-/estree-jsx-0.0.1.tgz#c36d7a1afeb47a95a8ee0b7bc8bc705db38f919d"
@@ -1027,6 +1034,11 @@ destroy@~1.0.4:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/destroy/-/destroy-1.0.4.tgz#978857442c44749e4206613e37946205826abd80"
   integrity sha1-l4hXRCxEdJ5CBmE+N5RiBYJqvYA=
+
+detect-it@*, detect-it@^4.0.1:
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/detect-it/-/detect-it-4.0.1.tgz#3f8de6b8330f5086270571251bedf10aec049e18"
+  integrity sha512-dg5YBTJYvogK1+dA2mBUDKzOWfYZtHVba89SyZUhc4+e3i2tzgjANFg5lDRCd3UOtRcw00vUTMK8LELcMdicug==
 
 detective@^5.2.0:
   version "5.2.0"
