@@ -15,20 +15,5 @@ services:
       - ./services/postgres/:/docker-entrypoint-initdb.d/
     ports:
       - 35432:5432
-  minio:
-    container_name: 'partycrawler_minio'
-    image: minio/minio:latest
-    restart: always
-    ports:
-      - 39000:9000
-    command:
-      - server
-      - /data
-    environment:
-      - MINIO_ACCESS_KEY=minioadmin
-      - MINIO_SECRET_KEY=minioadmin
-    volumes:
-      - minio_volume:/data
 volumes:
   postgres_volume:
-  minio_volume:
