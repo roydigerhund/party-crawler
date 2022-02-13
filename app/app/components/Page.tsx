@@ -28,7 +28,7 @@ const Page: React.FC<{ noSearch?: boolean }> = ({ children, noSearch }) => {
   );
 
   return (
-    <div className="bg-white">
+    <div>
       <Transition.Root show={sidebarOpen} as={Fragment}>
         <Dialog as="div" className="fixed inset-0 z-40 flex md:hidden" onClose={setSidebarOpen}>
           <Transition.Child
@@ -112,7 +112,7 @@ const Page: React.FC<{ noSearch?: boolean }> = ({ children, noSearch }) => {
       </Transition.Root>
 
       {/* Static sidebar for desktop */}
-      <div className="text-500 hidden md:fixed md:inset-y-0 md:flex md:w-64 md:flex-col">
+      <div className="text-500 hidden md:fixed md:inset-y-0 md:flex md:w-56 md:flex-col">
         {/* Sidebar component, swap this element with another sidebar if you like */}
         <div className="flex flex-grow flex-col overflow-y-auto border-r border-gray-200 bg-white pt-5">
           <div className="flex flex-shrink-0 items-center px-4">
@@ -151,7 +151,7 @@ const Page: React.FC<{ noSearch?: boolean }> = ({ children, noSearch }) => {
         </div>
       </div>
 
-      <div className="md:pl-64">
+      <div className="md:pl-56">
         <div className="mx-auto flex max-w-7xl flex-col md:px-8">
           {noSearch ? (
             <button
@@ -172,7 +172,7 @@ const Page: React.FC<{ noSearch?: boolean }> = ({ children, noSearch }) => {
                 <span className="sr-only">Menu öffnen</span>
                 <MenuAlt2Icon className="h-6 w-6" aria-hidden="true" />
               </button>
-              <div className="flex flex-1 justify-between bg-white px-4 border-y border-r border-gray-300 md:border-x-0 md:border-t-0 rounded-r-full md:border-gray-200 md:px-0">
+              <div className="flex flex-1 justify-between rounded-r-full border-y border-r border-gray-300 bg-white px-4 md:rounded-none md:border-x-0 md:border-t-0 md:border-gray-200 md:px-0">
                 <div className="flex flex-1">
                   <Form className="flex w-full md:ml-0" method="get" onChange={(e) => debouncedSubmit(e.currentTarget)}>
                     <label htmlFor="search-field" className="sr-only">
