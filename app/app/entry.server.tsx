@@ -13,12 +13,15 @@ export default async function handleRequest(
   const cookieHeader = request.headers.get('Cookie');
   const isAuthorized = (await authCookie.parse(cookieHeader)) || false;
 
-  if (!isAuthorized && request.url !== `${process.env.APP_BASE_URL}/login`) {
+  const url = new URL(request.url);
+
+  if (!isAuthorized && url.pathname !== '/login') {
     responseStatusCode = 302;
-    responseHeaders.set('Location', '/login');
-  } else if (isAuthorized && request.url === `${process.env.APP_BASE_URL}/login`) {
+    responseHeaders.set('Location', '/login?redirect=' + encodeURIComponent(url.pathname));
+  } else if (isAuthorized && url.pathname === '/login') {
+    const redirectPath = url.searchParams.get('redirect') || '/';
     responseStatusCode = 302;
-    responseHeaders.set('Location', '/');
+    responseHeaders.set('Location', redirectPath);
   }
 
   responseHeaders.set('Content-Type', 'text/html');

@@ -1,22 +1,79 @@
-import { ActionFunction, Form, redirect, useActionData } from 'remix';
+import { ActionFunction, Form, LoaderFunction, MetaFunction, redirect, useActionData, useSearchParams } from 'remix';
 import { authCookie } from '~/cookies';
+import db from '~/db.server';
 
-export const action: ActionFunction = async ({ request }) => {
+type ActionReturnType = { wrongPassword: boolean; redirectPath: string } | null;
+
+export const action: ActionFunction = async ({ request }): Promise<ActionReturnType | Response> => {
   const body = await request.formData();
   const password = body.get('password');
+  const redirectPath = body.get('redirect')?.toString() || '/';
   if (password === process.env.APP_PASSWORD) {
-    return redirect('/', {
+    console.log('redirecting to', redirectPath);
+    return redirect(redirectPath, {
       headers: {
-        Location: '/',
+        Location: redirectPath,
         'Set-Cookie': await authCookie.serialize(true),
       },
     });
   }
-  return false;
+  console.log(redirectPath, 'redirectPath');
+  return { wrongPassword: true, redirectPath };
+};
+
+type LoaderReturnType = { title?: string } | null;
+
+export const loader: LoaderFunction = async ({ request }): Promise<LoaderReturnType> => {
+  const searchParams = new URLSearchParams(request.url.split('?')[1]);
+
+  // if redirect matches 'image/$imageId'
+  if (searchParams.get('redirect')?.startsWith('/image/')) {
+    const imageId = searchParams.get('redirect')?.split('/')[2];
+    const image = await db.image.findFirst({
+      where: {
+        id: imageId,
+      },
+      include: {
+        party: true,
+      },
+    });
+    return { title: image?.party.name };
+  }
+
+  // if redirect matches 'parties/$partyId'
+  if (searchParams.get('redirect')?.startsWith('/parties/')) {
+    const partyId = searchParams.get('redirect')?.split('/')[2];
+    const party = await db.party.findFirst({
+      where: {
+        id: partyId,
+      },
+    });
+    return { title: party?.name };
+  }
+
+  // if redirect matches 'cities/$cityId'
+  if (searchParams.get('redirect')?.startsWith('/cities/')) {
+    const cityId = searchParams.get('redirect')?.split('/')[2];
+    const city = await db.city.findFirst({
+      where: {
+        id: cityId,
+      },
+    });
+    return { title: city?.name };
+  }
+
+  return null;
+};
+
+export const meta: MetaFunction = ({ data }) => {
+  return { title: `${data?.title || 'Login'} - Partybilder` };
 };
 
 export default function Login() {
-  const success = useActionData();
+  const data = useActionData<ActionReturnType>();
+  const [searchParams] = useSearchParams();
+
+  const redirect = data?.redirectPath || searchParams.get('redirect') || '/';
 
   return (
     <div className="xs:px-6 flex min-h-full flex-col justify-center py-12 lg:px-8">
@@ -30,7 +87,7 @@ export default function Login() {
 
       <div className="xs:mx-auto xs:w-full xs:max-w-md mt-8">
         <div className="xs:rounded-lg xs:px-10 bg-white py-8 px-4 shadow">
-          {success === false && (
+          {data?.wrongPassword && (
             <div className="mb-4 text-sm font-semibold text-red-500">
               Das Passwort ist falsch. Bitte versuche es erneut.
             </div>
@@ -42,6 +99,7 @@ export default function Login() {
                 Passwort
               </label>
               <div className="mt-1">
+                <input type="hidden" name="redirect" value={redirect} />
                 <input
                   id="password"
                   name="password"
