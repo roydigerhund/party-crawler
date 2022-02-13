@@ -40,7 +40,7 @@ export default function App() {
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
         <link rel="icon" type="image/png" href="/favicon.png" sizes="200x200" />
-        <meta property="og:image" content="/logo.png" />
+        <meta property="og:image" content={context.APP_BASE_URL + "/logo.png"} />
         <meta property="og:image:type" content="image/png" />
         <meta property="og:image:width" content="524" />
         <meta property="og:image:height" content="183" />
