@@ -9,7 +9,6 @@ export const action: ActionFunction = async ({ request }): Promise<ActionReturnT
   const password = body.get('password');
   const redirectPath = body.get('redirect')?.toString() || '/';
   if (password === process.env.APP_PASSWORD) {
-    console.log('redirecting to', redirectPath);
     return redirect(redirectPath, {
       headers: {
         Location: redirectPath,
@@ -17,7 +16,6 @@ export const action: ActionFunction = async ({ request }): Promise<ActionReturnT
       },
     });
   }
-  console.log(redirectPath, 'redirectPath');
   return { wrongPassword: true, redirectPath };
 };
 
