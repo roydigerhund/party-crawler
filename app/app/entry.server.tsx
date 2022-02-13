@@ -17,7 +17,10 @@ export default async function handleRequest(
 
   if (!isAuthorized && url.pathname !== '/login') {
     responseStatusCode = 302;
-    responseHeaders.set('Location', '/login?redirect=' + encodeURIComponent(url.pathname));
+    responseHeaders.set(
+      'Location',
+      url.pathname.length > 1 ? '/login?redirect=' + encodeURIComponent(url.pathname) : '/login',
+    );
   } else if (isAuthorized && url.pathname === '/login') {
     const redirectPath = url.searchParams.get('redirect') || '/';
     responseStatusCode = 302;

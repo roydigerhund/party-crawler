@@ -40,13 +40,15 @@ export default function App() {
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
         <link rel="icon" type="image/png" href="/favicon.png" sizes="200x200" />
+        <meta property="og:image" content="/logo.png" />
+        <meta property="og:image:type" content="image/png" />
+        <meta property="og:image:width" content="524" />
+        <meta property="og:image:height" content="183" />
         <Meta />
         <Links />
       </head>
       <body className="h-full">
-        {/* <EnvironmentVariablesProvider> */}
         <Outlet context={context} />
-        {/* </EnvironmentVariablesProvider> */}
         <ScrollRestoration />
         <Scripts />
         {process.env.NODE_ENV === 'development' && <LiveReload />}
