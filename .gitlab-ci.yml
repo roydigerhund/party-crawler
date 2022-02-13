@@ -20,7 +20,8 @@ app:
 
 tag-latest:
   stage: tag-images
-  when: manual
+  needs:
+    - app
   only:
     - tags
   allow_failure: false
