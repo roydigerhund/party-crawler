@@ -67,7 +67,7 @@ const Page: React.FC<{ noSearch?: boolean }> = ({ children, noSearch }) => {
                     className="ml-1 flex h-10 w-10 items-center justify-center rounded-full focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
                     onClick={() => setSidebarOpen(false)}
                   >
-                    <span className="sr-only">Close sidebar</span>
+                    <span className="sr-only">Menu schließen</span>
                     <XIcon className="h-6 w-6 text-white" aria-hidden="true" />
                   </button>
                 </div>
@@ -156,23 +156,23 @@ const Page: React.FC<{ noSearch?: boolean }> = ({ children, noSearch }) => {
           {noSearch ? (
             <button
               type="button"
-              className="sticky top-3 left-3 z-10 mb-2 flex h-16 w-16 items-center justify-center rounded-full bg-white px-4 text-gray-500 shadow-md focus:outline-none focus:ring-2 focus:ring-inset focus:ring-sky-500 md:hidden"
+              className="sticky top-3 left-2 z-10 mb-2 flex h-12 w-12 items-center justify-center rounded-full bg-black text-white shadow-sm focus:outline-none focus:ring-2 focus:ring-inset focus:ring-sky-500 md:hidden"
               onClick={() => setSidebarOpen(true)}
             >
-              <span className="sr-only">Open sidebar</span>
+              <span className="sr-only">Menu öffnen</span>
               <MenuAlt2Icon className="h-6 w-6" aria-hidden="true" />
             </button>
           ) : (
-            <div className="sticky top-3 right-3 z-10 mx-3 mb-2 flex h-16 flex-shrink-0 rounded-full bg-white shadow-md md:relative md:top-0 md:left-0 md:mb-0 md:rounded-none md:border-b md:border-gray-200 md:shadow-none">
+            <div className="sticky top-3 z-10 mx-2 mb-2 flex h-12 flex-shrink-0 rounded-full shadow-sm md:relative md:top-0 md:left-0 md:mb-0 md:h-16 md:rounded-none md:shadow-none">
               <button
                 type="button"
-                className="border-r border-gray-200 px-4 text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-sky-500 md:hidden"
+                className="rounded-l-full border-r border-gray-200 bg-black pl-3 pr-2 text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-sky-500 md:hidden md:px-4"
                 onClick={() => setSidebarOpen(true)}
               >
-                <span className="sr-only">Open sidebar</span>
+                <span className="sr-only">Menu öffnen</span>
                 <MenuAlt2Icon className="h-6 w-6" aria-hidden="true" />
               </button>
-              <div className="flex flex-1 justify-between px-4 md:px-0">
+              <div className="flex flex-1 justify-between bg-white px-4 border-y border-r border-gray-300 md:border-x-0 md:border-t-0 rounded-r-full md:border-gray-200 md:px-0">
                 <div className="flex flex-1">
                   <Form className="flex w-full md:ml-0" method="get" onChange={(e) => debouncedSubmit(e.currentTarget)}>
                     <label htmlFor="search-field" className="sr-only">
@@ -184,7 +184,7 @@ const Page: React.FC<{ noSearch?: boolean }> = ({ children, noSearch }) => {
                       </div>
                       <input
                         id="search-field"
-                        className="block bg-transparent h-full w-full border-transparent py-2 pl-8 pr-0 text-gray-900 placeholder-gray-500 focus:border-transparent focus:placeholder-gray-400 focus:outline-none focus:ring-0 sm:text-sm"
+                        className="xxs:text-base block h-full w-full border-transparent bg-transparent py-2 pl-8 pr-0 text-sm text-gray-900 placeholder-gray-500 focus:border-transparent focus:placeholder-gray-400 focus:outline-none focus:ring-0"
                         placeholder="Suche"
                         type="search"
                         name="search"
