@@ -31,13 +31,13 @@ const Pagination = ({ currentPage, perPage, total }: Props) => {
   };
 
   return numberOfPages < 2 ? null : (
-    <nav className="my-4 flex items-center justify-between border-t border-gray-200 px-4 sm:px-0">
+    <nav className="my-4 flex items-center justify-between border-t border-gray-200">
       <div className="-mt-px flex w-0 flex-1">
         <Link
           to={getLink(currentPage > 1 ? currentPage - 1 : 1)}
           className={classNames(
             'inline-flex items-center border-t-2 border-transparent pt-4 pr-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700',
-            currentPage === 1 && 'pointer-events-none opacity-50',
+            currentPage === 1 && 'pointer-events-none opacity-40',
           )}
         >
           <ArrowNarrowLeftIcon className="mr-3 h-5 w-5 text-gray-400" aria-hidden="true" />
