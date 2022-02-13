@@ -11,7 +11,6 @@ export const action: ActionFunction = async ({ request }): Promise<ActionReturnT
   if (password === process.env.APP_PASSWORD) {
     return redirect(redirectPath, {
       headers: {
-        Location: redirectPath,
         'Set-Cookie': await authCookie.serialize(true),
       },
     });
