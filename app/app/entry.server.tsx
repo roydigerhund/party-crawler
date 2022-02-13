@@ -17,7 +17,6 @@ export default async function handleRequest(
     responseStatusCode = 302;
     responseHeaders.set('Location', '/login');
   } else if (isAuthorized && request.url === `${process.env.APP_BASE_URL}/login`) {
-    console.log('Redirecting to home page');
     responseStatusCode = 302;
     responseHeaders.set('Location', '/');
   }
