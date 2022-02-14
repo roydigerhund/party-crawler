@@ -58,9 +58,7 @@ export const loader: LoaderFunction = async ({ request }): Promise<LoaderReturnT
     },
     skip: perPage * (page - 1),
     take: perPage,
-    orderBy: {
-      name: 'asc',
-    },
+    orderBy: [{ name: 'asc' }, { id: 'desc' }],
   });
   return { cities, cityCount, page };
 };

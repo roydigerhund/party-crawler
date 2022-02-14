@@ -45,9 +45,7 @@ export const loader: LoaderFunction = async ({ request }): Promise<LoaderReturnT
     },
     skip: perPage * (page - 1),
     take: perPage,
-    orderBy: {
-      date: 'desc',
-    },
+    orderBy: [{ date: 'desc' }, { id: 'desc' }],
   });
   return { parties, partyCount, page };
 };
