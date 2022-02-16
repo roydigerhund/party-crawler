@@ -25,7 +25,11 @@ export const loader: LoaderFunction = async ({ params }): Promise<LoaderReturnTy
               country: true,
             },
           },
-          images: true,
+          images: {
+            orderBy: {
+              rawDataId: 'asc',
+            }
+          },
         },
       },
     },

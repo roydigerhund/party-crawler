@@ -37,10 +37,12 @@ export const loader: LoaderFunction = async ({ request }): Promise<LoaderReturnT
     include: {
       country: true,
       parties: {
+        orderBy: [{ date: 'desc' }, { id: 'desc' }],
         select: {
           id: true,
           name: true,
           images: {
+            orderBy: { rawDataId: 'asc' },
             select: {
               id: true,
               filePath: true,

@@ -16,7 +16,11 @@ export const loader: LoaderFunction = async ({ params }): Promise<PartyData | nu
   const party = await db.party.findFirst({
     where: { id: partyId },
     include: {
-      images: true,
+      images: {
+        orderBy: {
+          rawDataId: 'asc',
+        },
+      },
       city: {
         include: {
           country: true,

@@ -12,7 +12,7 @@ export const meta: MetaFunction = ({ data }) => {
 
 const perPage = 20;
 
-type LoaderReturnType = { city: CityData | null; parties: PartyData[]; page: number };
+type LoaderReturnType = { city: Omit<CityData, 'parties'> | null; parties: PartyData[]; page: number };
 
 export const loader: LoaderFunction = async ({ params, request }): Promise<LoaderReturnType> => {
   const { cityId } = params;
@@ -25,20 +25,6 @@ export const loader: LoaderFunction = async ({ params, request }): Promise<Loade
     where: { id: cityId },
     include: {
       country: true,
-      parties: {
-        select: {
-          id: true,
-          name: true,
-          images: {
-            select: {
-              id: true,
-              filePath: true,
-            },
-            take: 1,
-          },
-        },
-        take: 4,
-      },
       _count: {
         select: {
           parties: true,
@@ -57,7 +43,7 @@ export const loader: LoaderFunction = async ({ params, request }): Promise<Loade
     },
     include: {
       city: { include: { country: true } },
-      images: { take: 1 },
+      images: { orderBy: { rawDataId: 'asc' }, take: 1 },
       _count: {
         select: {
           images: true,
@@ -66,9 +52,7 @@ export const loader: LoaderFunction = async ({ params, request }): Promise<Loade
     },
     skip: perPage * (page - 1),
     take: perPage,
-    orderBy: {
-      date: 'desc',
-    },
+    orderBy: [{ date: 'desc' }, { id: 'desc' }],
   });
 
   return { city, parties, page };

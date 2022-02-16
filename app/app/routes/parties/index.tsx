@@ -36,7 +36,7 @@ export const loader: LoaderFunction = async ({ request }): Promise<LoaderReturnT
     },
     include: {
       city: { include: { country: true } },
-      images: { take: 1 },
+      images: { orderBy: { rawDataId: 'asc' }, take: 1 },
       _count: {
         select: {
           images: true,
