@@ -184,7 +184,7 @@ const Page: React.FC<{ noSearch?: boolean }> = ({ children, noSearch }) => {
                       </div>
                       <input
                         id="search-field"
-                        className="xxs:text-base block h-full w-full border-transparent bg-transparent py-2 pl-8 pr-0 text-sm text-gray-900 placeholder-gray-500 focus:border-transparent focus:placeholder-gray-400 focus:outline-none focus:ring-0"
+                        className="block h-full w-full border-transparent bg-transparent py-2 pl-8 pr-0 text-base text-gray-900 placeholder-gray-500 focus:border-transparent focus:placeholder-gray-400 focus:outline-none focus:ring-0 sm:text-sm"
                         placeholder="Suche"
                         type="search"
                         name="search"
