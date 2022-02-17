@@ -7,6 +7,6 @@ export const authCookie = createCookie('auth', {
   maxAge: 60 * 60 * 24 * 365, // 1 year
   path: '/',
   sameSite: 'strict',
-  secrets: [process.env.APP_SECRET || ''],
+  secrets: [process.env.APP_SECRET!],
   secure: process.env.NODE_ENV === 'production',
 });
