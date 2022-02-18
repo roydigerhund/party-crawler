@@ -2,8 +2,7 @@
 import { Dialog, Transition } from '@headlessui/react';
 import { Image } from '@prisma/client';
 import { Fragment, useEffect, useState } from 'react';
-import { useOutletContext } from 'remix';
-import { OutletContext } from '~/root';
+import { getEnv } from '~/utils/envs';
 
 export default function Gallery({
   images,
@@ -16,7 +15,6 @@ export default function Gallery({
   open?: boolean;
   onClose: () => void;
 }) {
-  const { MINIO_BASE_URL } = useOutletContext<OutletContext>();
   const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
@@ -83,7 +81,7 @@ export default function Gallery({
                 <span className="sr-only">Vorheriges Bild</span>
               </button>
               <img
-                src={MINIO_BASE_URL + images[currentIndex]?.filePath}
+                src={getEnv('MINIO_BASE_URL') + images[currentIndex]?.filePath}
                 alt={`Bild ${currentIndex + 1}`}
                 className="block w-full rounded-md object-cover"
               />

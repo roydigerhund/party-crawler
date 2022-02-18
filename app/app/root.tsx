@@ -10,6 +10,7 @@ import {
   useLoaderData,
 } from 'remix';
 import styles from './tailwind.css';
+import { Envs } from './utils/types-and-enums';
 
 export const meta: MetaFunction = () => {
   return { title: 'Partybilder' };
@@ -19,12 +20,7 @@ export function links() {
   return [{ rel: 'stylesheet', href: styles }];
 }
 
-export type OutletContext = {
-  MINIO_BASE_URL: string;
-  APP_BASE_URL: string;
-};
-
-export const loader: LoaderFunction = async (): Promise<OutletContext> => {
+export const loader: LoaderFunction = async (): Promise<Envs> => {
   return {
     MINIO_BASE_URL: process.env.MINIO_BASE_URL || '',
     APP_BASE_URL: process.env.APP_BASE_URL || '',
@@ -32,7 +28,7 @@ export const loader: LoaderFunction = async (): Promise<OutletContext> => {
 };
 
 export default function App() {
-  const context = useLoaderData<OutletContext>();
+  const envs = useLoaderData<Envs>();
 
   return (
     <html lang="en" className="h-full">
@@ -40,7 +36,7 @@ export default function App() {
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
         <link rel="icon" type="image/png" href="/favicon.png" sizes="200x200" />
-        <meta property="og:image" content={context.APP_BASE_URL + "/logo.png"} />
+        <meta property="og:image" content={envs.APP_BASE_URL + '/logo.png'} />
         <meta property="og:image:type" content="image/png" />
         <meta property="og:image:width" content="524" />
         <meta property="og:image:height" content="183" />
@@ -48,8 +44,13 @@ export default function App() {
         <Links />
       </head>
       <body className="h-full">
-        <Outlet context={context} />
+        <Outlet />
         <ScrollRestoration />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `window.ENV = ${JSON.stringify(envs)}`,
+          }}
+        />
         <Scripts />
         {process.env.NODE_ENV === 'development' && <LiveReload />}
       </body>

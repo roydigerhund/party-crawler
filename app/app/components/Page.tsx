@@ -1,5 +1,5 @@
 import { Dialog, Transition } from '@headlessui/react';
-import { HomeIcon, LocationMarkerIcon, MenuAlt2Icon, UsersIcon, XIcon } from '@heroicons/react/outline';
+import { BookmarkIcon, HomeIcon, LocationMarkerIcon, MenuAlt2Icon, UsersIcon, XIcon } from '@heroicons/react/outline';
 import { SearchIcon } from '@heroicons/react/solid';
 import debounce from 'debounce';
 import React, { Fragment, useCallback, useState } from 'react';
@@ -10,6 +10,7 @@ const navigation = [
   { name: 'Home', href: '/', icon: HomeIcon },
   { name: 'Parties', href: '/parties', icon: UsersIcon },
   { name: 'Städte', href: '/cities', icon: LocationMarkerIcon },
+  { name: 'Gemerkt', href: '/bookmarks', icon: BookmarkIcon },
   // { name: 'Raw Data', href: '/raw-data', icon: UsersIcon },
 ];
 

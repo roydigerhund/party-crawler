@@ -1,7 +1,7 @@
 import { PhotographIcon } from '@heroicons/react/solid';
-import { Link, useOutletContext } from 'remix';
+import { Link } from 'remix';
 import Pagination from '~/components/Pagination';
-import { OutletContext } from '~/root';
+import { getEnv } from '~/utils/envs';
 import { formatDate } from '~/utils/intl';
 import { PartyData } from '~/utils/types-and-enums';
 
@@ -24,8 +24,6 @@ const PartyList = ({
   page: number;
   perPage: number;
 }) => {
-  const { MINIO_BASE_URL } = useOutletContext<OutletContext>();
-
   return (
     <div className="px-4 sm:px-6 md:px-0">
       <div className="py-4">
@@ -39,7 +37,7 @@ const PartyList = ({
                 <div className="group aspect-w-10 aspect-h-10 block w-full overflow-hidden rounded-lg bg-gray-100 focus-within:ring-2 focus-within:ring-sky-500 focus-within:ring-offset-2 focus-within:ring-offset-gray-100">
                   {party.images[0] && (
                     <img
-                      src={MINIO_BASE_URL + party.images[0].filePath}
+                      src={getEnv('MINIO_BASE_URL') + party.images[0].filePath}
                       alt=""
                       className="pointer-events-none object-cover group-hover:opacity-75"
                     />

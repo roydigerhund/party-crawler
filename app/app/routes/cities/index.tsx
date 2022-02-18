@@ -1,11 +1,11 @@
 /* This example requires Tailwind CSS v2.0+ */
 import { ChevronRightIcon, UsersIcon } from '@heroicons/react/solid';
 import { Prisma } from '@prisma/client';
-import { Link, LoaderFunction, MetaFunction, useLoaderData, useOutletContext } from 'remix';
+import { Link, LoaderFunction, MetaFunction, useLoaderData } from 'remix';
 import Page from '~/components/Page';
 import Pagination from '~/components/Pagination';
 import db from '~/db.server';
-import { OutletContext } from '~/root';
+import { getEnv } from '~/utils/envs';
 import { CityData } from '~/utils/types-and-enums';
 
 export const meta: MetaFunction = () => {
@@ -66,7 +66,6 @@ export const loader: LoaderFunction = async ({ request }): Promise<LoaderReturnT
 };
 
 export default function Cities() {
-  const { MINIO_BASE_URL } = useOutletContext<OutletContext>();
   const { cities, cityCount, page } = useLoaderData<LoaderReturnType>();
 
   return (
@@ -107,8 +106,8 @@ export default function Cities() {
                         {city.parties.map((party) => (
                           <img
                             key={party.id}
-                            className="xs:h-10 xs:w-10 h-8 w-8 rounded-lg ring-2 ring-white sm:h-12 sm:w-12"
-                            src={MINIO_BASE_URL + party.images[0]?.filePath}
+                            className="xs:h-10 xs:w-10 h-8 w-8 rounded-lg object-cover ring-2 ring-white sm:h-12 sm:w-12"
+                            src={getEnv('MINIO_BASE_URL') + party.images[0]?.filePath}
                             alt={party.name}
                           />
                         ))}

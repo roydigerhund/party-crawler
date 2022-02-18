@@ -1,4 +1,9 @@
-import { City, Country, Image } from '@prisma/client';
+import { Bookmark, City, Country, Image } from '@prisma/client';
+
+export type Envs = {
+  MINIO_BASE_URL: string;
+  APP_BASE_URL: string;
+};
 
 export type PartyData = {
   id: string;
@@ -26,4 +31,8 @@ export type CityData = City & {
   _count: {
     parties: number;
   };
+};
+
+export type BookmarkData = Bookmark & {
+  image: Image;
 };
