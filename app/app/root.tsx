@@ -1,5 +1,3 @@
-import { primaryInput } from 'detect-it';
-import { useState, useEffect } from 'react';
 import {
   Links,
   LiveReload,
@@ -9,12 +7,11 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
-  useLoaderData,
+  useLoaderData
 } from 'remix';
 import { userCookie } from './cookies';
 import db from './db.server';
 import styles from './tailwind.css';
-import { classNames } from './utils/class-names';
 import { RootData } from './utils/types-and-enums';
 
 export const meta: MetaFunction = () => {
@@ -50,14 +47,8 @@ export const loader: LoaderFunction = async ({ request }): Promise<RootData> => 
 export default function App() {
   const { envs } = useLoaderData<RootData>();
 
-  const [isTouchDevice, setIsTouchDevice] = useState(false);
-
-  useEffect(() => {
-    setIsTouchDevice(primaryInput === 'touch');
-  }, []);
-
   return (
-    <html lang="en" className={classNames("h-full", isTouchDevice && 'is-touch')}>
+    <html lang="en" className="h-full">
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
