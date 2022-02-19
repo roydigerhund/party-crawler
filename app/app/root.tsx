@@ -1,3 +1,5 @@
+import { primaryInput } from 'detect-it';
+import { useState, useEffect } from 'react';
 import {
   Links,
   LiveReload,
@@ -9,8 +11,11 @@ import {
   ScrollRestoration,
   useLoaderData,
 } from 'remix';
+import { userCookie } from './cookies';
+import db from './db.server';
 import styles from './tailwind.css';
-import { Envs } from './utils/types-and-enums';
+import { classNames } from './utils/class-names';
+import { RootData } from './utils/types-and-enums';
 
 export const meta: MetaFunction = () => {
   return { title: 'Partybilder' };
@@ -20,18 +25,39 @@ export function links() {
   return [{ rel: 'stylesheet', href: styles }];
 }
 
-export const loader: LoaderFunction = async (): Promise<Envs> => {
+export const loader: LoaderFunction = async ({ request }): Promise<RootData> => {
+  const cookieHeader = request.headers.get('Cookie');
+  const userName = (await userCookie.parse(cookieHeader)) || undefined;
+  const bookmarks =
+    // userName && typeof userName === 'string'
+       await db.bookmark.findMany({
+          // where: {
+          //   user: { name: userName },
+          // },
+        })
+      // : [];
+
   return {
-    MINIO_BASE_URL: process.env.MINIO_BASE_URL || '',
-    APP_BASE_URL: process.env.APP_BASE_URL || '',
+    envs: {
+      MINIO_BASE_URL: process.env.MINIO_BASE_URL || '',
+      APP_BASE_URL: process.env.APP_BASE_URL || '',
+    },
+    userName,
+    bookmarks,
   };
 };
 
 export default function App() {
-  const envs = useLoaderData<Envs>();
+  const { envs } = useLoaderData<RootData>();
+
+  const [isTouchDevice, setIsTouchDevice] = useState(false);
+
+  useEffect(() => {
+    setIsTouchDevice(primaryInput === 'touch');
+  }, []);
 
   return (
-    <html lang="en" className="h-full">
+    <html lang="en" className={classNames("h-full", isTouchDevice && 'is-touch')}>
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -45,12 +71,12 @@ export default function App() {
       </head>
       <body className="h-full">
         <Outlet />
-        <ScrollRestoration />
         <script
           dangerouslySetInnerHTML={{
             __html: `window.ENV = ${JSON.stringify(envs)}`,
           }}
         />
+        <ScrollRestoration />
         <Scripts />
         {process.env.NODE_ENV === 'development' && <LiveReload />}
       </body>

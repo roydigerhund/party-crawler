@@ -67,4 +67,6 @@ model Bookmark {
   imageId   String   @db.Uuid
   image     Image    @relation(fields: [imageId], references: [id])
   createdAt DateTime @default(now())
+
+  @@unique([userId, imageId])
 }

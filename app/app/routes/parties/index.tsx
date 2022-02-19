@@ -11,7 +11,7 @@ export const meta: MetaFunction = () => {
 
 type LoaderReturnType = { parties: PartyData[]; partyCount: number; page: number };
 
-const perPage = 20;
+const perPage = 12;
 
 export const loader: LoaderFunction = async ({ request }): Promise<LoaderReturnType> => {
   const url = new URL(request.url);

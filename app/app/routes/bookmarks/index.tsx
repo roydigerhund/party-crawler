@@ -7,9 +7,9 @@ import { BookmarkData } from '~/utils/types-and-enums';
 export const loader: LoaderFunction = async (): Promise<BookmarkData[]> => {
   const user = { id: 'fa2b9f7c-f8c2-4b8e-b8e8-b8e8b8e8b8e8' };
   const bookmarks = await db.bookmark.findMany({
-    where: {
-      userId: user.id,
-    },
+    // where: {
+    //   userId: user.id,
+    // },
     include: {
       image: true,
     },

@@ -10,7 +10,7 @@ export const meta: MetaFunction = ({ data }) => {
   return { title: `${city?.name || 'Stadt'} - Partybilder` };
 };
 
-const perPage = 20;
+const perPage = 12;
 
 type LoaderReturnType = { city: Omit<CityData, 'parties'> | null; parties: PartyData[]; page: number };
 

@@ -5,6 +5,12 @@ export type Envs = {
   APP_BASE_URL: string;
 };
 
+export type RootData = {
+  envs: Envs;
+  userName?: string;
+  bookmarks: Bookmark[];
+};
+
 export type PartyData = {
   id: string;
   name: string;

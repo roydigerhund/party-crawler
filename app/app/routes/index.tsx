@@ -5,7 +5,7 @@ import Page from '~/components/Page';
 import db from '~/db.server';
 
 export const loader: LoaderFunction = async (): Promise<Image[]> => {
-  const images: Image[] = await db.$queryRaw`SELECT * from "Image" ORDER BY random() LIMIT 20`;
+  const images: Image[] = await db.$queryRaw`SELECT * from "Image" ORDER BY random() LIMIT 12`;
   return images;
 };
 
