@@ -1,5 +1,6 @@
 import { Prisma, User } from '@prisma/client';
 import { ActionFunction, json } from 'remix';
+import { userCookie } from '~/cookies';
 import db from '~/db.server';
 import { randomFromArray } from '~/utils/random';
 import { adjectives, nouns } from '~/utils/words';
@@ -7,6 +8,7 @@ import { adjectives, nouns } from '~/utils/words';
 export const action: ActionFunction = async ({ request }) => {
   let user: User | null = null;
   let tries = 0;
+  
   do {
     const username = `${randomFromArray(adjectives)} ${randomFromArray(nouns)}`;
     const newUser: Prisma.UserCreateInput = {
@@ -16,7 +18,14 @@ export const action: ActionFunction = async ({ request }) => {
       user = await db.user.create({
         data: newUser,
       });
-      return json({ ok: true });
+      return json(
+        { ok: true },
+        {
+          headers: {
+            'Set-Cookie': await userCookie.serialize(user.name),
+          },
+        },
+      );
     } catch (error) {
       tries++;
     }

@@ -7,7 +7,7 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
-  useLoaderData
+  useLoaderData,
 } from 'remix';
 import { userCookie } from './cookies';
 import db from './db.server';
@@ -23,16 +23,17 @@ export function links() {
 }
 
 export const loader: LoaderFunction = async ({ request }): Promise<RootData> => {
+  console.log(process.env.APP_SECRET, 'process');
   const cookieHeader = request.headers.get('Cookie');
   const username = (await userCookie.parse(cookieHeader)) || undefined;
   const bookmarks =
-    // username && typeof username === 'string'
-       await db.bookmark.findMany({
-          // where: {
-          //   user: { name: username },
-          // },
+    username && typeof username === 'string'
+      ? await db.bookmark.findMany({
+          where: {
+            user: { name: username },
+          },
         })
-      // : [];
+      : [];
 
   return {
     envs: {
