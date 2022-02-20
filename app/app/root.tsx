@@ -49,7 +49,7 @@ export default function App() {
   const { envs } = useLoaderData<RootData>();
 
   return (
-    <html lang="en" className="h-full">
+    <html lang="de" className="h-full">
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -70,7 +70,7 @@ export default function App() {
         />
         <ScrollRestoration />
         <Scripts />
-        {process.env.NODE_ENV === 'development' && <LiveReload />}
+        <LiveReload />
       </body>
     </html>
   );
