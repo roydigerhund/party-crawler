@@ -7,7 +7,7 @@ export type Envs = {
 
 export type RootData = {
   envs: Envs;
-  userName?: string;
+  username?: string;
   bookmarks: Bookmark[];
 };
 

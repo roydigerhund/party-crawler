@@ -24,12 +24,12 @@ export function links() {
 
 export const loader: LoaderFunction = async ({ request }): Promise<RootData> => {
   const cookieHeader = request.headers.get('Cookie');
-  const userName = (await userCookie.parse(cookieHeader)) || undefined;
+  const username = (await userCookie.parse(cookieHeader)) || undefined;
   const bookmarks =
-    // userName && typeof userName === 'string'
+    // username && typeof username === 'string'
        await db.bookmark.findMany({
           // where: {
-          //   user: { name: userName },
+          //   user: { name: username },
           // },
         })
       // : [];
@@ -39,7 +39,7 @@ export const loader: LoaderFunction = async ({ request }): Promise<RootData> => 
       MINIO_BASE_URL: process.env.MINIO_BASE_URL || '',
       APP_BASE_URL: process.env.APP_BASE_URL || '',
     },
-    userName,
+    username,
     bookmarks,
   };
 };

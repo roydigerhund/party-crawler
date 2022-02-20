@@ -9,7 +9,7 @@ import { getEnv } from '~/utils/envs';
 import { RootData } from '~/utils/types-and-enums';
 
 const ImageListItem = ({ image, toParty, onClick }: { image: Image; toParty?: boolean; onClick: () => void }) => {
-  const { bookmarks, userName } = useMatches()[0]!.data as RootData;
+  const { bookmarks, username } = useMatches()[0]!.data as RootData;
   const bookmarker = useFetcher();
   const [copiedId, setCopiedId] = useState<string>();
 
@@ -24,7 +24,7 @@ const ImageListItem = ({ image, toParty, onClick }: { image: Image; toParty?: bo
   const handleCreateBookmarkClick = (imageId: string) => {
     console.log('bookmark clicked', imageId);
     bookmarker.submit(
-      { userName: userName || 'freaky milk', imageId },
+      { username: username || 'freaky milk', imageId },
       {
         method: 'post',
         action: `/bookmarks/create`,

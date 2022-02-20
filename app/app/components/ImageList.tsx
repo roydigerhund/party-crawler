@@ -6,7 +6,7 @@ import ImageListItem from './ImageListItem';
 const ImageList = ({ images, toParty }: { images: Image[]; toParty?: boolean }) => {
   const [openGallery, setOpenGallery] = useState(false);
   const [initialGalleryIndex, setInitialGalleryIndex] = useState<number>(0);
-  
+
   return (
     <>
       <Gallery images={images} index={initialGalleryIndex} open={openGallery} onClose={() => setOpenGallery(false)} />
@@ -18,6 +18,7 @@ const ImageList = ({ images, toParty }: { images: Image[]; toParty?: boolean }) 
           >
             {images.map((image, index) => (
               <ImageListItem
+                key={image.id}
                 image={image}
                 onClick={() => {
                   setInitialGalleryIndex(index);

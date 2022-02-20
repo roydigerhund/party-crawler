@@ -4,14 +4,14 @@ import db from '~/db.server';
 
 export const action: ActionFunction = async ({ request }) => {
   const formData = await request.formData();
-  const userName = formData.get('userName');
+  const username = formData.get('username');
   const imageId = formData.get('imageId');
 
-  if (!userName || !imageId || typeof userName !== 'string' || typeof imageId !== 'string') {
-    return json({ error: 'Missing userName or imageId' });
+  if (!username || !imageId || typeof username !== 'string' || typeof imageId !== 'string') {
+    return json({ error: 'Missing username or imageId' });
   }
   const bookmark: Prisma.BookmarkCreateInput = {
-    user: { connectOrCreate: { where: { name: userName }, create: { name: userName } } },
+    user: { connect: { name: username } },
     image: { connect: { id: imageId } },
   };
   try {
