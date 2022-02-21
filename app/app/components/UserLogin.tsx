@@ -68,6 +68,7 @@ export default function UserLogin({ onClose, open }: { onClose: () => void; open
                   </p>
                   <button
                     onClick={onClose}
+                    type="button"
                     className="mt-6 flex w-full justify-center rounded-md border border-transparent bg-sky-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2"
                   >
                     Hab ich verstanden

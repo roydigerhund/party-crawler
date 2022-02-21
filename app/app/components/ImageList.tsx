@@ -8,15 +8,13 @@ const ImageList = ({
   images,
   toParty,
   isRandom,
-  showLogin,
 }: {
   images: Image[];
   toParty?: boolean;
   isRandom?: boolean;
-  showLogin?: boolean;
 }) => {
   const [openGallery, setOpenGallery] = useState(false);
-  const [openLogin, setOpenLogin] = useState(!!showLogin);
+  const [openLogin, setOpenLogin] = useState(false);
   const [initialGalleryIndex, setInitialGalleryIndex] = useState<number>(0);
 
   return (
