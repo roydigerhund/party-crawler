@@ -5,10 +5,10 @@ import db from '~/db.server';
 import { randomFromArray } from '~/utils/random';
 import { adjectives, nouns } from '~/utils/words';
 
-export const action: ActionFunction = async ({ request }) => {
+export const action: ActionFunction = async () => {
   let user: User | null = null;
   let tries = 0;
-  
+
   do {
     const username = `${randomFromArray(adjectives)} ${randomFromArray(nouns)}`;
     const newUser: Prisma.UserCreateInput = {
@@ -19,7 +19,7 @@ export const action: ActionFunction = async ({ request }) => {
         data: newUser,
       });
       return json(
-        { ok: true },
+        { ok: true, username: user.name },
         {
           headers: {
             'Set-Cookie': await userCookie.serialize(user.name),
@@ -32,3 +32,5 @@ export const action: ActionFunction = async ({ request }) => {
   } while (!user && tries < 10);
   return json({ error: 'Could not create user' });
 };
+
+export default () => 'user/create';

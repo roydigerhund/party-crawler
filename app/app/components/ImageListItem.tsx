@@ -1,5 +1,5 @@
-import { BookmarkIcon } from '@heroicons/react/outline';
-import { CheckCircleIcon } from '@heroicons/react/solid';
+import { HeartIcon } from '@heroicons/react/outline';
+import { CheckCircleIcon, HeartIcon as HeartIconSolid } from '@heroicons/react/solid';
 import { Image } from '@prisma/client';
 import { useEffect, useState } from 'react';
 import CopyToClipboard from 'react-copy-to-clipboard';
@@ -8,7 +8,19 @@ import { classNames } from '~/utils/class-names';
 import { getEnv } from '~/utils/envs';
 import { RootData } from '~/utils/types-and-enums';
 
-const ImageListItem = ({ image, toParty, onClick }: { image: Image; toParty?: boolean; onClick: () => void }) => {
+const ImageListItem = ({
+  image,
+  toParty,
+  isRandom,
+  onClick,
+  onShowLogin,
+}: {
+  image: Image;
+  toParty?: boolean;
+  isRandom?: boolean;
+  onClick: () => void;
+  onShowLogin: () => void;
+}) => {
   const { bookmarks, username } = useMatches()[0]!.data as RootData;
   const bookmarker = useFetcher();
   const [copiedId, setCopiedId] = useState<string>();
@@ -22,14 +34,17 @@ const ImageListItem = ({ image, toParty, onClick }: { image: Image; toParty?: bo
   }, [copiedId]);
 
   const handleCreateBookmarkClick = (imageId: string) => {
-    console.log('bookmark clicked', imageId);
-    bookmarker.submit(
-      { username: username || 'freaky milk', imageId },
-      {
-        method: 'post',
-        action: `/bookmarks/create`,
-      },
-    );
+    if (!username) {
+      onShowLogin();
+    } else {
+      bookmarker.submit(
+        { username: username, imageId },
+        {
+          method: 'post',
+          action: `/bookmarks/create`,
+        },
+      );
+    }
   };
 
   const handleDeleteBookmarkClick = (bookmarkId: string) => {
@@ -70,23 +85,23 @@ const ImageListItem = ({ image, toParty, onClick }: { image: Image; toParty?: bo
           )}
           aria-hidden="true"
         >
-          <button
-            onClick={() => (!!bookmarkId ? handleDeleteBookmarkClick(bookmarkId) : handleCreateBookmarkClick(image.id))}
-            disabled={actionPending}
-            className={classNames(
-              'cursor-pointer pointer-events-auto flex-grow-0 rounded-md bg-white bg-opacity-75 py-2 px-2.5 text-gray-900 backdrop-blur-sm backdrop-filter transition-all duration-300 hover:bg-opacity-100',
-            )}
-          >
-            {isBookmarked ? (
-              <CheckCircleIcon className="h-5 w-5 text-emerald-500" />
-            ) : (
-              <BookmarkIcon className="h-5 w-5" />
-            )}
-          </button>
+          {!isRandom && (
+            <button
+              onClick={() =>
+                !!bookmarkId ? handleDeleteBookmarkClick(bookmarkId) : handleCreateBookmarkClick(image.id)
+              }
+              disabled={actionPending}
+              className={classNames(
+                'pointer-events-auto flex-grow-0 cursor-pointer rounded-md bg-white bg-opacity-75 py-2 px-2.5 text-gray-900 backdrop-blur-sm backdrop-filter transition-all duration-300 hover:bg-opacity-100',
+              )}
+            >
+              {isBookmarked ? <HeartIconSolid className="h-5 w-5 text-red-500" /> : <HeartIcon className="h-5 w-5" />}
+            </button>
+          )}
           {toParty ? (
             <Link
               to={`/parties/${image.partyId}`}
-              target="_blank"
+              target={isRandom ? '_blank' : undefined}
               className="pointer-events-auto w-full rounded-md bg-white bg-opacity-75 py-2 px-4 text-center text-sm font-medium text-gray-900 backdrop-blur-sm backdrop-filter transition-all duration-300 hover:bg-opacity-100"
             >
               Zur Party

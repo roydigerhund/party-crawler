@@ -1,20 +1,22 @@
 import { Dialog, Transition } from '@headlessui/react';
-import { BookmarkIcon, HomeIcon, LocationMarkerIcon, MenuAlt2Icon, UsersIcon, XIcon } from '@heroicons/react/outline';
+import { HeartIcon, HomeIcon, LocationMarkerIcon, MenuAlt2Icon, UsersIcon, XIcon } from '@heroicons/react/outline';
 import { SearchIcon } from '@heroicons/react/solid';
 import debounce from 'debounce';
 import React, { Fragment, useCallback, useState } from 'react';
-import { Form, NavLink, useSearchParams, useSubmit } from 'remix';
+import { Form, NavLink, useMatches, useSearchParams, useSubmit } from 'remix';
 import { classNames } from '~/utils/class-names';
+import { RootData } from '~/utils/types-and-enums';
 
 const navigation = [
   { name: 'Home', href: '/', icon: HomeIcon },
   { name: 'Parties', href: '/parties', icon: UsersIcon },
   { name: 'Städte', href: '/cities', icon: LocationMarkerIcon },
-  { name: 'Gemerkt', href: '/bookmarks', icon: BookmarkIcon },
+  { name: 'Gemerkt', href: '/bookmarks', icon: HeartIcon },
   // { name: 'Raw Data', href: '/raw-data', icon: UsersIcon },
 ];
 
 const Page: React.FC<{ noSearch?: boolean }> = ({ children, noSearch }) => {
+  const { bookmarks } = useMatches()[0]!.data as RootData;
   const submit = useSubmit();
   const [searchParams] = useSearchParams();
   const search = searchParams.get('search') || undefined;
@@ -86,20 +88,32 @@ const Page: React.FC<{ noSearch?: boolean }> = ({ children, noSearch }) => {
                       className={({ isActive }) =>
                         classNames(
                           isActive ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900',
-                          'group flex items-center rounded-md py-2 px-2 text-base font-medium',
+                          'group flex items-center justify-between rounded-md py-2 px-2 text-base font-medium',
                         )
                       }
                     >
                       {({ isActive }) => (
                         <>
-                          <item.icon
-                            className={classNames(
-                              isActive ? 'text-gray-500' : 'text-gray-400 group-hover:text-gray-500',
-                              'mr-4 h-6 w-6 flex-shrink-0',
-                            )}
-                            aria-hidden="true"
-                          />
-                          {item.name}
+                          <span className="flex items-center">
+                            <item.icon
+                              className={classNames(
+                                isActive ? 'text-gray-500' : 'text-gray-400 group-hover:text-gray-500',
+                                'mr-4 h-6 w-6 flex-shrink-0',
+                              )}
+                              aria-hidden="true"
+                            />
+                            {item.name}
+                          </span>
+                          {item.href === '/bookmarks' && bookmarks.length > 0 && (
+                            <span
+                              className={classNames(
+                                'ml-2 rounded-full py-0.5 px-2 text-xs text-gray-800',
+                                isActive ? 'bg-gray-300' : 'bg-gray-200 group-hover:bg-gray-300',
+                              )}
+                            >
+                              {bookmarks.length > 100 ? '99+' : bookmarks.length}
+                            </span>
+                          )}
                         </>
                       )}
                     </NavLink>
@@ -129,20 +143,32 @@ const Page: React.FC<{ noSearch?: boolean }> = ({ children, noSearch }) => {
                   className={({ isActive }) =>
                     classNames(
                       isActive ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900',
-                      'group flex items-center rounded-md py-2 px-2 text-sm font-medium',
+                      'group flex items-center justify-between rounded-md py-2 px-2 text-sm font-medium',
                     )
                   }
                 >
                   {({ isActive }) => (
                     <>
-                      <item.icon
-                        className={classNames(
-                          isActive ? 'text-gray-500' : 'text-gray-400 group-hover:text-gray-500',
-                          'mr-3 h-6 w-6 flex-shrink-0',
-                        )}
-                        aria-hidden="true"
-                      />
-                      {item.name}
+                      <span className="flex items-center">
+                        <item.icon
+                          className={classNames(
+                            isActive ? 'text-gray-500' : 'text-gray-400 group-hover:text-gray-500',
+                            'mr-3 h-6 w-6 flex-shrink-0',
+                          )}
+                          aria-hidden="true"
+                        />
+                        {item.name}
+                      </span>
+                      {item.href === '/bookmarks' && bookmarks.length > 0 && (
+                        <span
+                          className={classNames(
+                            'ml-2 rounded-full py-0.5 px-2 text-xs text-gray-800',
+                            isActive ? 'bg-gray-300' : 'bg-gray-200 group-hover:bg-gray-300',
+                          )}
+                        >
+                          {bookmarks.length > 100 ? '99+' : bookmarks.length}
+                        </span>
+                      )}
                     </>
                   )}
                 </NavLink>

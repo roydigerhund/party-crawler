@@ -2,14 +2,27 @@ import { Image } from '@prisma/client';
 import { useState } from 'react';
 import Gallery from './Gallery';
 import ImageListItem from './ImageListItem';
+import UserLogin from './UserLogin';
 
-const ImageList = ({ images, toParty }: { images: Image[]; toParty?: boolean }) => {
+const ImageList = ({
+  images,
+  toParty,
+  isRandom,
+  showLogin,
+}: {
+  images: Image[];
+  toParty?: boolean;
+  isRandom?: boolean;
+  showLogin?: boolean;
+}) => {
   const [openGallery, setOpenGallery] = useState(false);
+  const [openLogin, setOpenLogin] = useState(!!showLogin);
   const [initialGalleryIndex, setInitialGalleryIndex] = useState<number>(0);
 
   return (
     <>
       <Gallery images={images} index={initialGalleryIndex} open={openGallery} onClose={() => setOpenGallery(false)} />
+      <UserLogin open={openLogin} onClose={() => setOpenLogin(false)} />
       <div className="px-4 sm:px-6 md:px-0">
         <div className="py-4">
           <ul
@@ -24,7 +37,9 @@ const ImageList = ({ images, toParty }: { images: Image[]; toParty?: boolean }) 
                   setInitialGalleryIndex(index);
                   setOpenGallery(true);
                 }}
+                onShowLogin={() => setOpenLogin(true)}
                 toParty={toParty}
+                isRandom={isRandom}
               />
             ))}
           </ul>

@@ -23,7 +23,6 @@ export function links() {
 }
 
 export const loader: LoaderFunction = async ({ request }): Promise<RootData> => {
-  console.log(process.env.APP_SECRET, 'process');
   const cookieHeader = request.headers.get('Cookie');
   const username = (await userCookie.parse(cookieHeader)) || undefined;
   const bookmarks =

@@ -1,4 +1,5 @@
 import { ActionFunction, json } from 'remix';
+import { userCookie } from '~/cookies';
 import db from '~/db.server';
 
 export const action: ActionFunction = async ({ request }) => {
@@ -13,7 +14,14 @@ export const action: ActionFunction = async ({ request }) => {
       },
       rejectOnNotFound: true,
     });
-    return json({ ok: true });
+    return json(
+      { ok: true },
+      {
+        headers: {
+          'Set-Cookie': await userCookie.serialize(username),
+        },
+      },
+    );
   } catch (error) {
     if (error instanceof Error) {
       return json({ error: error.message });
@@ -21,3 +29,5 @@ export const action: ActionFunction = async ({ request }) => {
     return json({ error: 'Unknown error' });
   }
 };
+
+export default () => 'user/login';
