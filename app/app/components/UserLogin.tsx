@@ -83,12 +83,16 @@ export default function UserLogin({ onClose, open }: { onClose: () => void; open
                       <button type="submit" className="font-medium text-sky-600 hover:text-sky-500">
                         einen Account erstellen
                       </button>
-                      .
+                      <br />
+                      falls du noch keinen Account hast.
                     </p>
                   </create.Form>
                   <login.Form className="mt-8 space-y-6" method="post" action="/user/login">
                     {userNotFound && (
-                      <div className="text-sm font-semibold text-red-500">Der Nutzername wurde nicht gefunden.</div>
+                      <div className="text-sm font-semibold text-red-500">
+                        Der Nutzername wurde nicht gefunden. Falls du noch keinen Account hast, kannst du über den Link
+                        oben einen Neuen erstellen.
+                      </div>
                     )}
                     <div className="-space-y-px rounded-md shadow-sm">
                       <div>
