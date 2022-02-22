@@ -3,3 +3,5 @@ Skeleton
 Disable Login button while pending
 Search form with fetcher
 ask before removing bookmark when on bookmark page
+merken in Gallery
+Bildzahl in Gallery
