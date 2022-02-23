@@ -1,6 +1,6 @@
 import { renderToString } from 'react-dom/server';
 import { EntryContext, RemixServer } from 'remix';
-import { authCookie } from './cookies';
+import { authCookie } from './cookies.server';
 
 export default async function handleRequest(
   request: Request,

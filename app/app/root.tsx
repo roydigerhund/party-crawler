@@ -9,7 +9,7 @@ import {
   ScrollRestoration,
   useLoaderData,
 } from 'remix';
-import { userCookie } from './cookies';
+import { userCookie } from './cookies.server';
 import db from './db.server';
 import styles from './tailwind.css';
 import { RootData } from './utils/types-and-enums';

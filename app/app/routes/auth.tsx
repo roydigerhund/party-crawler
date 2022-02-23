@@ -1,5 +1,5 @@
 import { ActionFunction, Form, LoaderFunction, MetaFunction, redirect, useActionData, useSearchParams } from 'remix';
-import { authCookie } from '~/cookies';
+import { authCookie } from '~/cookies.server';
 import db from '~/db.server';
 
 type ActionReturnType = { wrongPassword: boolean; redirectPath: string } | null;

@@ -4,7 +4,7 @@ import { LoaderFunction, useLoaderData } from 'remix';
 import ImageList from '~/components/ImageList';
 import Page from '~/components/Page';
 import UserLogin from '~/components/UserLogin';
-import { userCookie } from '~/cookies';
+import { userCookie } from '~/cookies.server';
 import db from '~/db.server';
 import { BookmarkData } from '~/utils/types-and-enums';
 

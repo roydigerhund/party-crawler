@@ -1,5 +1,5 @@
 import { ActionFunction, json } from 'remix';
-import { userCookie } from '~/cookies';
+import { userCookie } from '~/cookies.server';
 import db from '~/db.server';
 
 export const action: ActionFunction = async ({ request }) => {
@@ -29,5 +29,3 @@ export const action: ActionFunction = async ({ request }) => {
     return json({ error: 'Unknown error' });
   }
 };
-
-export default () => 'user/login';

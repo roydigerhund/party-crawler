@@ -1,6 +1,6 @@
 import { Prisma, User } from '@prisma/client';
 import { ActionFunction, json } from 'remix';
-import { userCookie } from '~/cookies';
+import { userCookie } from '~/cookies.server';
 import db from '~/db.server';
 import { randomFromArray } from '~/utils/random';
 import { adjectives, nouns } from '~/utils/words';
@@ -32,5 +32,3 @@ export const action: ActionFunction = async () => {
   } while (!user && tries < 10);
   return json({ error: 'Could not create user' });
 };
-
-export default () => 'user/create';

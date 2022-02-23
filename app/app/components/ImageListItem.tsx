@@ -85,19 +85,15 @@ const ImageListItem = ({
           )}
           aria-hidden="true"
         >
-          {!isRandom && (
-            <button
-              onClick={() =>
-                !!bookmarkId ? handleDeleteBookmarkClick(bookmarkId) : handleCreateBookmarkClick(image.id)
-              }
-              disabled={actionPending}
-              className={classNames(
-                'pointer-events-auto flex-grow-0 cursor-pointer rounded-md bg-white bg-opacity-75 py-2 px-2.5 text-gray-900 backdrop-blur-sm backdrop-filter transition-all duration-300 hover:bg-opacity-100',
-              )}
-            >
-              {isBookmarked ? <HeartIconSolid className="h-5 w-5 text-red-500" /> : <HeartIcon className="h-5 w-5" />}
-            </button>
-          )}
+          <button
+            onClick={() => (!!bookmarkId ? handleDeleteBookmarkClick(bookmarkId) : handleCreateBookmarkClick(image.id))}
+            disabled={actionPending}
+            className={classNames(
+              'pointer-events-auto flex-grow-0 cursor-pointer rounded-md bg-white bg-opacity-75 py-2 px-2.5 text-gray-900 backdrop-blur-sm backdrop-filter transition-all duration-300 hover:bg-opacity-100',
+            )}
+          >
+            {isBookmarked ? <HeartIconSolid className="h-5 w-5 text-red-500" /> : <HeartIcon className="h-5 w-5" />}
+          </button>
           {toParty ? (
             <Link
               to={`/parties/${image.partyId}`}

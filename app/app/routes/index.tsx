@@ -21,3 +21,5 @@ export default function Index() {
     </Page>
   );
 }
+
+export const unstable_shouldReload = () => false;
