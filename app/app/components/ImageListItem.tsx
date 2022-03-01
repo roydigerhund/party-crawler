@@ -50,17 +50,21 @@ const ImageListItem = ({
     }
   };
 
+  const deleteBookmark = (bookmarkId: string) => {
+    bookmarker.submit(
+      { bookmarkId },
+      {
+        method: 'delete',
+        action: `/bookmarks/delete`,
+      },
+    );
+  };
+
   useEffect(() => {
     if (toDeletedBookmarkId) {
       // wait 5000ms to delete the bookmark
       const timeout = setTimeout(() => {
-        bookmarker.submit(
-          { bookmarkId: toDeletedBookmarkId },
-          {
-            method: 'delete',
-            action: `/bookmarks/delete`,
-          },
-        );
+        deleteBookmark(toDeletedBookmarkId);
       }, 5000);
 
       return () => clearTimeout(timeout);
@@ -71,13 +75,7 @@ const ImageListItem = ({
     if (allowCancelingDeleteBookmark) {
       setToDeletedBookmarkId(bookmarkId);
     } else {
-      bookmarker.submit(
-        { bookmarkId },
-        {
-          method: 'delete',
-          action: `/bookmarks/delete`,
-        },
-      );
+      deleteBookmark(bookmarkId);
     }
   };
 
