@@ -70,7 +70,6 @@ const Page: React.FC<{ noSearch?: boolean }> = ({ children, noSearch }) => {
                     className="ml-1 flex h-10 w-10 items-center justify-center rounded-full focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
                     onClick={() => setSidebarOpen(false)}
                   >
-                    <span className="sr-only">Menu schließen</span>
                     <XIcon className="h-6 w-6 text-white" aria-hidden="true" />
                   </button>
                 </div>
@@ -186,7 +185,6 @@ const Page: React.FC<{ noSearch?: boolean }> = ({ children, noSearch }) => {
               className="sticky top-3 left-2 z-10 mb-2 flex h-12 w-12 items-center justify-center rounded-full bg-black text-white shadow-sm focus:outline-none focus:ring-2 focus:ring-inset focus:ring-sky-500 md:hidden"
               onClick={() => setSidebarOpen(true)}
             >
-              <span className="sr-only">Menu öffnen</span>
               <MenuAlt2Icon className="h-6 w-6" aria-hidden="true" />
             </button>
           ) : (
@@ -196,7 +194,6 @@ const Page: React.FC<{ noSearch?: boolean }> = ({ children, noSearch }) => {
                 className="rounded-l-full border-r border-gray-200 bg-black pl-3 pr-2 text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-sky-500 md:hidden md:px-4"
                 onClick={() => setSidebarOpen(true)}
               >
-                <span className="sr-only">Menu öffnen</span>
                 <MenuAlt2Icon className="h-6 w-6" aria-hidden="true" />
               </button>
               <div className="flex flex-1 justify-between rounded-r-full border-y border-r border-gray-300 bg-white px-4 md:rounded-none md:border-x-0 md:border-t-0 md:border-gray-200 md:px-0">

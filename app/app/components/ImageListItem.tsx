@@ -97,9 +97,7 @@ const ImageListItem = ({
           alt={image.id}
           className="is-hover:group-hover:block pointer-events-none hidden object-contain"
         />
-        <button onClick={onClick} className="absolute inset-0 focus:outline-none">
-          <span className="sr-only">Details anzeigen für {image.id}</span>
-        </button>
+        <button onClick={onClick} className="absolute inset-0 focus:outline-none" />
         <div
           className={classNames(
             'xs:p-2 pointer-events-none flex items-end space-x-2 p-1 sm:p-4',

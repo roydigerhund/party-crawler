@@ -42,9 +42,7 @@ const PartyList = ({
                       className="pointer-events-none object-cover group-hover:opacity-75"
                     />
                   )}
-                  <Link to={`/parties/${party.id}`} className="absolute inset-0 focus:outline-none">
-                    <span className="sr-only">Details anzeigen für {party.name}</span>
-                  </Link>
+                  <Link to={`/parties/${party.id}`} className="absolute inset-0 focus:outline-none" />
                 </div>
                 <div className="absolute right-2 bottom-2 flex gap-1 rounded-full bg-white px-2 py-1 text-xs font-medium text-gray-700 shadow-md">
                   {party._count.images}

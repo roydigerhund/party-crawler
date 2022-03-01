@@ -59,9 +59,7 @@ const RawData = () => {
                       href={image.url.replace('http://www.binpartygeil.de/', '/downloads/')}
                       target="_blank"
                       className="absolute inset-0 focus:outline-none"
-                    >
-                      <span className="sr-only">Details anzeigen für {image.id}</span>
-                    </a>
+                    />
                   </div>
                   <p className="pointer-events-none mt-2 block text-sm font-medium text-gray-900">
                     {image.party} in{' '}
