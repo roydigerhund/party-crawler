@@ -1,4 +1,13 @@
-import { ActionFunction, Form, LoaderFunction, MetaFunction, redirect, useActionData, useSearchParams } from 'remix';
+import {
+  ActionFunction,
+  Form,
+  LoaderFunction,
+  MetaFunction,
+  redirect,
+  useActionData,
+  useSearchParams,
+  useTransition,
+} from 'remix';
 import { authCookie } from '~/cookies.server';
 import db from '~/db.server';
 
@@ -69,11 +78,12 @@ export const meta: MetaFunction = ({ data }) => {
 export default function Login() {
   const data = useActionData<ActionReturnType>();
   const [searchParams] = useSearchParams();
+  const { state } = useTransition();
 
   const redirect = data?.redirectPath || searchParams.get('redirect') || '/';
 
   return (
-    <div className="bg-gray-50 h-full">
+    <div className="h-full bg-gray-50">
       <div className="xs:px-6 flex min-h-full flex-col justify-center py-12 lg:px-8">
         <div className="xs:mx-auto xs:w-full xs:max-w-md xs:px-0 px-4">
           <img className="mx-auto h-12 w-auto" src="/logo.png" alt="Workflow" />
@@ -91,34 +101,36 @@ export default function Login() {
               </div>
             )}
 
-            <Form className="space-y-6" method="post">
-              <div>
-                <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-                  Passwort
-                </label>
-                <div className="mt-1">
-                  <input type="hidden" name="redirect" value={redirect} />
-                  <input
-                    id="password"
-                    name="password"
-                    type="password"
-                    autoComplete="password"
-                    required
-                    className={
-                      'xs:text-sm block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-sky-500 focus:outline-none focus:ring-sky-500'
-                    }
-                  />
+            <Form method="post">
+              <fieldset className="space-y-6" disabled={state !== 'idle'}>
+                <div>
+                  <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+                    Passwort
+                  </label>
+                  <div className="mt-1">
+                    <input type="hidden" name="redirect" value={redirect} />
+                    <input
+                      id="password"
+                      name="password"
+                      type="password"
+                      autoComplete="password"
+                      required
+                      className={
+                        'xs:text-sm block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-sky-500 focus:outline-none focus:ring-sky-500'
+                      }
+                    />
+                  </div>
                 </div>
-              </div>
 
-              <div>
-                <button
-                  type="submit"
-                  className="flex w-full justify-center rounded-md border border-transparent bg-sky-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2"
-                >
-                  Lass mich rein
-                </button>
-              </div>
+                <div>
+                  <button
+                    type="submit"
+                    className="flex w-full justify-center rounded-md border border-transparent bg-sky-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2"
+                  >
+                    {state !== 'idle' ? '…' : 'Lass mich rein'}
+                  </button>
+                </div>
+              </fieldset>
             </Form>
           </div>
         </div>
