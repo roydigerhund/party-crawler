@@ -12,18 +12,21 @@ const ImageListItem = ({
   image,
   toParty,
   isRandom,
+  allowCancelingDeleteBookmark,
   onClick,
   onShowLogin,
 }: {
   image: Image;
   toParty?: boolean;
   isRandom?: boolean;
+  allowCancelingDeleteBookmark?: boolean;
   onClick: () => void;
   onShowLogin: () => void;
 }) => {
   const { bookmarks, username } = useMatches()[0]!.data as RootData;
   const bookmarker = useFetcher();
   const [copiedId, setCopiedId] = useState<string>();
+  const [toDeletedBookmarkId, setToDeletedBookmarkId] = useState<string>();
 
   // reset the copied id after a second
   useEffect(() => {
@@ -47,14 +50,35 @@ const ImageListItem = ({
     }
   };
 
-  const handleDeleteBookmarkClick = (bookmarkId: string) => {
-    bookmarker.submit(
-      { bookmarkId },
-      {
-        method: 'delete',
-        action: `/bookmarks/delete`,
-      },
-    );
+  useEffect(() => {
+    if (toDeletedBookmarkId) {
+      // wait 5000ms to delete the bookmark
+      const timeout = setTimeout(() => {
+        bookmarker.submit(
+          { bookmarkId: toDeletedBookmarkId },
+          {
+            method: 'delete',
+            action: `/bookmarks/delete`,
+          },
+        );
+      }, 5000);
+
+      return () => clearTimeout(timeout);
+    }
+  }, [toDeletedBookmarkId]);
+
+  const handleDeleteBookmarkClick = async (bookmarkId: string) => {
+    if (allowCancelingDeleteBookmark) {
+      setToDeletedBookmarkId(bookmarkId);
+    } else {
+      bookmarker.submit(
+        { bookmarkId },
+        {
+          method: 'delete',
+          action: `/bookmarks/delete`,
+        },
+      );
+    }
   };
 
   const bookmarkId = bookmarks.find((bookmark) => bookmark.imageId === image.id)?.id;
@@ -85,36 +109,53 @@ const ImageListItem = ({
           )}
           aria-hidden="true"
         >
-          <button
-            onClick={() => (!!bookmarkId ? handleDeleteBookmarkClick(bookmarkId) : handleCreateBookmarkClick(image.id))}
-            disabled={actionPending}
-            className={classNames(
-              'pointer-events-auto flex-grow-0 cursor-pointer rounded-md bg-white bg-opacity-75 py-2 px-2.5 text-gray-900 backdrop-blur-sm backdrop-filter transition-all duration-300 hover:bg-opacity-100',
-            )}
-          >
-            {isBookmarked ? <HeartIconSolid className="h-5 w-5 text-red-500" /> : <HeartIcon className="h-5 w-5" />}
-          </button>
-          {toParty ? (
-            <Link
-              to={`/parties/${image.partyId}`}
-              target={isRandom ? '_blank' : undefined}
-              className="pointer-events-auto w-full rounded-md bg-white bg-opacity-75 py-2 px-4 text-center text-sm font-medium text-gray-900 backdrop-blur-sm backdrop-filter transition-all duration-300 hover:bg-opacity-100"
+          {!!toDeletedBookmarkId ? (
+            <button
+              onClick={() => setToDeletedBookmarkId(undefined)}
+              className="pointer-events-auto relative w-full overflow-hidden rounded-md bg-white bg-opacity-75 py-2 px-4 text-center text-sm font-medium text-gray-900 backdrop-blur-sm backdrop-filter hover:bg-opacity-100"
             >
-              Zur Party
-            </Link>
+              <span className="cancel-bar absolute bottom-0 left-0 h-1 w-full bg-sky-500" />
+              Rückgängig machen
+            </button>
           ) : (
-            <CopyToClipboard text={`${getEnv('APP_BASE_URL')}/image/${image.id}`} onCopy={() => setCopiedId(image.id)}>
-              <div className="pointer-events-auto flex w-full cursor-pointer items-center justify-center rounded-md bg-white bg-opacity-75 py-2 px-4 text-center text-sm font-medium text-gray-900 backdrop-blur-sm backdrop-filter transition-all duration-300 hover:bg-opacity-100">
-                {copiedId === image.id ? (
-                  <>
-                    <span>Link kopiert</span>
-                    <CheckCircleIcon className="ml-1 h-4 w-4 text-emerald-500" />
-                  </>
-                ) : (
-                  'Bild teilen'
+            <>
+              <button
+                onClick={() =>
+                  !!bookmarkId ? handleDeleteBookmarkClick(bookmarkId) : handleCreateBookmarkClick(image.id)
+                }
+                disabled={actionPending}
+                className={classNames(
+                  'pointer-events-auto flex-grow-0 cursor-pointer rounded-md bg-white bg-opacity-75 py-2 px-2.5 text-gray-900 backdrop-blur-sm backdrop-filter hover:bg-opacity-100',
                 )}
-              </div>
-            </CopyToClipboard>
+              >
+                {isBookmarked ? <HeartIconSolid className="h-5 w-5 text-red-500" /> : <HeartIcon className="h-5 w-5" />}
+              </button>
+              {toParty ? (
+                <Link
+                  to={`/parties/${image.partyId}`}
+                  target={isRandom ? '_blank' : undefined}
+                  className="pointer-events-auto w-full rounded-md bg-white bg-opacity-75 py-2 px-4 text-center text-sm font-medium text-gray-900 backdrop-blur-sm backdrop-filter hover:bg-opacity-100"
+                >
+                  Zur Party
+                </Link>
+              ) : (
+                <CopyToClipboard
+                  text={`${getEnv('APP_BASE_URL')}/image/${image.id}`}
+                  onCopy={() => setCopiedId(image.id)}
+                >
+                  <div className="pointer-events-auto flex w-full cursor-pointer items-center justify-center rounded-md bg-white bg-opacity-75 py-2 px-4 text-center text-sm font-medium text-gray-900 backdrop-blur-sm backdrop-filter hover:bg-opacity-100">
+                    {copiedId === image.id ? (
+                      <>
+                        <span>Link kopiert</span>
+                        <CheckCircleIcon className="ml-1 h-4 w-4 text-emerald-500" />
+                      </>
+                    ) : (
+                      'Bild teilen'
+                    )}
+                  </div>
+                </CopyToClipboard>
+              )}
+            </>
           )}
         </div>
       </div>

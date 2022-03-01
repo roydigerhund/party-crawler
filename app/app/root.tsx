@@ -11,7 +11,7 @@ import {
 } from 'remix';
 import { userCookie } from './cookies.server';
 import db from './db.server';
-import styles from './tailwind.css';
+import styles from './styles/app.css';
 import { RootData } from './utils/types-and-enums';
 
 export const meta: MetaFunction = () => {

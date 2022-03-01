@@ -1,0 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.cancel-bar {
+  animation: scale-out-x 5s linear forwards;
+  transform-origin: left;
+}
+
+@keyframes scale-out-x {
+  0% {
+    transform: scaleX(1);
+  }
+  100% {
+    transform: scaleX(0);
+  }
+}

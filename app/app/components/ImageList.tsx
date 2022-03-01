@@ -8,10 +8,12 @@ const ImageList = ({
   images,
   toParty,
   isRandom,
+  allowCancelingDeleteBookmark,
 }: {
   images: Image[];
   toParty?: boolean;
   isRandom?: boolean;
+  allowCancelingDeleteBookmark?: boolean;
 }) => {
   const [openGallery, setOpenGallery] = useState(false);
   const [openLogin, setOpenLogin] = useState(false);
@@ -38,6 +40,7 @@ const ImageList = ({
                 onShowLogin={() => setOpenLogin(true)}
                 toParty={toParty}
                 isRandom={isRandom}
+                allowCancelingDeleteBookmark={allowCancelingDeleteBookmark}
               />
             ))}
           </ul>
