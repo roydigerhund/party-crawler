@@ -1,3 +1,7 @@
+# Look here for template changes when upgrading
+https://github.com/remix-run/remix/tree/main/packages/create-remix/templates
+
+
 # Welcome to Remix!
 
 - [Remix Docs](https://remix.run/docs)
