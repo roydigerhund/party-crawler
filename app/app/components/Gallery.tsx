@@ -2,6 +2,7 @@
 import { Dialog, Transition } from '@headlessui/react';
 import { Image } from '@prisma/client';
 import { Fragment, useEffect, useState } from 'react';
+import { classNames } from '~/utils/class-names';
 import { getEnv } from '~/utils/envs';
 import ImageActions from './ImageActions';
 
@@ -25,6 +26,7 @@ export default function Gallery({
   onShowLogin: () => void;
 }) {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [showImageNumber, setShowImageNumber] = useState(true);
 
   useEffect(() => {
     if (index !== undefined && open) {
@@ -52,6 +54,16 @@ export default function Gallery({
   const handleNext = () => {
     setCurrentIndex(currentIndex < images.length - 1 ? currentIndex + 1 : 0);
   };
+
+  useEffect(() => {
+    if (open) {
+      setShowImageNumber(true);
+      const timeout = setTimeout(() => {
+        setShowImageNumber(false);
+      }, 1000);
+      return () => clearTimeout(timeout);
+    }
+  }, [currentIndex, open]);
 
   const currentImage = images[currentIndex];
 
@@ -86,6 +98,17 @@ export default function Gallery({
           >
             {!!currentImage && (
               <div className="relative mt-4 mb-16 inline-block max-w-4xl transform rounded-lg bg-white p-0.5 text-left align-middle shadow-xl transition-all">
+                {/* Show number of current image and number of total images */}
+                <div
+                  className={classNames(
+                    'absolute top-0 right-0 rounded-bl-lg rounded-tr-lg bg-white px-2 pt-0.5 pb-1 transition-opacity duration-300',
+                    !showImageNumber && 'opacity-0',
+                  )}
+                >
+                  <span className="text-xs font-semibold text-gray-600">
+                    {currentIndex + 1} / {images.length}
+                  </span>
+                </div>
                 <button
                   onClick={handlePrevious}
                   className="absolute inset-y-0 left-0 right-2/3 cursor-w-resize focus:outline-none"
@@ -99,7 +122,7 @@ export default function Gallery({
                   onClick={handleNext}
                   className="absolute inset-y-0 left-2/3 right-0 cursor-e-resize focus:outline-none"
                 />
-                <div className="absolute top-full flex w-full justify-center items-center pt-1 xs:pt-2">
+                <div className="xs:pt-2 absolute top-full flex w-full items-center justify-center pt-1">
                   <ImageActions
                     image={currentImage}
                     {...{

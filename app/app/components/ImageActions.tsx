@@ -83,18 +83,18 @@ const ImageListItem = ({
   const actionPending = bookmarker.state !== 'idle';
 
   return (
-    <div className="xs:space-x-2 flex space-x-1 text-sm">
+    <div className="xs:space-x-2 flex space-x-1 text-sm font-semibold">
       {!!toDeletedBookmarkId ? (
         <button
           onClick={() => setToDeletedBookmarkId(undefined)}
-          className="xxs:px-4 pointer-events-auto relative flex w-full items-center justify-center overflow-hidden truncate rounded-md bg-white py-2 px-3 text-center font-medium text-gray-900 backdrop-blur-sm backdrop-filter"
+          className="xxs:px-4 pointer-events-auto relative flex w-full items-center justify-center overflow-hidden truncate rounded-md bg-white py-2 px-3 text-center text-gray-900 backdrop-blur-sm backdrop-filter"
         >
           <span className="cancel-bar absolute bottom-0 left-0 h-1 w-full bg-sky-500" />
           <HeartIcon className="mr-1.5 h-4 w-4 shrink-0 grow-0" />
           <span className="truncate">Rückgängig</span>
         </button>
       ) : !!copiedId ? (
-        <div className="xxs:px-4 pointer-events-auto flex w-full cursor-pointer items-center justify-center overflow-hidden rounded-md bg-white py-2 px-3 text-center font-medium text-gray-900 backdrop-blur-sm backdrop-filter">
+        <div className="xxs:px-4 pointer-events-auto flex w-full cursor-pointer items-center justify-center overflow-hidden rounded-md bg-white py-2 px-3 text-center text-gray-900 backdrop-blur-sm backdrop-filter">
           <span className="truncate">Link kopiert</span>
           <CheckCircleIcon className="ml-1 h-4 w-4 shrink-0 grow-0 text-emerald-500" />
         </div>
@@ -113,13 +113,13 @@ const ImageListItem = ({
             <Link
               to={`/parties/${image.partyId}`}
               target={isRandom ? '_blank' : undefined}
-              className="xxs:px-4 pointer-events-auto w-full truncate rounded-md bg-white bg-opacity-75 py-2 px-3 text-center font-medium text-gray-900 backdrop-blur-sm backdrop-filter hover:bg-opacity-100"
+              className="xxs:px-4 pointer-events-auto w-full truncate rounded-md bg-white bg-opacity-75 py-2 px-3 text-center text-gray-900 backdrop-blur-sm backdrop-filter hover:bg-opacity-100"
             >
               Zur Party
             </Link>
           ) : (
             <CopyToClipboard text={`${getEnv('APP_BASE_URL')}/image/${image.id}`} onCopy={() => setCopiedId(image.id)}>
-              <div className="xxs:px-4 pointer-events-auto flex w-full cursor-pointer items-center justify-center overflow-hidden rounded-md bg-white bg-opacity-75 py-2 px-3 text-center font-medium text-gray-900 backdrop-blur-sm backdrop-filter hover:bg-opacity-100">
+              <div className="xxs:px-4 pointer-events-auto flex w-full cursor-pointer items-center justify-center overflow-hidden rounded-md bg-white bg-opacity-75 py-2 px-3 text-center text-gray-900 backdrop-blur-sm backdrop-filter hover:bg-opacity-100">
                 Bild teilen
               </div>
             </CopyToClipboard>
