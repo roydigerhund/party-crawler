@@ -65,11 +65,13 @@ const Party = () => {
         <p className="text-md font-medium text-gray-500">{formatDate(image.party.date)}</p>
       </div>
       <div className="p-4 sm:px-6 md:px-0">
-        <img
-          className="h-auto max-w-full rounded-lg"
-          src={getEnv('MINIO_BASE_URL') + image.filePath}
-          alt={image.party.name}
-        />
+        <a href={'#image-' + image.id} className="inline-block">
+          <img
+            className="h-auto max-w-full rounded-lg"
+            src={getEnv('MINIO_BASE_URL') + image.filePath}
+            alt={image.party.name}
+          />
+        </a>
       </div>
       {image.party.images.length > 1 && (
         <>

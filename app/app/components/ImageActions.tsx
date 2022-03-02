@@ -8,7 +8,7 @@ import { classNames } from '~/utils/class-names';
 import { getEnv } from '~/utils/envs';
 import { RootData } from '~/utils/types-and-enums';
 
-const ImageListItem = ({
+const ImageActions = ({
   image,
   toParty,
   isRandom,
@@ -130,4 +130,4 @@ const ImageListItem = ({
   );
 };
 
-export default ImageListItem;
+export default ImageActions;
