@@ -3,17 +3,26 @@ import { Dialog, Transition } from '@headlessui/react';
 import { Image } from '@prisma/client';
 import { Fragment, useEffect, useState } from 'react';
 import { getEnv } from '~/utils/envs';
+import ImageActions from './ImageActions';
 
 export default function Gallery({
   images,
   index,
   open,
   onClose,
+  toParty,
+  isRandom,
+  allowCancelingDeleteBookmark,
+  onShowLogin,
 }: {
   images: Image[];
   index?: number;
   open?: boolean;
   onClose: () => void;
+  toParty?: boolean;
+  isRandom?: boolean;
+  allowCancelingDeleteBookmark?: boolean;
+  onShowLogin: () => void;
 }) {
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -44,6 +53,8 @@ export default function Gallery({
     setCurrentIndex(currentIndex < images.length - 1 ? currentIndex + 1 : 0);
   };
 
+  const currentImage = images[currentIndex];
+
   return (
     <Transition.Root show={open} as={Fragment}>
       <Dialog as="div" className="fixed inset-0 z-10 overflow-y-auto" onClose={onClose}>
@@ -73,21 +84,34 @@ export default function Gallery({
             leaveFrom="opacity-100 scale-100"
             leaveTo="opacity-0 scale-95"
           >
-            <div className="my-4 inline-block max-w-4xl transform overflow-hidden rounded-lg bg-white p-0.5 text-left align-middle shadow-xl transition-all">
-              <button
-                onClick={handlePrevious}
-                className="absolute inset-y-0 left-0 right-2/3 cursor-w-resize focus:outline-none"
-              />
-              <img
-                src={getEnv('MINIO_BASE_URL') + images[currentIndex]?.filePath}
-                alt={`Bild ${currentIndex + 1}`}
-                className="block w-full rounded-md object-cover"
-              />
-              <button
-                onClick={handleNext}
-                className="absolute inset-y-0 left-2/3 right-0 cursor-e-resize focus:outline-none"
-              />
-            </div>
+            {!!currentImage && (
+              <div className="relative mt-4 mb-16 inline-block max-w-4xl transform rounded-lg bg-white p-0.5 text-left align-middle shadow-xl transition-all">
+                <button
+                  onClick={handlePrevious}
+                  className="absolute inset-y-0 left-0 right-2/3 cursor-w-resize focus:outline-none"
+                />
+                <img
+                  src={getEnv('MINIO_BASE_URL') + currentImage.filePath}
+                  alt={`Bild ${currentIndex + 1}`}
+                  className="block w-full rounded-md object-cover"
+                />
+                <button
+                  onClick={handleNext}
+                  className="absolute inset-y-0 left-2/3 right-0 cursor-e-resize focus:outline-none"
+                />
+                <div className="absolute top-full flex w-full justify-center items-center pt-1 xs:pt-2">
+                  <ImageActions
+                    image={currentImage}
+                    {...{
+                      toParty,
+                      isRandom,
+                      allowCancelingDeleteBookmark,
+                      onShowLogin,
+                    }}
+                  />
+                </div>
+              </div>
+            )}
           </Transition.Child>
         </div>
       </Dialog>

@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 .cancel-bar {
-  animation: scale-out-x 5s linear forwards;
+  animation: scale-out-x 4s linear forwards;
   transform-origin: left;
 }
 
