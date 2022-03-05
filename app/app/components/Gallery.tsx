@@ -62,6 +62,7 @@ export default function Gallery({
 
   useEffect(() => {
     if (open) {
+      setChangeOffset(0);
       setShowImageNumber(true);
       const timeout = setTimeout(() => {
         setShowImageNumber(false);
@@ -77,9 +78,7 @@ export default function Gallery({
       <Dialog
         as="div"
         className="fixed inset-0 z-10 overflow-y-auto"
-        onClose={() => {
-          onClose(Math.abs(changeOffset) > 4 ? currentImage?.id : undefined);
-        }}
+        onClose={() => onClose(Math.abs(changeOffset) > 4 ? currentImage?.id : undefined)}
       >
         <div className="xs:px-4 block min-h-screen items-end justify-center px-1 text-center">
           <Transition.Child
