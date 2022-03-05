@@ -19,7 +19,7 @@ export default function Gallery({
   images: Image[];
   index?: number;
   open?: boolean;
-  onClose: () => void;
+  onClose: (imageId?: Image['id']) => void;
   toParty?: boolean;
   isRandom?: boolean;
   allowCancelingDeleteBookmark?: boolean;
@@ -69,8 +69,8 @@ export default function Gallery({
 
   return (
     <Transition.Root show={open} as={Fragment}>
-      <Dialog as="div" className="fixed inset-0 z-10 overflow-y-auto" onClose={onClose}>
-        <div className="block min-h-screen items-end justify-center px-4 text-center">
+      <Dialog as="div" className="fixed inset-0 z-10 overflow-y-auto" onClose={() => onClose(currentImage?.id)}>
+        <div className="xs:px-4 block min-h-screen items-end justify-center px-1 text-center">
           <Transition.Child
             as={Fragment}
             enter="ease-out duration-300"

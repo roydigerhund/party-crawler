@@ -1,6 +1,7 @@
 import { City, Country, Image, Party } from '@prisma/client';
+import { Ref, useRef } from 'react';
 import { Link, LoaderFunction, MetaFunction, useLoaderData } from 'remix';
-import ImageList from '~/components/ImageList';
+import ImageList, { ImageListRef } from '~/components/ImageList';
 import Page from '~/components/Page';
 import db from '~/db.server';
 import { getEnv } from '~/utils/envs';
@@ -39,6 +40,7 @@ export const loader: LoaderFunction = async ({ params }): Promise<LoaderReturnTy
 
 const Party = () => {
   const image = useLoaderData<LoaderReturnType | null>();
+  const imageListRef: Ref<ImageListRef> | null = useRef(null);
 
   if (!image)
     return (
@@ -48,6 +50,12 @@ const Party = () => {
         </div>
       </Page>
     );
+
+  const handleImageClick = () => {
+    if (imageListRef.current) {
+      imageListRef.current.setHighlightedImageId(image.id);
+    }
+  };
 
   return (
     <Page noSearch>
@@ -65,20 +73,19 @@ const Party = () => {
         <p className="text-md font-medium text-gray-500">{formatDate(image.party.date)}</p>
       </div>
       <div className="p-4 sm:px-6 md:px-0">
-        <a href={'#image-' + image.id} className="inline-block">
-          <img
-            className="h-auto max-w-full rounded-lg"
-            src={getEnv('MINIO_BASE_URL') + image.filePath}
-            alt={image.party.name}
-          />
-        </a>
+        <img
+          className="block h-auto max-w-full rounded-lg cursor-pointer"
+          src={getEnv('MINIO_BASE_URL') + image.filePath}
+          alt={image.party.name}
+          onClick={handleImageClick}
+        />
       </div>
       {image.party.images.length > 1 && (
         <>
           <div className="mt-4 px-4 sm:px-6 md:px-0">
             <h2 className="text-2xl font-semibold text-gray-900">Alle Bilder der Party</h2>
           </div>
-          <ImageList images={image.party.images} />
+          <ImageList ref={imageListRef} images={image.party.images} />
         </>
       )}
     </Page>

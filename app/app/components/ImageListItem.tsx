@@ -1,4 +1,5 @@
 import { Image } from '@prisma/client';
+import { useEffect, useRef } from 'react';
 import { classNames } from '~/utils/class-names';
 import { getEnv } from '~/utils/envs';
 import ImageActions from './ImageActions';
@@ -10,6 +11,7 @@ const ImageListItem = ({
   allowCancelingDeleteBookmark,
   onClick,
   onShowLogin,
+  highlighted,
 }: {
   image: Image;
   toParty?: boolean;
@@ -17,9 +19,27 @@ const ImageListItem = ({
   allowCancelingDeleteBookmark?: boolean;
   onClick: () => void;
   onShowLogin: () => void;
+  highlighted?: boolean;
 }) => {
+  const imageRef = useRef<HTMLLIElement>(null);
+
+  useEffect(() => {
+    if (highlighted) {
+      imageRef.current?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center',
+      });
+    }
+  }, [highlighted]);
+
   return (
-    <li id={'image-' + image.id} className="relative scroll-mt-2 xs:scroll-mt-3 lg:scroll-mt-4">
+    <li
+      ref={imageRef}
+      className={classNames(
+        'xs:scroll-mt-3 relative scroll-mt-2 transition-all lg:scroll-mt-4',
+        highlighted && 'animate-tada z-10',
+      )}
+    >
       <div className="group aspect-w-10 aspect-h-10 block w-full overflow-hidden rounded-lg bg-black focus-within:ring-2 focus-within:ring-sky-500 focus-within:ring-offset-2 focus-within:ring-offset-gray-100">
         <img
           src={getEnv('MINIO_BASE_URL') + image.filePath}
