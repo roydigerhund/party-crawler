@@ -9,7 +9,7 @@ export default function UserLogin({ onClose, open }: { onClose: () => void; open
   const [userNotFound, setUserNotFound] = useState(false);
   const [hasNewAccount, setHasNewAccount] = useState(false);
 
-  const actionPending = login.state !== 'idle';
+  const actionPending = login.state !== 'idle' || create.state !== 'idle';
 
   useEffect(() => {
     if (login.data?.error) {
@@ -22,6 +22,10 @@ export default function UserLogin({ onClose, open }: { onClose: () => void; open
       setHasNewAccount(true);
     }
   }, [login.data, create.data]);
+
+  const handleCreate = () => {
+    create.submit({}, { method: 'post', action: '/user/create' });
+  };
 
   return (
     <Transition.Root show={open} as={Fragment}>
@@ -76,19 +80,19 @@ export default function UserLogin({ onClose, open }: { onClose: () => void; open
                 </div>
               ) : (
                 <div className="space-y-8">
-                  <create.Form method="post" action="/user/create">
+                  <div>
                     <h2 className="text-center text-3xl font-extrabold text-gray-900">Anmelden</h2>
                     <p className="mt-2 text-center text-sm text-gray-600">
                       oder{' '}
-                      <button type="submit" className="font-medium text-sky-600 hover:text-sky-500">
+                      <button onClick={handleCreate} className="font-medium text-sky-600 hover:text-sky-500">
                         einen Account erstellen
                       </button>
                       <br />
                       falls du noch keinen Account hast.
                     </p>
-                  </create.Form>
+                  </div>
                   <login.Form className="mt-8" method="post" action="/user/login">
-                    <fieldset className="space-y-6" disabled={actionPending}>
+                    <fieldset className="space-y-3" disabled={actionPending}>
                       {userNotFound && (
                         <div className="text-sm font-semibold text-red-500">
                           Der Nutzername wurde nicht gefunden. Falls du noch keinen Account hast, kannst du über den
@@ -112,14 +116,24 @@ export default function UserLogin({ onClose, open }: { onClose: () => void; open
                         </div>
                       </div>
 
-                      <div>
-                        <button
-                          type="submit"
-                          className="flex w-full justify-center rounded-md border border-transparent bg-sky-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2"
-                        >
-                          {actionPending ? '…' : 'Anmelden'}
-                        </button>
+                      <button
+                        type="submit"
+                        className="flex w-full justify-center rounded-md border border-transparent bg-sky-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2"
+                      >
+                        {actionPending ? '…' : 'Anmelden'}
+                      </button>
+                      <div className="flex items-center justify-center">
+                        <div className="h-px grow bg-gray-400" />
+                        <span className="mx-2 shrink-0 text-xs uppercase tracking-wider">oder</span>
+                        <div className="h-px grow bg-gray-400" />
                       </div>
+                      <button
+                        type="button"
+                        onClick={handleCreate}
+                        className="flex w-full justify-center rounded-md border border-transparent bg-sky-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2"
+                      >
+                        {actionPending ? '…' : 'Neuen Account erstellen'}
+                      </button>
                     </fieldset>
                   </login.Form>
                 </div>
