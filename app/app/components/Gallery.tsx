@@ -12,6 +12,7 @@ export default function Gallery({
   open,
   onClose,
   toParty,
+  toImage,
   isRandom,
   allowCancelingDeleteBookmark,
   onShowLogin,
@@ -21,12 +22,14 @@ export default function Gallery({
   open?: boolean;
   onClose: (imageId?: Image['id']) => void;
   toParty?: boolean;
+  toImage?: boolean;
   isRandom?: boolean;
   allowCancelingDeleteBookmark?: boolean;
   onShowLogin: () => void;
 }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showImageNumber, setShowImageNumber] = useState(true);
+  const [changeOffset, setChangeOffset] = useState(0);
 
   useEffect(() => {
     if (index !== undefined && open) {
@@ -49,10 +52,12 @@ export default function Gallery({
 
   const handlePrevious = () => {
     setCurrentIndex(currentIndex > 0 ? currentIndex - 1 : images.length - 1);
+    setChangeOffset(old => old - 1);
   };
 
   const handleNext = () => {
     setCurrentIndex(currentIndex < images.length - 1 ? currentIndex + 1 : 0);
+    setChangeOffset(old => old + 1);
   };
 
   useEffect(() => {
@@ -69,7 +74,13 @@ export default function Gallery({
 
   return (
     <Transition.Root show={open} as={Fragment}>
-      <Dialog as="div" className="fixed inset-0 z-10 overflow-y-auto" onClose={() => onClose(currentImage?.id)}>
+      <Dialog
+        as="div"
+        className="fixed inset-0 z-10 overflow-y-auto"
+        onClose={() => {
+          onClose(Math.abs(changeOffset) > 4 ? currentImage?.id : undefined);
+        }}
+      >
         <div className="xs:px-4 block min-h-screen items-end justify-center px-1 text-center">
           <Transition.Child
             as={Fragment}
@@ -127,6 +138,7 @@ export default function Gallery({
                     image={currentImage}
                     {...{
                       toParty,
+                      toImage,
                       isRandom,
                       allowCancelingDeleteBookmark,
                       onShowLogin,

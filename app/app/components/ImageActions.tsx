@@ -11,13 +11,17 @@ import { RootData } from '~/utils/types-and-enums';
 const ImageActions = ({
   image,
   toParty,
+  toImage,
   isRandom,
+  onWhite,
   allowCancelingDeleteBookmark,
   onShowLogin,
 }: {
   image: Image;
   toParty?: boolean;
+  toImage?: boolean;
   isRandom?: boolean;
+  onWhite?: boolean;
   allowCancelingDeleteBookmark?: boolean;
   onShowLogin: () => void;
 }) => {
@@ -82,19 +86,24 @@ const ImageActions = ({
     (!!bookmarkId || bookmarker.submission?.method === 'POST') && bookmarker.submission?.method !== 'DELETE';
   const actionPending = bookmarker.state !== 'idle';
 
+  const buttonClassName = classNames(
+    'relative pointer-events-auto cursor-pointer truncate flex items-center justify-center backdrop-blur-sm backdrop-filter text-gray-900 rounded-md py-2 text-center overflow-hidden',
+    onWhite ? 'bg-gray-100' : 'bg-white bg-opacity-50 hover:bg-opacity-100',
+  );
+
   return (
     <div className="xs:space-x-2 flex space-x-1 text-sm font-semibold">
       {!!toDeletedBookmarkId ? (
         <button
           onClick={() => setToDeletedBookmarkId(undefined)}
-          className="xxs:px-4 pointer-events-auto relative flex w-full items-center justify-center overflow-hidden truncate rounded-md bg-white py-2 px-3 text-center text-gray-900 backdrop-blur-sm backdrop-filter"
+          className={classNames(buttonClassName, 'xxs:px-4 w-full px-3')}
         >
           <span className="cancel-bar absolute bottom-0 left-0 h-1 w-full bg-sky-500" />
           <HeartIcon className="mr-1.5 h-4 w-4 shrink-0 grow-0" />
           <span className="truncate">Rückgängig</span>
         </button>
       ) : !!copiedId ? (
-        <div className="xxs:px-4 pointer-events-auto flex w-full cursor-pointer items-center justify-center overflow-hidden rounded-md bg-white py-2 px-3 text-center text-gray-900 backdrop-blur-sm backdrop-filter">
+        <div className={classNames(buttonClassName, 'xxs:px-4 w-full px-3')}>
           <span className="truncate">Link kopiert</span>
           <CheckCircleIcon className="ml-1 h-4 w-4 shrink-0 grow-0 text-emerald-500" />
         </div>
@@ -103,23 +112,29 @@ const ImageActions = ({
           <button
             onClick={() => (!!bookmarkId ? handleDeleteBookmarkClick(bookmarkId) : handleCreateBookmarkClick(image.id))}
             disabled={actionPending}
-            className={classNames(
-              'pointer-events-auto flex-grow-0 cursor-pointer rounded-md bg-white bg-opacity-75 py-2 px-2.5 text-gray-900 backdrop-blur-sm backdrop-filter hover:bg-opacity-100',
-            )}
+            className={classNames(buttonClassName, 'grow-0 shrink-0 px-2.5')}
           >
-            {isBookmarked ? <HeartIconSolid className="h-5 w-5 text-red-500" /> : <HeartIcon className="h-5 w-5" />}
+            {isBookmarked ? <HeartIconSolid className="shrink-0 h-5 w-5 text-red-500" /> : <HeartIcon className="shrink-0 h-5 w-5" />}
           </button>
           {toParty ? (
             <Link
               to={`/parties/${image.partyId}`}
               target={isRandom ? '_blank' : undefined}
-              className="xxs:px-4 pointer-events-auto w-full truncate rounded-md bg-white bg-opacity-75 py-2 px-3 text-center text-gray-900 backdrop-blur-sm backdrop-filter hover:bg-opacity-100"
+              className={classNames(buttonClassName, 'xxs:px-4 w-full px-3')}
             >
               Zur Party
             </Link>
+          ) : toImage ? (
+            <Link
+              to={`/image/${image.id}`}
+              target={isRandom ? '_blank' : undefined}
+              className={classNames(buttonClassName, 'xxs:px-4 w-full px-3')}
+            >
+              Zum Bild
+            </Link>
           ) : (
             <CopyToClipboard text={`${getEnv('APP_BASE_URL')}/image/${image.id}`} onCopy={() => setCopiedId(image.id)}>
-              <div className="xxs:px-4 pointer-events-auto flex w-full cursor-pointer items-center justify-center overflow-hidden rounded-md bg-white bg-opacity-75 py-2 px-3 text-center text-gray-900 backdrop-blur-sm backdrop-filter hover:bg-opacity-100">
+              <div className={classNames(buttonClassName, 'xxs:px-4 w-full px-3')}>
                 Bild teilen
               </div>
             </CopyToClipboard>

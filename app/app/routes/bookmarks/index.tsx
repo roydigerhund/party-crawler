@@ -44,7 +44,7 @@ export default function Index() {
             <h1 className="text-2xl font-semibold text-gray-900">Gemerkte Bilder von {username}</h1>
           </div>
           {!!bookmarks.length ? (
-            <ImageList images={images} toParty allowCancelingDeleteBookmark />
+            <ImageList images={images} toImage allowCancelingDeleteBookmark />
           ) : (
             <div className="px-4 sm:px-6 md:px-0">
               <div className="relative mt-4 block w-full rounded-lg border-2 border-dashed border-gray-300 px-4 py-12 text-center hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">

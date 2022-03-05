@@ -8,6 +8,7 @@ import UserLogin from './UserLogin';
 type ImageListProps = {
   images: Image[];
   toParty?: boolean;
+  toImage?: boolean;
   isRandom?: boolean;
   allowCancelingDeleteBookmark?: boolean;
 };
@@ -17,7 +18,7 @@ export type ImageListRef = {
 };
 
 const ImageList = forwardRef<ImageListRef, ImageListProps>(
-  ({ images, toParty, isRandom, allowCancelingDeleteBookmark }, ref) => {
+  ({ images, toParty, toImage, isRandom, allowCancelingDeleteBookmark }, ref) => {
     const [openGallery, setOpenGallery] = useState(false);
     const [openLogin, setOpenLogin] = useState(false);
     const [initialGalleryIndex, setInitialGalleryIndex] = useState<number>(0);
@@ -44,7 +45,7 @@ const ImageList = forwardRef<ImageListRef, ImageListProps>(
             setHighlightedImageId(imageId);
           }}
           onShowLogin={() => setOpenLogin(true)}
-          {...{ toParty, isRandom, allowCancelingDeleteBookmark }}
+          {...{ toParty, toImage, isRandom, allowCancelingDeleteBookmark }}
         />
         <UserLogin open={openLogin} onClose={() => setOpenLogin(false)} />
         <div className="px-4 sm:px-6 md:px-0">
@@ -68,7 +69,7 @@ const ImageList = forwardRef<ImageListRef, ImageListProps>(
                   }}
                   highlighted={image.id === highlightedImageId}
                   onShowLogin={() => setOpenLogin(true)}
-                  {...{ toParty, isRandom, allowCancelingDeleteBookmark }}
+                  {...{ toParty, toImage, isRandom, allowCancelingDeleteBookmark }}
                 />
               ))}
             </ul>

@@ -7,6 +7,7 @@ import ImageActions from './ImageActions';
 const ImageListItem = ({
   image,
   toParty,
+  toImage,
   isRandom,
   allowCancelingDeleteBookmark,
   onClick,
@@ -15,6 +16,7 @@ const ImageListItem = ({
 }: {
   image: Image;
   toParty?: boolean;
+  toImage?: boolean;
   isRandom?: boolean;
   allowCancelingDeleteBookmark?: boolean;
   onClick: () => void;
@@ -62,6 +64,7 @@ const ImageListItem = ({
             {...{
               image,
               toParty,
+              toImage,
               isRandom,
               allowCancelingDeleteBookmark,
               onShowLogin,

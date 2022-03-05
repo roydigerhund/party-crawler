@@ -1,8 +1,10 @@
 import { City, Country, Image, Party } from '@prisma/client';
-import { Ref, useRef } from 'react';
+import { Ref, useRef, useState } from 'react';
 import { Link, LoaderFunction, MetaFunction, useLoaderData } from 'remix';
+import ImageActions from '~/components/ImageActions';
 import ImageList, { ImageListRef } from '~/components/ImageList';
 import Page from '~/components/Page';
+import UserLogin from '~/components/UserLogin';
 import db from '~/db.server';
 import { getEnv } from '~/utils/envs';
 import { formatDate } from '~/utils/intl';
@@ -39,6 +41,7 @@ export const loader: LoaderFunction = async ({ params }): Promise<LoaderReturnTy
 };
 
 const Party = () => {
+  const [openLogin, setOpenLogin] = useState(false);
   const image = useLoaderData<LoaderReturnType | null>();
   const imageListRef: Ref<ImageListRef> | null = useRef(null);
 
@@ -59,6 +62,7 @@ const Party = () => {
 
   return (
     <Page noSearch>
+      <UserLogin open={openLogin} onClose={() => setOpenLogin(false)} />
       <div className="px-4 sm:px-6 md:px-0">
         <h1 className="text-2xl font-semibold text-gray-900">
           Partybild von{' '}
@@ -74,11 +78,14 @@ const Party = () => {
       </div>
       <div className="p-4 sm:px-6 md:px-0">
         <img
-          className="block h-auto max-w-full rounded-lg cursor-pointer"
+          className="block h-auto max-w-full cursor-pointer rounded-lg"
           src={getEnv('MINIO_BASE_URL') + image.filePath}
           alt={image.party.name}
           onClick={handleImageClick}
         />
+        <div className="xs:pt-2 flex items-center justify-start pt-1">
+          <ImageActions onWhite image={image} onShowLogin={() => setOpenLogin(true)} />
+        </div>
       </div>
       {image.party.images.length > 1 && (
         <>
