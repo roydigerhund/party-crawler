@@ -33,6 +33,7 @@ export default function Gallery({
 
   useEffect(() => {
     if (index !== undefined && open) {
+      setChangeOffset(0);
       setCurrentIndex(index);
     }
   }, [index, open]);
@@ -62,7 +63,6 @@ export default function Gallery({
 
   useEffect(() => {
     if (open) {
-      setChangeOffset(0);
       setShowImageNumber(true);
       const timeout = setTimeout(() => {
         setShowImageNumber(false);
