@@ -38,7 +38,7 @@ const ImageListItem = ({
     <li
       ref={imageRef}
       className={classNames(
-        'xs:scroll-mt-3 relative scroll-mt-2 transition-all lg:scroll-mt-4',
+        'xs:scroll-mt-3 relative scroll-mt-2 transition-all lg:scroll-mt-4 select-none',
         highlighted && 'animate-tada z-10',
       )}
     >

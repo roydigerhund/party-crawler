@@ -119,20 +119,20 @@ export default function Gallery({
                     {currentIndex + 1} / {images.length}
                   </span>
                 </div>
-                <button
-                  onClick={handlePrevious}
-                  className="absolute inset-y-0 left-0 right-2/3 cursor-w-resize focus:outline-none"
-                />
                 <img
                   src={getEnv('MINIO_BASE_URL') + currentImage.filePath}
                   alt={`Bild ${currentIndex + 1}`}
                   className="block w-full rounded-md object-cover"
                 />
                 <button
-                  onClick={handleNext}
-                  className="absolute inset-y-0 left-2/3 right-0 cursor-e-resize focus:outline-none"
+                  onClick={handlePrevious}
+                  className="absolute inset-y-0 left-0 right-2/3 cursor-w-resize focus:outline-none select-none"
                 />
-                <div className="xs:pt-2 absolute top-full flex w-full items-center justify-center pt-1">
+                <button
+                  onClick={handleNext}
+                  className="absolute inset-y-0 left-2/3 right-0 cursor-e-resize focus:outline-none select-none"
+                />
+                <div className="xs:pt-2 absolute top-full flex w-full items-center justify-center pt-1 pointer-events-none">
                   <ImageActions
                     image={currentImage}
                     {...{
