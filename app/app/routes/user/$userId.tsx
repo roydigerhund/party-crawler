@@ -1,5 +1,6 @@
 import { HeartIcon } from '@heroicons/react/solid';
 import { User } from '@prisma/client';
+import { MetaFunction } from '@remix-run/react/routeModules';
 import { useEffect, useState } from 'react';
 import { LoaderFunction, useLoaderData } from 'remix';
 import ImageList from '~/components/ImageList';
@@ -7,6 +8,16 @@ import Page from '~/components/Page';
 import UserLogin from '~/components/UserLogin';
 import db from '~/db.server';
 import { BookmarkData } from '~/utils/types-and-enums';
+
+const anonymize = (str: string) =>
+  str
+    .split(' ')
+    .map((word) => word.slice(0, 2) + '*****')
+    .join(' ');
+
+export const meta: MetaFunction = ({ data }) => {
+  return { title: `${data?.user?.name ? anonymize(data.user.name) : 'Nutzer'} - Partybilder` };
+};
 
 type LoaderReturnType = { user: User & { bookmarks: BookmarkData[] } };
 
@@ -21,7 +32,7 @@ export const loader: LoaderFunction = async ({ params }): Promise<LoaderReturnTy
     throw new Error('User not found');
   }
 
-  return { user: { ...user, name: user.name.split(' ').map((word) => word.slice(0, 2) + '*****').join(' ') } };
+  return { user: { ...user, name: anonymize(user.name) } };
 };
 
 export default function Index() {
