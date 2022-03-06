@@ -4,7 +4,7 @@ import ImageList from '~/components/ImageList';
 import Page from '~/components/Page';
 import db from '~/db.server';
 
-export const loader: LoaderFunction = async (): Promise<Image[]> => {
+export const loader: LoaderFunction = async ({ request }): Promise<Image[]> => {
   const images: Image[] = await db.$queryRaw`SELECT * from "Image" ORDER BY random() LIMIT 12`;
   return images;
 };

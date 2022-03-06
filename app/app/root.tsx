@@ -6,12 +6,13 @@ import {
   Meta,
   MetaFunction,
   Outlet,
+  redirect,
   Scripts,
   ScrollRestoration,
   useLoaderData,
 } from 'remix';
 import Page from './components/Page';
-import { userCookie } from './cookies.server';
+import { authCookie, userCookie } from './cookies.server';
 import db from './db.server';
 import styles from './styles/app.css';
 import { RootData } from './utils/types-and-enums';
@@ -26,6 +27,18 @@ export function links() {
 
 export const loader: LoaderFunction = async ({ request }): Promise<RootData> => {
   const cookieHeader = request.headers.get('Cookie');
+  const isAuthorized = (await authCookie.parse(cookieHeader)) || false;
+
+  const url = new URL(request.url);
+
+  console.log(isAuthorized, 'isAuthorized');
+
+  if (!isAuthorized && url.pathname !== '/auth') {
+    throw redirect(url.pathname.length > 1 ? '/auth?redirect=' + encodeURIComponent(url.pathname) : '/auth');
+  } else if (isAuthorized && url.pathname === '/auth') {
+    throw redirect(url.searchParams.get('redirect') || '/');
+  }
+
   const username = (await userCookie.parse(cookieHeader)) || undefined;
   const bookmarks =
     username && typeof username === 'string'
