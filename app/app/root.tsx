@@ -1,3 +1,4 @@
+import { ErrorBoundaryComponent } from '@remix-run/react/routeModules';
 import {
   Links,
   LiveReload,
@@ -9,6 +10,7 @@ import {
   ScrollRestoration,
   useLoaderData,
 } from 'remix';
+import Page from './components/Page';
 import { userCookie } from './cookies.server';
 import db from './db.server';
 import styles from './styles/app.css';
@@ -89,3 +91,14 @@ export function Root() {
     </html>
   );
 }
+
+export const ErrorBoundary: ErrorBoundaryComponent = ({ error }) => {
+  return (
+    <Page noSearch>
+      <div className="px-4 sm:px-6 md:px-0">
+        <h1 className="text-2xl font-semibold text-gray-900">Sorry, da ist irgendwas schief gelaufen 🙈</h1>
+        <p className="text-md font-medium text-gray-500">{error.message}</p>
+      </div>
+    </Page>
+  );
+};

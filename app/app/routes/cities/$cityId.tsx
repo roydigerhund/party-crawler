@@ -97,7 +97,6 @@ const City = () => {
 
   return (
     <Page>
-      <div className="px-4 sm:px-6 md:px-0"></div>
       <div className="flex items-end justify-between space-x-2 px-4 sm:px-6 md:px-0">
         <div>
           <h1 className="text-2xl font-semibold text-gray-900">{city.name}</h1>
@@ -111,7 +110,7 @@ const City = () => {
           <select
             id="year"
             name="year"
-            className="block w-full rounded-md border-none bg-gray-100 py-1.5 pl-3 pr-10 text-base text-gray-900 focus:border-sky-500 focus:outline-none focus:ring-sky-500 sm:text-sm"
+            className="block w-full rounded-md border-none bg-gray-100 py-1.5 pl-3 pr-10 text-base text-gray-900 hover:bg-gray-200 focus:border-sky-500 focus:outline-none focus:ring-sky-500 sm:text-sm"
             defaultValue={year}
           >
             <option value="">Alle Jahre</option>

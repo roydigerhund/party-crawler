@@ -79,7 +79,7 @@ const Parties = () => {
           <select
             id="year"
             name="year"
-            className="block w-full rounded-md border-none bg-gray-100 py-1.5 pl-3 pr-10 text-base text-gray-900 focus:border-sky-500 focus:outline-none focus:ring-sky-500 sm:text-sm"
+            className="block w-full rounded-md border-none bg-gray-100 py-1.5 pl-3 pr-10 text-base text-gray-900 hover:bg-gray-200 focus:border-sky-500 focus:outline-none focus:ring-sky-500 sm:text-sm"
             defaultValue={year}
           >
             <option value="">Alle Jahre</option>

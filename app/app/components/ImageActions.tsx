@@ -88,7 +88,7 @@ const ImageActions = ({
 
   const buttonClassName = classNames(
     'relative pointer-events-auto cursor-pointer truncate flex items-center justify-center backdrop-blur-sm backdrop-filter text-gray-900 rounded-md py-2 text-center overflow-hidden',
-    onWhite ? 'bg-gray-100' : 'bg-white bg-opacity-50 hover:bg-opacity-100',
+    onWhite ? 'bg-gray-100 hover:bg-gray-200' : 'bg-white bg-opacity-50 hover:bg-opacity-100',
   );
 
   return (

@@ -1,50 +1,68 @@
-import { HeartIcon } from '@heroicons/react/solid';
-import { useState } from 'react';
+import { CheckCircleIcon, HeartIcon } from '@heroicons/react/solid';
+import { User } from '@prisma/client';
+import { useEffect, useState } from 'react';
+import CopyToClipboard from 'react-copy-to-clipboard';
 import { LoaderFunction, useLoaderData } from 'remix';
 import ImageList from '~/components/ImageList';
 import Page from '~/components/Page';
 import UserLogin from '~/components/UserLogin';
 import { userCookie } from '~/cookies.server';
 import db from '~/db.server';
+import { getEnv } from '~/utils/envs';
 import { BookmarkData } from '~/utils/types-and-enums';
 
-type LoaderReturnType = { bookmarks: BookmarkData[]; username?: string };
+type LoaderReturnType = { user?: User & { bookmarks: BookmarkData[] } };
 
 export const loader: LoaderFunction = async ({ request }): Promise<LoaderReturnType> => {
   const cookieHeader = request.headers.get('Cookie');
   const username = (await userCookie.parse(cookieHeader)) || undefined;
-  const bookmarks =
-    username && typeof username === 'string'
-      ? await db.bookmark.findMany({
-          where: {
-            user: { name: username },
-          },
-          include: {
-            image: true,
-          },
-          orderBy: {
-            createdAt: 'desc',
-          },
-        })
-      : [];
-  return { bookmarks, username };
+  const user =
+    (await db.user.findUnique({
+      where: { name: username },
+      include: { bookmarks: { include: { image: true }, orderBy: { createdAt: 'desc' } } },
+    })) || undefined;
+  return { user };
 };
 
 export default function Index() {
-  const { bookmarks, username } = useLoaderData<LoaderReturnType>();
-  const images = bookmarks?.map((bookmark) => bookmark.image);
+  const { user } = useLoaderData<LoaderReturnType>();
   const [openLogin, setOpenLogin] = useState(false);
+  const [isCopied, setIsCopied] = useState(false);
+
+  // reset isCopied after a second
+  useEffect(() => {
+    if (isCopied) {
+      const timeout = setTimeout(() => setIsCopied(false), 1000);
+      return () => clearTimeout(timeout);
+    }
+  }, [isCopied]);
 
   return (
     <Page noSearch>
       <UserLogin open={openLogin} onClose={() => setOpenLogin(false)} />
-      {!!username ? (
+      {!!user ? (
         <>
-          <div className="px-4 sm:px-6 md:px-0">
-            <h1 className="text-2xl font-semibold text-gray-900">Gemerkte Bilder von {username}</h1>
+          <div className="flex items-end justify-between space-x-2 px-4 sm:px-6 md:px-0">
+            <div className="grow">
+              <h1 className="text-2xl font-semibold text-gray-900">Gemerkte Bilder</h1>
+              <p className="text-md font-medium text-gray-500">{user.name}</p>
+            </div>
+
+            <CopyToClipboard text={`${getEnv('APP_BASE_URL')}/user/${user.id}`} onCopy={() => setIsCopied(true)}>
+              <div className="xxs:px-4 pointer-events-auto relative flex cursor-pointer items-center justify-center overflow-hidden truncate rounded-md bg-gray-100 px-3 py-2 text-center text-sm font-medium text-gray-900 backdrop-blur-sm backdrop-filter hover:bg-gray-200">
+                {isCopied ? (
+                  <>
+                    <span className="truncate">Link kopiert</span>
+                    <CheckCircleIcon className="ml-1 h-4 w-4 shrink-0 grow-0 text-emerald-500" />
+                  </>
+                ) : (
+                  'Profil teilen'
+                )}
+              </div>
+            </CopyToClipboard>
           </div>
-          {!!bookmarks.length ? (
-            <ImageList images={images} toImage allowCancelingDeleteBookmark />
+          {!!user.bookmarks.length ? (
+            <ImageList images={user.bookmarks.map((bookmark) => bookmark.image)} toImage allowCancelingDeleteBookmark />
           ) : (
             <div className="px-4 sm:px-6 md:px-0">
               <div className="relative mt-4 block w-full rounded-lg border-2 border-dashed border-gray-300 px-4 py-12 text-center hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
