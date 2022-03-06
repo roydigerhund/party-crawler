@@ -9,9 +9,8 @@ import {
   redirect,
   Scripts,
   ScrollRestoration,
-  useLoaderData,
+  useLoaderData
 } from 'remix';
-import Page from './components/Page';
 import { authCookie, userCookie } from './cookies.server';
 import db from './db.server';
 import styles from './styles/app.css';
@@ -92,7 +91,7 @@ export default function App() {
 
 export function Root() {
   return (
-    <html lang="en">
+    <html lang="de">
       <head>
         <Meta />
         <Links />
@@ -107,11 +106,18 @@ export function Root() {
 
 export const ErrorBoundary: ErrorBoundaryComponent = ({ error }) => {
   return (
-    <Page noSearch>
-      <div className="px-4 sm:px-6 md:px-0">
-        <h1 className="text-2xl font-semibold text-gray-900">Sorry, da ist irgendwas schief gelaufen 🙈</h1>
-        <p className="text-md font-medium text-gray-500">{error.message}</p>
-      </div>
-    </Page>
+    <html lang="de">
+      <head>
+        <Meta />
+        <Links />
+      </head>
+      <body>
+        <div className="p-4 sm:p-6">
+          <h1 className="text-2xl font-semibold text-gray-900">Sorry, da ist irgendwas schief gelaufen 🙈</h1>
+          <p className="text-md font-medium text-gray-500">{error.message}</p>
+        </div>
+        <Scripts />
+      </body>
+    </html>
   );
 };

@@ -10,6 +10,7 @@ import {
 } from 'remix';
 import { authCookie } from '~/cookies.server';
 import db from '~/db.server';
+import { anonymize } from './user/$userId';
 
 type ActionReturnType = { wrongPassword: boolean; redirectPath: string } | null;
 
@@ -66,6 +67,17 @@ export const loader: LoaderFunction = async ({ request }): Promise<LoaderReturnT
       },
     });
     return { title: city?.name };
+  }
+
+  // if redirect matches 'user/$userId'
+  if (searchParams.get('redirect')?.startsWith('/user/')) {
+    const userId = searchParams.get('redirect')?.split('/')[2];
+    const user = await db.user.findFirst({
+      where: {
+        id: userId,
+      },
+    });
+    return { title: user?.name ? anonymize(user.name) : undefined };
   }
 
   return null;

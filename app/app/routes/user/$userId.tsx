@@ -9,7 +9,7 @@ import UserLogin from '~/components/UserLogin';
 import db from '~/db.server';
 import { BookmarkData } from '~/utils/types-and-enums';
 
-const anonymize = (str: string) =>
+export const anonymize = (str: string) =>
   str
     .split(' ')
     .map((word) => word.slice(0, 2) + '*****')
