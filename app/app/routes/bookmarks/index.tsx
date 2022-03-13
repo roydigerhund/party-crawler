@@ -16,11 +16,14 @@ type LoaderReturnType = { user?: User & { bookmarks: BookmarkData[] } };
 export const loader: LoaderFunction = async ({ request }): Promise<LoaderReturnType> => {
   const cookieHeader = request.headers.get('Cookie');
   const username = (await userCookie.parse(cookieHeader)) || undefined;
+  console.log('username', username);
   const user =
-    (await db.user.findUnique({
-      where: { name: username },
-      include: { bookmarks: { include: { image: true }, orderBy: { createdAt: 'desc' } } },
-    })) || undefined;
+    (!!username &&
+      (await db.user.findUnique({
+        where: { name: username },
+        include: { bookmarks: { include: { image: true }, orderBy: { createdAt: 'desc' } } },
+      }))) ||
+    undefined;
   return { user };
 };
 
