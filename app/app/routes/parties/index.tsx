@@ -65,14 +65,12 @@ const Parties = () => {
   const submit = useSubmit();
   const [searchParams] = useSearchParams();
   const year = searchParams.get('year') || undefined;
-  const search = searchParams.get('search') || undefined;
 
   return (
     <Page>
       <div className="flex items-end justify-between space-x-2 px-4 sm:px-6 md:px-0">
         <h1 className="text-2xl font-semibold text-gray-900">Parties</h1>
-        <Form method="get" onChange={(e) => submit(e.currentTarget)}>
-          <input id="search-field" type="search" name="search" defaultValue={search} hidden />
+        <Form id="search-and-pagination" method="get" onChange={(e) => submit(e.currentTarget)}>
           <label htmlFor="location" className="sr-only">
             Location
           </label>

@@ -1,6 +1,5 @@
 import { ArrowNarrowLeftIcon, ArrowNarrowRightIcon } from '@heroicons/react/solid';
 import React from 'react';
-import { Link, useLocation } from 'remix';
 import { classNames } from '~/utils/class-names';
 
 type Viewable = 'always' | 'never';
@@ -8,7 +7,6 @@ type Viewable = 'always' | 'never';
 type Props = { currentPage: number; perPage: number; total: number };
 
 const Pagination = ({ currentPage, perPage, total }: Props) => {
-  const location = useLocation();
   const numberOfPages = Math.ceil(total / perPage);
 
   // always 1 2 3? and 8? 9 10
@@ -23,26 +21,23 @@ const Pagination = ({ currentPage, perPage, total }: Props) => {
     viewable: page < 2 || Math.abs(page - currentPage) < 2 || Math.abs(page - numberOfPages) < 1 ? 'always' : 'never',
   }));
 
-  const getLink = (page: number) => {
-    const { pathname, search } = location;
-    const params = new URLSearchParams(search);
-    params.set('page', page.toString());
-    return `${pathname}?${params.toString()}`;
-  };
-
   return numberOfPages < 2 ? null : (
     <nav className="my-4 flex items-center justify-between border-t border-gray-200">
       <div className="-mt-px flex w-0 flex-1">
-        <Link
-          to={getLink(currentPage > 1 ? currentPage - 1 : 1)}
+        <button
+          form="search-and-pagination"
+          name="page"
+          value={currentPage > 1 ? currentPage - 1 : 1}
+          type="submit"
           className={classNames(
             'inline-flex items-center border-t-2 border-transparent pt-4 pr-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700',
             currentPage === 1 && 'pointer-events-none opacity-40',
           )}
+          disabled={currentPage === 1}
         >
           <ArrowNarrowLeftIcon className="mr-3 h-5 w-5 text-gray-400" aria-hidden="true" />
           Zurück
-        </Link>
+        </button>
       </div>
       <div className="inline border-t-2 border-transparent pt-4 text-sm text-gray-500 md:hidden">
         Seite <span className="font-medium text-gray-700">{currentPage}</span> von{' '}
@@ -51,10 +46,12 @@ const Pagination = ({ currentPage, perPage, total }: Props) => {
       <div className="hidden md:-mt-px md:flex">
         {printablePages.map(({ page, viewable }, i) =>
           viewable === 'always' ? (
-            <Link
+            <button
               key={page}
-              to={getLink(page)}
-              prefetch="intent"
+              form="search-and-pagination"
+              name="page"
+              value={page}
+              type="submit"
               className={classNames(
                 'inline-flex items-center border-t-2 px-3 pt-4 text-sm font-medium',
                 page === currentPage
@@ -63,7 +60,7 @@ const Pagination = ({ currentPage, perPage, total }: Props) => {
               )}
             >
               {page}
-            </Link>
+            </button>
           ) : printablePages[i - 1]?.viewable !== 'never' ? (
             <span
               key={page}
@@ -77,16 +74,20 @@ const Pagination = ({ currentPage, perPage, total }: Props) => {
         )}
       </div>
       <div className="-mt-px flex w-0 flex-1 justify-end">
-        <Link
-          to={getLink(currentPage < numberOfPages ? currentPage + 1 : numberOfPages)}
+        <button
+          form="search-and-pagination"
+          name="page"
+          value={currentPage < numberOfPages ? currentPage + 1 : numberOfPages}
+          type="submit"
           className={classNames(
             'inline-flex items-center border-t-2 border-transparent pt-4 pl-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700',
             currentPage === numberOfPages && 'pointer-events-none opacity-50',
           )}
+          disabled={currentPage === numberOfPages}
         >
           Weiter
           <ArrowNarrowRightIcon className="ml-3 h-5 w-5 text-gray-400" aria-hidden="true" />
-        </Link>
+        </button>
       </div>
     </nav>
   );

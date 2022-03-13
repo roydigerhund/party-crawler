@@ -84,7 +84,6 @@ const City = () => {
   const submit = useSubmit();
   const [searchParams] = useSearchParams();
   const year = searchParams.get('year') || undefined;
-  const search = searchParams.get('search') || undefined;
 
   if (!city)
     return (
@@ -102,8 +101,7 @@ const City = () => {
           <h1 className="text-2xl font-semibold text-gray-900">{city.name}</h1>
           <p className="text-md font-medium text-gray-500">{city.country.name}</p>
         </div>
-        <Form method="get" onChange={(e) => submit(e.currentTarget)}>
-          <input id="search-field" type="search" name="search" defaultValue={search} hidden />
+        <Form id="search-and-pagination" method="get" onChange={(e) => submit(e.currentTarget)}>
           <label htmlFor="location" className="sr-only">
             Location
           </label>

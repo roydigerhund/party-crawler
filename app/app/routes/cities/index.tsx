@@ -1,7 +1,7 @@
 /* This example requires Tailwind CSS v2.0+ */
 import { ChevronRightIcon, UsersIcon } from '@heroicons/react/solid';
 import { Prisma } from '@prisma/client';
-import { Link, LoaderFunction, MetaFunction, useLoaderData } from 'remix';
+import { Form, Link, LoaderFunction, MetaFunction, useLoaderData } from 'remix';
 import Page from '~/components/Page';
 import Pagination from '~/components/Pagination';
 import db from '~/db.server';
@@ -72,6 +72,7 @@ export default function Cities() {
     <Page>
       <div className="px-4 sm:px-6 md:px-0">
         <h1 className="text-2xl font-semibold text-gray-900">Städte</h1>
+        <Form id="search-and-pagination" method="get" className='hidden' />
       </div>
 
       <div className="px-4 sm:px-6 md:px-0">

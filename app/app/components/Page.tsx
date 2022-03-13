@@ -3,7 +3,7 @@ import { HeartIcon, HomeIcon, LocationMarkerIcon, MenuAlt2Icon, UsersIcon, XIcon
 import { SearchIcon } from '@heroicons/react/solid';
 import debounce from 'debounce';
 import React, { Fragment, useCallback, useState } from 'react';
-import { Form, NavLink, useMatches, useSearchParams, useSubmit } from 'remix';
+import { NavLink, useMatches, useSearchParams, useSubmit } from 'remix';
 import { classNames } from '~/utils/class-names';
 import { RootData } from '~/utils/types-and-enums';
 
@@ -24,7 +24,7 @@ const Page: React.FC<{ noSearch?: boolean }> = ({ children, noSearch }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const debouncedSubmit = useCallback(
-    debounce((currentTarget: React.FormEvent<HTMLFormElement>['currentTarget']) => {
+    debounce((currentTarget: HTMLFormElement) => {
       submit(currentTarget);
     }, 250),
     [],
@@ -197,25 +197,25 @@ const Page: React.FC<{ noSearch?: boolean }> = ({ children, noSearch }) => {
                 <MenuAlt2Icon className="h-6 w-6" aria-hidden="true" />
               </button>
               <div className="flex flex-1 justify-between rounded-r-full border-y border-r border-gray-300 bg-white px-4 md:rounded-none md:border-x-0 md:border-t-0 md:border-gray-200 md:px-0">
-                <div className="flex flex-1">
-                  <Form className="flex w-full md:ml-0" method="get" onChange={(e) => debouncedSubmit(e.currentTarget)}>
-                    <label htmlFor="search-field" className="sr-only">
-                      Suche
-                    </label>
-                    <div className="relative w-full text-gray-400 focus-within:text-gray-600">
-                      <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center">
-                        <SearchIcon className="h-5 w-5" aria-hidden="true" />
-                      </div>
-                      <input
-                        id="search-field"
-                        className="block h-full w-full border-transparent bg-transparent py-2 pl-8 pr-0 text-base text-gray-900 placeholder-gray-500 focus:border-transparent focus:placeholder-gray-400 focus:outline-none focus:ring-0 sm:text-sm"
-                        placeholder="Suche"
-                        type="search"
-                        name="search"
-                        defaultValue={search}
-                      />
+                <div className="flex w-full md:ml-0">
+                  <label htmlFor="search-field" className="sr-only">
+                    Suche
+                  </label>
+                  <div className="relative w-full text-gray-400 focus-within:text-gray-600">
+                    <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center">
+                      <SearchIcon className="h-5 w-5" aria-hidden="true" />
                     </div>
-                  </Form>
+                    <input
+                      id="search-field"
+                      form="search-and-pagination"
+                      onChange={(e) => !!e.currentTarget.form && debouncedSubmit(e.currentTarget.form)}
+                      className="block h-full w-full border-transparent bg-transparent py-2 pl-8 pr-0 text-base text-gray-900 placeholder-gray-500 focus:border-transparent focus:placeholder-gray-400 focus:outline-none focus:ring-0 sm:text-sm"
+                      placeholder="Suche"
+                      type="search"
+                      name="search"
+                      defaultValue={search}
+                    />
+                  </div>
                 </div>
               </div>
             </div>
