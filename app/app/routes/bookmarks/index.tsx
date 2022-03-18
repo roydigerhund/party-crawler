@@ -16,7 +16,6 @@ type LoaderReturnType = { user?: User & { bookmarks: BookmarkData[] } };
 export const loader: LoaderFunction = async ({ request }): Promise<LoaderReturnType> => {
   const cookieHeader = request.headers.get('Cookie');
   const username = (await userCookie.parse(cookieHeader)) || undefined;
-  console.log('username', username);
   const user =
     (!!username &&
       (await db.user.findUnique({

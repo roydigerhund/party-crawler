@@ -26,19 +26,6 @@ export function links() {
 
 export const loader: LoaderFunction = async ({ request }): Promise<RootData> => {
   const cookieHeader = request.headers.get('Cookie');
-  const isAuthorized = (await authCookie.parse(cookieHeader)) || false;
-
-  const url = new URL(request.url);
-
-  console.log(isAuthorized, 'isAuthorized');
-
-  if (!isAuthorized && url.pathname !== '/auth') {
-    throw redirect(url.pathname.length > 1 ? '/auth?redirect=' + encodeURIComponent(url.pathname) : '/auth', {
-      status: 401,
-    });
-  } else if (isAuthorized && url.pathname === '/auth') {
-    throw redirect(url.searchParams.get('redirect') || '/');
-  }
 
   const username = (await userCookie.parse(cookieHeader)) || undefined;
   const bookmarks =
