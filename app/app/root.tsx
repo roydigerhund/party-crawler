@@ -9,7 +9,7 @@ import {
   redirect,
   Scripts,
   ScrollRestoration,
-  useLoaderData
+  useLoaderData,
 } from 'remix';
 import { authCookie, userCookie } from './cookies.server';
 import db from './db.server';
@@ -33,7 +33,9 @@ export const loader: LoaderFunction = async ({ request }): Promise<RootData> => 
   console.log(isAuthorized, 'isAuthorized');
 
   if (!isAuthorized && url.pathname !== '/auth') {
-    throw redirect(url.pathname.length > 1 ? '/auth?redirect=' + encodeURIComponent(url.pathname) : '/auth');
+    throw redirect(url.pathname.length > 1 ? '/auth?redirect=' + encodeURIComponent(url.pathname) : '/auth', {
+      status: 401,
+    });
   } else if (isAuthorized && url.pathname === '/auth') {
     throw redirect(url.searchParams.get('redirect') || '/');
   }
