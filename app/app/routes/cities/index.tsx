@@ -78,7 +78,7 @@ export default function Cities() {
       <div className="px-4 sm:px-6 md:px-0">
         <div className="py-4">
           <ul role="list" className="divide-y divide-gray-200">
-            {cities.map((city) => (
+            {cities.map((city, index) => (
               <li key={city.id}>
                 <Link
                   to={`/cities/${city.id}`}
@@ -110,6 +110,7 @@ export default function Cities() {
                             className="xs:h-10 xs:w-10 h-8 w-8 rounded-lg object-cover ring-2 ring-white sm:h-12 sm:w-12"
                             src={getEnv('MINIO_BASE_URL') + party.images[0]?.filePath}
                             alt={party.name}
+                            loading={index > 5 ? 'lazy' : 'eager'}
                           />
                         ))}
                       </div>

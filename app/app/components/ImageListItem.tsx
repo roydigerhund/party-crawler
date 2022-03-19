@@ -13,6 +13,7 @@ const ImageListItem = ({
   onClick,
   onShowLogin,
   highlighted,
+  lazy,
 }: {
   image: Image;
   toParty?: boolean;
@@ -22,6 +23,7 @@ const ImageListItem = ({
   onClick: () => void;
   onShowLogin: () => void;
   highlighted?: boolean;
+  lazy?: boolean;
 }) => {
   const imageRef = useRef<HTMLLIElement>(null);
 
@@ -38,7 +40,7 @@ const ImageListItem = ({
     <li
       ref={imageRef}
       className={classNames(
-        'xs:scroll-mt-3 relative scroll-mt-2 transition-all lg:scroll-mt-4 select-none',
+        'xs:scroll-mt-3 relative select-none scroll-mt-2 transition-all lg:scroll-mt-4',
         highlighted && 'animate-tada z-10',
       )}
     >
@@ -47,6 +49,7 @@ const ImageListItem = ({
           src={getEnv('MINIO_BASE_URL') + image.filePath}
           alt=""
           className={classNames('pointer-events-none object-cover', 'is-hover:group-hover:blur-sm')}
+          loading={lazy ? 'lazy' : 'eager'}
         />
         <img
           src={getEnv('MINIO_BASE_URL') + image.filePath}

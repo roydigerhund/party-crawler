@@ -70,6 +70,7 @@ const ImageList = forwardRef<ImageListRef, ImageListProps>(
                   highlighted={image.id === highlightedImageId}
                   onShowLogin={() => setOpenLogin(true)}
                   {...{ toParty, toImage, isRandom, allowCancelingDeleteBookmark }}
+                  lazy={index > 5}
                 />
               ))}
             </ul>

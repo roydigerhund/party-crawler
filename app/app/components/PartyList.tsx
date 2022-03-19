@@ -31,7 +31,7 @@ const PartyList = ({
           role="list"
           className="grid grid-cols-2 gap-4 gap-y-5 sm:grid-cols-3 sm:gap-x-6 sm:gap-y-7 lg:grid-cols-4 xl:gap-x-8 xl:gap-y-9"
         >
-          {parties.map((party) => (
+          {parties.map((party, index) => (
             <li key={party.id} className="relative">
               <div className="relative">
                 <div className="group aspect-w-10 aspect-h-10 block w-full overflow-hidden rounded-lg bg-gray-100 focus-within:ring-2 focus-within:ring-sky-500 focus-within:ring-offset-2 focus-within:ring-offset-gray-100">
@@ -40,6 +40,7 @@ const PartyList = ({
                       src={getEnv('MINIO_BASE_URL') + party.images[0].filePath}
                       alt=""
                       className="pointer-events-none object-cover group-hover:opacity-75"
+                      loading={index > 5 ? 'lazy' : 'eager'}
                     />
                   )}
                   <Link to={`/parties/${party.id}`} className="absolute inset-0 focus:outline-none" />
