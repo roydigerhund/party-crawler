@@ -15,8 +15,6 @@ export default async function handleRequest(
 
   const url = new URL(request.url);
 
-  console.log({isAuthorized})
-
   if (!isAuthorized && url.pathname !== '/auth') {
     responseStatusCode = 302;
     responseHeaders.set(
@@ -28,8 +26,6 @@ export default async function handleRequest(
     responseStatusCode = 302;
     responseHeaders.set('Location', redirectPath);
   }
-
-  console.log({responseStatusCode, responseHeaders})
 
   responseHeaders.set('Content-Type', 'text/html');
 
