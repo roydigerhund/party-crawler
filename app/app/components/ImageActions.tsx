@@ -118,7 +118,7 @@ const ImageActions = ({
           </button>
           {toParty ? (
             <Link
-              to={`/parties/${image.partyId}`}
+              to={`/image/${image.id}`}
               target={isRandom ? '_blank' : undefined}
               className={classNames(buttonClassName, 'xxs:px-4 w-full px-3')}
             >
