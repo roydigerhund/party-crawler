@@ -74,7 +74,7 @@ const Party = () => {
             {image.party.city.name}
           </Link>
         </h1>
-        <p className="text-md font-medium text-gray-500">{formatDate(image.party.date)}</p>
+        <p className="text-base font-medium text-gray-500">{formatDate(image.party.date)}</p>
       </div>
       <div className="p-4 sm:px-6 md:px-0">
         <img

@@ -47,7 +47,7 @@ export default function Index() {
           <div className="flex items-end justify-between space-x-2 px-4 sm:px-6 md:px-0">
             <div className="grow">
               <h1 className="text-2xl font-semibold text-gray-900">Gemerkte Bilder</h1>
-              <p className="text-md font-medium text-gray-500">{user.name}</p>
+              <p className="text-base font-medium text-gray-500">{user.name}</p>
             </div>
 
             <CopyToClipboard text={`${getEnv('APP_BASE_URL')}/user/${user.id}`} onCopy={() => setIsCopied(true)}>

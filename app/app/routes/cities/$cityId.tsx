@@ -99,7 +99,7 @@ const City = () => {
       <div className="flex items-end justify-between space-x-2 px-4 sm:px-6 md:px-0">
         <div>
           <h1 className="text-2xl font-semibold text-gray-900">{city.name}</h1>
-          <p className="text-md font-medium text-gray-500">{city.country.name}</p>
+          <p className="text-base font-medium text-gray-500">{city.country.name}</p>
         </div>
         <Form id="search-and-pagination" method="get" onChange={(e) => submit(e.currentTarget)}>
           <label htmlFor="location" className="sr-only">

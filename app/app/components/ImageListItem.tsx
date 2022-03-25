@@ -44,11 +44,11 @@ const ImageListItem = ({
         highlighted && 'animate-tada z-10',
       )}
     >
-      <div className="group aspect-w-10 aspect-h-10 block w-full overflow-hidden rounded-lg bg-black focus-within:ring-2 focus-within:ring-sky-500 focus-within:ring-offset-2 focus-within:ring-offset-gray-100">
+      <div className="group aspect-w-10 aspect-h-10 block w-full overflow-hidden rounded-lg bg-gray-200 focus-within:ring-2 focus-within:ring-sky-500 focus-within:ring-offset-2 focus-within:ring-offset-gray-100">
         <img
           src={getEnv('MINIO_BASE_URL') + image.filePath}
           alt=""
-          className={classNames('pointer-events-none object-cover', 'is-hover:group-hover:blur-sm')}
+          className={classNames('pointer-events-none object-cover', 'is-hover:group-hover:blur-sm scale-110')}
           loading={lazy ? 'lazy' : 'eager'}
         />
         <img

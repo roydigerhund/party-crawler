@@ -6,13 +6,13 @@ import {
   Meta,
   MetaFunction,
   Outlet,
-  redirect,
   Scripts,
   ScrollRestoration,
-  useLoaderData,
+  useLoaderData, useTransition
 } from 'remix';
-import { authCookie, userCookie } from './cookies.server';
+import { userCookie } from './cookies.server';
 import db from './db.server';
+import { partyIdSkeleton } from './routes/parties/$partyId';
 import styles from './styles/app.css';
 import { RootData } from './utils/types-and-enums';
 
@@ -50,6 +50,18 @@ export const loader: LoaderFunction = async ({ request }): Promise<RootData> => 
 export default function App() {
   const { envs } = useLoaderData<RootData>();
 
+const transition = useTransition();
+
+const skeletons = [
+  {
+    pathRegex: /\/parties\/.*/,
+    component: partyIdSkeleton,
+  },
+];
+
+const skeleton =
+  transition.state === 'loading' && skeletons.find((s) => s.pathRegex.test(transition.location.pathname))?.component;
+
   return (
     <html lang="de" className="h-full scroll-smooth">
       <head>
@@ -64,7 +76,7 @@ export default function App() {
         <Links />
       </head>
       <body className="h-full">
-        <Outlet />
+        {skeleton ? skeleton() : <Outlet />}
         <script
           dangerouslySetInnerHTML={{
             __html: `window.ENV = ${JSON.stringify(envs)}`,
@@ -73,21 +85,6 @@ export default function App() {
         <ScrollRestoration />
         <Scripts />
         <LiveReload />
-      </body>
-    </html>
-  );
-}
-
-export function Root() {
-  return (
-    <html lang="de">
-      <head>
-        <Meta />
-        <Links />
-      </head>
-      <body>
-        <Outlet />
-        <Scripts />
       </body>
     </html>
   );
@@ -103,7 +100,7 @@ export const ErrorBoundary: ErrorBoundaryComponent = ({ error }) => {
       <body>
         <div className="p-4 sm:p-6">
           <h1 className="text-2xl font-semibold text-gray-900">Sorry, da ist irgendwas schief gelaufen 🙈</h1>
-          <p className="text-md font-medium text-gray-500">{error.message}</p>
+          <p className="text-base font-medium text-gray-500">{error.message}</p>
         </div>
         <Scripts />
       </body>
