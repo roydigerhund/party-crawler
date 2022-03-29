@@ -1,6 +1,7 @@
 import { renderToString } from 'react-dom/server';
-import { EntryContext, RemixServer } from 'remix';
+import { EntryContext, HandleDataRequestFunction, RemixServer } from 'remix';
 import { authCookie } from './cookies.server';
+import { etag } from 'remix-etag';
 
 export default async function handleRequest(
   request: Request,
@@ -29,8 +30,13 @@ export default async function handleRequest(
 
   responseHeaders.set('Content-Type', 'text/html');
 
-  return new Response('<!DOCTYPE html>' + markup, {
+  const response = new Response('<!DOCTYPE html>' + markup, {
     status: responseStatusCode,
     headers: responseHeaders,
   });
+  return etag({ request, response });
 }
+
+export const handleDataRequest: HandleDataRequestFunction = async (response: Response, { request }) => {
+  return etag({ request, response });
+};

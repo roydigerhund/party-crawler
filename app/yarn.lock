@@ -1341,7 +1341,7 @@ estree-walker@^3.0.0:
   resolved "https://registry.yarnpkg.com/estree-walker/-/estree-walker-3.0.1.tgz#c2a9fb4a30232f5039b7c030b37ead691932debd"
   integrity sha512-woY0RUD87WzMBUiZLx8NsYr23N5BKsOMZHhu2hoNRVh6NXGfoiT1KOL8G3UHlJAnEDGmfa5ubNA/AacfG+Kb0g==
 
-etag@~1.8.1:
+etag@^1.8.1, etag@~1.8.1:
   version "1.8.1"
   resolved "https://registry.yarnpkg.com/etag/-/etag-1.8.1.tgz#41ae2eeb65efa62268aebfea83ac7d79299b0887"
   integrity sha1-Qa4u62XvpiJorr/qg6x9eSmbCIc=
@@ -3179,6 +3179,13 @@ remark-rehype@^9.0.0:
     "@types/mdast" "^3.0.0"
     mdast-util-to-hast "^11.0.0"
     unified "^10.0.0"
+
+remix-etag@^0.2.1:
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/remix-etag/-/remix-etag-0.2.1.tgz#ef92c3e9b528601f40049c46a6c29e88bd22482c"
+  integrity sha512-Lw1DVn3RqYTM//EBVaUfwuc9136HJIehxE2nrziOoCMJr8YNQfTJeQ3gGlOWg/ocuzMd7XLZbTm15zTdqRyzNA==
+  dependencies:
+    etag "^1.8.1"
 
 remix@^1.2.1:
   version "1.2.1"

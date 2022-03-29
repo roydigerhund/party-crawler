@@ -67,7 +67,7 @@ export default function Index() {
             <ImageList images={user.bookmarks.map((bookmark) => bookmark.image)} toImage allowCancelingDeleteBookmark />
           ) : (
             <div className="px-4 sm:px-6 md:px-0">
-              <div className="relative mt-4 block w-full rounded-lg border-2 border-dashed border-gray-300 px-4 py-12 text-center hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+              <div className="relative mt-4 block w-full rounded-lg border-2 border-dashed border-gray-300 px-4 py-12 text-center">
                 <HeartIcon className="mx-auto h-12 w-12 text-gray-200" />
 
                 <span className="mt-4 block text-base font-medium text-gray-600">
