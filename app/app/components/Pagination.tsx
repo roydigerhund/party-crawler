@@ -21,6 +21,10 @@ const Pagination = ({ currentPage, perPage, total }: Props) => {
     viewable: page < 2 || Math.abs(page - currentPage) < 2 || Math.abs(page - numberOfPages) < 1 ? 'always' : 'never',
   }));
 
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   return numberOfPages < 2 ? null : (
     <nav className="my-4 flex items-center justify-between border-t border-gray-200">
       <div className="-mt-px flex w-0 flex-1">
@@ -29,6 +33,7 @@ const Pagination = ({ currentPage, perPage, total }: Props) => {
           name="page"
           value={currentPage > 1 ? currentPage - 1 : 1}
           type="submit"
+          onClick={scrollToTop}
           className={classNames(
             'inline-flex items-center border-t-2 border-transparent pt-4 pr-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700',
             currentPage === 1 && 'pointer-events-none opacity-40',
@@ -52,12 +57,14 @@ const Pagination = ({ currentPage, perPage, total }: Props) => {
               name="page"
               value={page}
               type="submit"
+              onClick={scrollToTop}
               className={classNames(
                 'inline-flex items-center border-t-2 px-3 pt-4 text-sm font-medium',
                 page === currentPage
                   ? 'border-sky-500 text-sky-600'
                   : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700',
               )}
+              disabled={page === currentPage}
             >
               {page}
             </button>
@@ -79,6 +86,7 @@ const Pagination = ({ currentPage, perPage, total }: Props) => {
           name="page"
           value={currentPage < numberOfPages ? currentPage + 1 : numberOfPages}
           type="submit"
+          onClick={scrollToTop}
           className={classNames(
             'inline-flex items-center border-t-2 border-transparent pt-4 pl-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700',
             currentPage === numberOfPages && 'pointer-events-none opacity-50',
